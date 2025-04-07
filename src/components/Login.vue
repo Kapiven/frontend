@@ -1,7 +1,3 @@
-Cómo hago para centrar el cuadro del login
-
-este es el código
-
 <template>
   <div class="login-page">
     <div class="login-card">
@@ -28,12 +24,13 @@ este es el código
 
 <style scoped>
 .login-page {
-  height: 95vh;
-  width: 150vh;
+  height: 100vh;
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(to right, #e3f2fd, #ffffff);
+  overflow: hidden;
 }
 
 .login-card {
