@@ -7,21 +7,22 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    vueJsx(),
-    vueDevTools(),
-  ],
+  plugins: [vue(), vueJsx(), vueDevTools()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   server: {
     port: 8080,
-    historyApiFallback: true
+    watch: {
+      usePolling: true,
+    },
+    historyApiFallback: true,
   },
   define: {
-    'process.env.VITE_BACKEND_URL': JSON.stringify(process.env.VITE_BACKEND_URL || 'http://localhost:4000'),
+    'process.env.VITE_BACKEND_URL': JSON.stringify(
+      process.env.VITE_BACKEND_URL || 'http://localhost:4000',
+    ),
   },
 })
