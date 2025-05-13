@@ -5,6 +5,7 @@
       <h2 class="titulo">Bienvenido a la Clínica Oftalmológica</h2>
       <h3 class="subtitulo">Crear cuenta</h3>
 
+
       <form @submit.prevent="handleRegister" class="formulario">
         <label for="email">Correo electrónico</label>
         <input type="email" id="email" v-model="email" placeholder="usuario@ejemplo.com" />

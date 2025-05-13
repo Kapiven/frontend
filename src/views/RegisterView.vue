@@ -1,3 +1,7 @@
+<script setup>
+import Register from '../components/Register.vue'
+</script>
+
 <template>
   <div class="register-page">
     <div class="register-card">
@@ -126,5 +130,4 @@ async function handleRegister() {
   font-size: 0.9rem;
 }
 </style>
-
 

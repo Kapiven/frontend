@@ -12,7 +12,8 @@
         <label for="password">Contraseña</label>
         <input type="password" id="password" placeholder="••••••••" />
 
-        <button type="submit">Iniciar sesión</button>
+
+        <button type="submit">Iniciar Sesion</button>
       </form>
     </div>
   </div>
@@ -30,6 +31,8 @@ async function handleLogin() {
   try {
     error.value = ''
     const token = await login(email.value, password.value)
+    console.log('Token recibido:', token)
+    // Redirigir al usuario a otra página (por ejemplo, el dashboard)
     window.location.href = '/dashboard'
   } catch (err) {
     error.value = err.message
