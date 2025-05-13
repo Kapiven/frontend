@@ -1,6 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import LoginView from '@/views/LoginView.vue';
-import RegisterView from '@/views/RegisterView.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+import LoginView from '@/views/LoginView.vue'
+import RegisterView from '@/views/RegisterView.vue'
+import DashboardView from '@/views/DashboardView.vue'
 import Menu from '@/components/Menu.vue';
 
 const routes = [
@@ -15,7 +16,12 @@ const routes = [
     component: RegisterView,
   },
   {
-    path: '/menu',
+    path: '/dashboard',
+    mame: 'dashboard',
+    component: DashboardView,
+  },
+{
+  path: '/menu',
     name: 'menu',
     component: Menu,
   },
@@ -24,6 +30,6 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
+})
 
 export default router;
