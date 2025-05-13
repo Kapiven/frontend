@@ -13,6 +13,9 @@
 
         <button type="submit">Iniciar sesión</button>
       </form>
+      <div class="register-link">
+        ¿No tienes cuenta? <router-link to="/register">Regístrate aquí</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -100,6 +103,19 @@ async function handleLogin() {
 
 .formulario button:hover {
   background-color: #125ea7;
+}
+
+.register-link {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #000;
+}
+
+.register-link a {
+  color: #1976d2;
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>
 

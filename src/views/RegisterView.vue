@@ -1,7 +1,3 @@
-<script setup>
-import Register from '../components/Register.vue'
-</script>
-
 <template>
   <div class="register-page">
     <div class="register-card">
@@ -18,6 +14,9 @@ import Register from '../components/Register.vue'
 
         <button type="submit">Registrarse</button>
       </form>
+      <div class="login-link">
+        ¿Ya tienes cuenta? <router-link to="/login">Inicia sesión aquí</router-link>
+      </div>
 
       <p v-if="error" class="error">{{ error }}</p>
       <p v-if="success" class="success">{{ success }}</p>
@@ -116,6 +115,19 @@ async function handleRegister() {
 
 .formulario button:hover {
   background-color: #125ea7;
+}
+
+.login-link {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #000;
+}
+
+.login-link a {
+  color: #1976d2;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .error {
