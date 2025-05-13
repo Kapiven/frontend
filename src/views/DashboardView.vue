@@ -31,6 +31,8 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+
 const todaysAppointments = [
   { id: 1, time: '08:30', patient: 'Carlos M.', reason: 'Consulta general' },
   { id: 2, time: '09:15', patient: 'Ana R.', reason: 'Revisión de resultados' },
@@ -83,8 +85,10 @@ const upcomingAvailability = [
   { date: '2025-04-25', slots: 6 },
 ]
 
+const router = useRouter()
+
 function calendarRedirect() {
-  alert('Redirigir a calendario...')
+  router.push({ name: 'calendar' })
 }
 
 function consultRedirect() {
