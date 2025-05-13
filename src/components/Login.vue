@@ -1,19 +1,20 @@
 <template>
   <div class="login-page">
     <div class="login-card">
-      <img src="@/assets/logo.jpg" alt="Logo" class="logo" />
-      <h2 class="titulo">Iniciar Sesion</h2>
+      <img src="@/assets/logo.jpg" alt="Logo de la clínica" class="logo" />
+      <h2 class="titulo">Bienvenido a la Clínica Oftalmológica</h2>
+      <h3 class="subtitulo">Iniciar sesión</h3>
 
-      <form @submit.prevent="handleLogin" class="formulario">
-        <label for="email">Correo Electronico</label>
-        <input type="email" id="email" v-model="email" placeholder="usuario@ejemplo.com" />
+      <form class="formulario">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" placeholder="usuario@ejemplo.com" />
 
-        <label for="password">Contrasena</label>
-        <input type="password" id="password" v-model="password" placeholder="********" />
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" placeholder="••••••••" />
+
 
         <button type="submit">Iniciar Sesion</button>
       </form>
-      <p v-if="error" class="error">{{ error }}</p>
     </div>
   </div>
 </template>
@@ -31,7 +32,6 @@ async function handleLogin() {
     error.value = ''
     const token = await login(email.value, password.value)
     console.log('Token recibido:', token)
-
     // Redirigir al usuario a otra página (por ejemplo, el dashboard)
     window.location.href = '/dashboard'
   } catch (err) {
@@ -69,6 +69,12 @@ async function handleLogin() {
   font-size: 1.3rem;
   color: #1976d2;
   margin-bottom: 0.5rem;
+}
+
+.subtitulo {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #333;
 }
 
 .formulario {

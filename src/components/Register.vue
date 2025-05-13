@@ -2,8 +2,9 @@
   <div class="register-page">
     <div class="register-card">
       <img src="@/assets/logo.jpg" alt="Logo de la clínica" class="logo" />
-      <h2 class="titulo">Registrarse</h2>
-      <h3 class="subtitulo">Crea una cuenta</h3>
+      <h2 class="titulo">Bienvenido a la Clínica Oftalmológica</h2>
+      <h3 class="subtitulo">Crear cuenta</h3>
+
 
       <form @submit.prevent="handleRegister" class="formulario">
         <label for="email">Correo electrónico</label>
@@ -76,7 +77,7 @@ async function handleRegister() {
 .subtitulo {
   font-size: 1.1rem;
   margin-bottom: 1.5rem;
-  color: #2e2d2d;
+  color: #333;
 }
 
 .formulario {
