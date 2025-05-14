@@ -1,13 +1,16 @@
 <template>
   <div class="login-page">
     <div class="login-card">
-      <img src="@/assets/logo.jpg" alt="Logo" class="logo" />
       <h2 class="titulo">Iniciar Sesion</h2>
 
       <form @submit.prevent="handleLogin" class="formulario">
-        <label for="email">Correo Electronico</label>
-        <input type="email" id="email" v-model="email" placeholder="usuario@ejemplo.com" />
-
+        <label for="username">Usuario</label>
+        <input
+          type="text"
+          id="username"
+          v-model="username"
+          placeholder="Ingresa tu nombre de usuario"
+        />
         <label for="password">Contrasena</label>
         <input type="password" id="password" v-model="password" placeholder="********" />
 
@@ -22,14 +25,14 @@
 import { ref } from 'vue'
 import { login } from '@/services/authService'
 
-const email = ref('')
+const username = ref('')
 const password = ref('')
 const error = ref('')
 
 async function handleLogin() {
   try {
     error.value = ''
-    const token = await login(email.value, password.value)
+    const token = await login(username.value, password.value)
     console.log('Token recibido:', token)
 
     // Redirigir al usuario a otra página (por ejemplo, el dashboard)
