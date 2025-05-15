@@ -51,3 +51,4 @@ export async function searchPatients(query, limit = 10) {
 // export async function createPatient(patientData) { ... }
 // export async function updatePatient(patientId, updatedData) { ... }
 // export async function deletePatient(patientId) { ... }
+

@@ -1723,3 +1723,4 @@ async function removeAppointment(id) {
   }
 }
 </style>
+
