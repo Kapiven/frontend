@@ -12,3 +12,4 @@ export async function getAppointmentsForDay(dateStr) {
   const res = await axios.get(`${API_BASE_URL}/appointments/day`, { params: { date: dateStr } })
   return res.data // [{ id, start, duration, name, ... }]
 }
+
