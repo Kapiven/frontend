@@ -11,14 +11,13 @@
           <div><strong>Nombre:</strong> {{ paciente.name }}</div>
           <div><strong>Fecha de nacimiento:</strong> {{ formatDate(paciente.date_of_birth) }}</div>
           <div><strong>Edad:</strong> {{ calcularEdad(paciente.date_of_birth) }} años</div>
-          <div><strong>Sexo:</strong> {{ paciente.sex }}</div>
           <div><strong>Teléfono:</strong> {{ paciente.phone }}</div>
         </div>
       </section>
 
       <!-- Sección: Antecedentes -->
       <section v-if="paciente.antecedentes" class="seccion">
-        <h2 class="subtitulo">Antecedentes Médicos</h2>
+        <h2 class="subtitulo">Antecedentes</h2>
         <div class="grid">
           <div><strong>Antecedentes médicos:</strong> {{ paciente.antecedentes.medical }}</div>
           <div><strong>Antecedentes familiares:</strong> {{ paciente.antecedentes.family }}</div>

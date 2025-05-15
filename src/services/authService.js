@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-const API_URL = process.env.VITE_BACKEND_URL || 'http://localhost:4000'
+const API_URL = 'http://localhost:4000'
 
-export async function login(email, password) {
+export async function login(username, password) {
   try {
-    const response = await axios.post(`${API_URL}/login`, { email, password })
+    const response = await axios.post(`${API_URL}/login`, { username, password })
     const token = response.data.token
 
     localStorage.setItem('authToken', token)
@@ -16,9 +16,9 @@ export async function login(email, password) {
   }
 }
 
-export async function register(email, password) {
+export async function register(email, username, password) {
   try {
-    const response = await axios.post(`${API_URL}/register`, { email, password })
+    const response = await axios.post(`${API_URL}/register`, { email, username, password })
     return response.data.token
   } catch (error) {
     console.error('Error al registrarse:', error)

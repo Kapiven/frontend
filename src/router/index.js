@@ -4,6 +4,7 @@ import RegisterView from '@/views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import HomeView from '@/views/HomeView.vue'
 import CalendarView from '@/views/CalendarView.vue'
+import PacienteView from '@/views/PacienteView.vue'
 const routes = [
   {
     path: '/',
@@ -35,15 +36,16 @@ const routes = [
     component : CalendarView,
   },
   {
-    path : '/home',
-    name : 'home',
-    component : HomeView,
-  },
-  {
     path : '/calendar',
     name : 'calendar',
     component : CalendarView,
   },
+  {
+    path : '/paciente',
+    name : 'paciente',
+    component : PacienteView,
+  },
+  
 ]
 
 const router = createRouter({
