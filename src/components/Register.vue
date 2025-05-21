@@ -1,14 +1,19 @@
 <template>
   <div class="register-page">
     <div class="register-card">
-      <img src="@/assets/logo.jpg" alt="Logo de la clínica" class="logo" />
-      <h2 class="titulo">Registrarse</h2>
-      <h3 class="subtitulo">Crea una cuenta</h3>
+      <h2 class="titulo">Registrar</h2>
+      <h3 class="subtitulo">Crea un Usuario</h3>
 
       <form @submit.prevent="handleRegister" class="formulario">
         <label for="email">Correo electrónico</label>
         <input type="email" id="email" v-model="email" placeholder="usuario@ejemplo.com" />
-
+        <label for="username">Usuario</label>
+        <input
+          type="text"
+          id="username"
+          v-model="username"
+          placeholder="Asigna un nombre de usuario"
+        />
         <label for="password">Contraseña</label>
         <input type="password" id="password" v-model="password" placeholder="••••••••" />
 
@@ -26,6 +31,7 @@ import { ref } from 'vue'
 import { register } from '@/services/authService'
 
 const email = ref('')
+const username = ref('')
 const password = ref('')
 const error = ref('')
 const success = ref('')
@@ -34,7 +40,7 @@ async function handleRegister() {
   try {
     error.value = ''
     success.value = ''
-    const message = await register(email.value, password.value)
+    const message = await register(email.value, username.value, password.value)
     success.value = message
   } catch (err) {
     error.value = err.message
