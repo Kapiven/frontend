@@ -2,9 +2,9 @@ import axios from 'axios'
 
 const API_URL = 'http://localhost:4000'
 
-export async function login(username, password) {
+export async function login(email, password) {
   try {
-    const response = await axios.post(`${API_URL}/login`, { username, password })
+    const response = await axios.post(`${API_URL}/login`, { email, password })
     const token = response.data.token
 
     localStorage.setItem('authToken', token)
