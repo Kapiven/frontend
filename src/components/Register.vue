@@ -5,18 +5,31 @@
       <h2 class="auth-title">Registrarse</h2>
       <h3 class="auth-subtitle">Crea una cuenta</h3>
 
-      <form class="auth-form" @submit.prevent="handleRegister">
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" v-model="email" placeholder="usuario@ejemplo.com" />
+      <AuthForm :onSubmit="handleRegister" buttonText="Registrarse">
+        <AuthInput
+          id="email"
+          label="Correo electrónico"
+          type="email"
+          placeholder="usuario@ejemplo.com"
+          v-model="email"
+        />
 
-        <label for="username">Usuario</label>
-        <input type="text" id="username" v-model="username" placeholder="Asigna un nombre de usuario"/>
+        <AuthInput
+          id="username"
+          label="Usuario"
+          type="text"
+          placeholder="Asigna un nombre de usuario"
+          v-model="username"
+        />
 
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" v-model="password" placeholder="••••••••" />
-
-        <button type="submit" class="auth-button">Registrarse</button>
-      </form>
+        <AuthInput
+          id="password"
+          label="Contraseña"
+          type="password"
+          placeholder="••••••••"
+          v-model="password"
+        />
+      </AuthForm>
 
       <div class="auth-link">
         ¿Ya tienes cuenta?
@@ -32,6 +45,8 @@
 <script setup>
 import { ref } from 'vue'
 import { register } from '@/services/authService'
+import AuthForm from '@/components/AuthForm.vue'
+import AuthInput from '@/components/AuthInput.vue'
 import '@/assets/styles/auth.css'
 
 const email = ref('')
@@ -41,9 +56,9 @@ const error = ref('')
 const success = ref('')
 
 async function handleRegister() {
+  error.value = ''
+  success.value = ''
   try {
-    error.value = ''
-    success.value = ''
     const message = await register(email.value, username.value, password.value)
     success.value = message
   } catch (err) {
