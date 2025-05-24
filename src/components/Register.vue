@@ -45,8 +45,8 @@
 <script setup>
 import { ref } from 'vue'
 import { register } from '@/services/authService'
-import AuthForm from '@/components/AuthForm.vue'
-import AuthInput from '@/components/AuthInput.vue'
+import AuthForm from '@/components/Auth/AuthForm.vue'
+import AuthInput from '@/components/Auth/AuthInput.vue'
 import '@/assets/styles/auth.css'
 
 const email = ref('')
