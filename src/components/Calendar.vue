@@ -17,72 +17,15 @@
 
     <div v-if="!loading && !error" class="calendar-grid-wrapper">
       <!-- Calendar grid with transition -->
-      <transition name="calendar-fade" mode="out-in">
-        <div :key="`${displayYear}-${displayMonth}`" class="calendar-container">
-          <!-- Calendar grid with properly placed dates -->
-          <div
-            v-for="(day, index) in calendarDays"
-            :key="index"
-            class="calendar-day"
-            :class="{
-              'empty-day': !day,
-              'current-day': isCurrentDay(day),
-            }"
-          >
-            <div v-if="day" class="day-number">
-              {{ day }}
-              <button class="expand-btn" @click.stop="openDayModal(day)" aria-label="Detalles">
-                <!-- Expand (corners) icon -->
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <polyline
-                    points="3,8 3,3 8,3"
-                    stroke="#1976d2"
-                    stroke-width="2"
-                    fill="none"
-                    stroke-linecap="round"
-                  />
-                  <polyline
-                    points="12,3 17,3 17,8"
-                    stroke="#1976d2"
-                    stroke-width="2"
-                    fill="none"
-                    stroke-linecap="round"
-                  />
-                  <polyline
-                    points="17,12 17,17 12,17"
-                    stroke="#1976d2"
-                    stroke-width="2"
-                    fill="none"
-                    stroke-linecap="round"
-                  />
-                  <polyline
-                    points="8,17 3,17 3,12"
-                    stroke="#1976d2"
-                    stroke-width="2"
-                    fill="none"
-                    stroke-linecap="round"
-                  />
-                </svg>
-              </button>
-            </div>
-            <ul v-if="day" class="appointments">
-              <!-- Loop through appointments fetched from the backend for this specific day -->
-              <li
-                v-for="appt in getAppointmentsForDay(day)"
-                :key="appt.id"
-                @click="openAppointmentDetails(appt)"
-                class="appointment-item"
-              >
-                <span>{{ formatStartTime(appt.start) }} - {{ appt.name }}</span>
-              </li>
-              <!-- Display a message if no appointments for this day - NOT CLICKABLE -->
-              <li v-if="getAppointmentsForDay(day).length === 0" class="no-appointments">
-                No hay citas
-              </li>
-            </ul>
-          </div>
-        </div>
-      </transition>
+      <CalendarGrid
+        :year="displayYear"
+        :month="displayMonth"
+        :days="calendarDays"
+        :get-appointments-for-day="getAppointmentsForDay"
+        :is-current-day="isCurrentDay"
+        @day-clicked="openDayModal"
+        @appointment-clicked="openAppointmentDetails"
+      />
     </div>
 
     <!-- Add/Edit Appointment Modal -->
@@ -328,6 +271,7 @@
 <script setup>
 import CalendarHeader from './Calendar/CalendarHeader.vue'
 import WeekDaysHeader from './Calendar/WeekDaysHeader.vue'
+import CalendarGrid from './Calendar/CalendarGrid.vue'
 import '@/assets/styles/calendar.css'
 import { ref, computed, onMounted, watch, onBeforeUnmount } from 'vue'
 import debounce from 'lodash.debounce'
@@ -381,6 +325,12 @@ const appointmentForm = ref({
   notes: '',
 })
 const formError = ref(null)
+
+const monthNames = [
+  'Enero', 'Febrero', 'Marzo', 'Abril',
+  'Mayo', 'Junio', 'Julio', 'Agosto',
+  'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+]
 
 const dayModalDateStr = computed(() => {
   if (!expandedDay.value) return null

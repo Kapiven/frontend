@@ -45,7 +45,15 @@ import { ref, watch } from 'vue'
 
 const props = defineProps({
   displayMonth: Number,
-  displayYear: Number
+  displayYear: Number,
+  monthNames: {
+    type: Array,
+    default: () => [
+      'Enero', 'Febrero', 'Marzo', 'Abril',
+      'Mayo', 'Junio', 'Julio', 'Agosto',
+      'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ]
+  }
 })
 
 const emit = defineEmits(['update:month', 'update:year', 'dashboard-redirect'])
@@ -56,12 +64,6 @@ const tempYear = ref(props.displayYear)
 watch(() => props.displayYear, (newYear) => {
   tempYear.value = newYear
 })
-
-const monthNames = [
-  'Enero', 'Febrero', 'Marzo', 'Abril',
-  'Mayo', 'Junio', 'Julio', 'Agosto',
-  'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-]
 
 function changeMonth(direction) {
   let newMonth = props.displayMonth + direction
