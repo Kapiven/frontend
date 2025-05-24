@@ -8,18 +8,14 @@
       @dashboard-redirect="dashboardRedirect"
     />
 
+    <!-- Day of week headers -->
+    <WeekDaysHeader/>
+
     <!-- Display loading or error states -->
     <p v-if="loading" class="loading">Cargando citas...</p>
     <p v-if="error" class="error">Error al cargar citas: {{ error.message }}</p>
 
     <div v-if="!loading && !error" class="calendar-grid-wrapper">
-      <!-- Day of week headers -->
-      <div class="weekday-row">
-        <div class="weekday-header" v-for="day in weekDays" :key="day">
-          {{ day }}
-        </div>
-      </div>
-
       <!-- Calendar grid with transition -->
       <transition name="calendar-fade" mode="out-in">
         <div :key="`${displayYear}-${displayMonth}`" class="calendar-container">
@@ -331,6 +327,7 @@
 
 <script setup>
 import CalendarHeader from './Calendar/CalendarHeader.vue'
+import WeekDaysHeader from './Calendar/WeekDaysHeader.vue'
 import '@/assets/styles/calendar.css'
 import { ref, computed, onMounted, watch, onBeforeUnmount } from 'vue'
 import debounce from 'lodash.debounce'
@@ -384,9 +381,6 @@ const appointmentForm = ref({
   notes: '',
 })
 const formError = ref(null)
-
-// Days of the week headers
-const weekDays = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
 
 const dayModalDateStr = computed(() => {
   if (!expandedDay.value) return null
