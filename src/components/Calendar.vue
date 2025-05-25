@@ -1,6 +1,7 @@
 <template>
   <div class="calendar-page">
     <CalendarHeader
+      v-model:showDatePicker="showDatePicker"
       :displayMonth="displayMonth"
       :displayYear="displayYear"
       @update:month="displayMonth = $event"
@@ -353,6 +354,8 @@ function hidePatientSuggestions() {
     showPatientSuggestions.value = false
   }, 120)
 }
+
+const showDatePicker = ref(false)
 
 // Close date picker when clicking outside
 function handleClickOutside(event) {

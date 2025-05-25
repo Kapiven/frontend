@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { defineModel, defineProps, defineEmits, ref, watch } from 'vue'
 
 const props = defineProps({
   displayMonth: Number,
@@ -56,14 +56,25 @@ const props = defineProps({
   }
 })
 
+const showDatePicker = defineModel('showDatePicker')  // ← clave
+
 const emit = defineEmits(['update:month', 'update:year', 'dashboard-redirect'])
 
-const showDatePicker = ref(false)
 const tempYear = ref(props.displayYear)
 
 watch(() => props.displayYear, (newYear) => {
   tempYear.value = newYear
 })
+
+function toggleDatePicker() {
+  showDatePicker.value = !showDatePicker.value
+}
+
+function selectMonth(index) {
+  emit('update:month', index)
+  emit('update:year', tempYear.value)
+  showDatePicker.value = false
+}
 
 function changeMonth(direction) {
   let newMonth = props.displayMonth + direction
@@ -79,15 +90,5 @@ function changeMonth(direction) {
 
   emit('update:month', newMonth)
   emit('update:year', newYear)
-}
-
-function toggleDatePicker() {
-  showDatePicker.value = !showDatePicker.value
-}
-
-function selectMonth(index) {
-  emit('update:month', index)
-  emit('update:year', tempYear.value)
-  showDatePicker.value = false
 }
 </script>
