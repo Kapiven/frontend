@@ -18,9 +18,20 @@
 
 <script setup>
 import SuggestionsList from './SuggestionsList.vue'
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { searchPatients } from '@/services/patientService'
 import debounce from 'lodash.debounce'
+
+const props = defineProps({
+  fetchDaySummary: {
+    type: Function,
+    required: true
+  },
+  patientRedirect: {
+    type: Function,
+    required: true
+  }
+})
 
 
 // Estado interno
@@ -50,11 +61,22 @@ function onSearchInput() {
 function selectPatient(patient) {
   searchQuery.value = patient.name
   showSuggestions.value = false
-  patientRedirect(patient.id)
+  props.patientRedirect(patient.id)
 }
 
-function patientRedirect(patientId) {
-  alert(`Redirigir a pagina del paciente con ID ${patientId}`)
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+  props.fetchDaySummary()
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
+function handleClickOutside(event) {
+  const searchBar = document.querySelector('.search-bar')
+  if (searchBar && !searchBar.contains(event.target)) {
+    showSuggestions.value = false
+  }
 }
 </script>
 

@@ -72,10 +72,12 @@
 .quick-actions button:hover {
   background-color: #1f2e40;
 }
+
 .section-wrapper {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  justify-content: center;
 }
 
 .section {

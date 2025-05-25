@@ -1,54 +1,39 @@
 <template>
   <div class="dashboard">
-    <SearchBar/>
+    <SearchBar
+      :fetchDaySummary="fetchDaySummary"
+      :patientRedirect="patientRedirect"
+    />
 
     <div class="quick-actions">
       <button @click="calendarRedirect">Calendario</button>
       <button @click="consultRedirect">Consultas</button>
     </div>
-
+    
     <div class="section-wrapper">
-      <!-- Citas de Hoy (with free intervals) -->
-      <div class="section">
-        <h2>Citas de Hoy</h2>
-
-        <ul>
-          <template v-for="(item, idx) in todayIntervals" :key="idx">
-            <li v-if="item.type === 'free'" class="interval-row free-interval">
-              <span class="interval-time">
-                {{ formatTime(item.start) }} - {{ formatTime(item.end) }}
-              </span>
-              <span class="interval-label">Libre</span>
-            </li>
-            <li v-else class="interval-row appointment-item" @click="patientRedirect(item.appt.id)">
-              <span class="interval-time">
-                {{ formatTime(item.appt.start) }} - {{ formatTime(getApptEnd(item.appt)) }}
-              </span>
-              <span class="interval-label">{{ item.appt.name }}</span>
-            </li>
-          </template>
-          <li v-if="todayIntervals.length === 0" class="no-appointments">
-            No hay citas ni intervalos libres de 20+ minutos hoy
-          </li>
-        </ul>
-      </div>
+      <!-- Citas de Hoy (with free intervals) 
+      <DashboardSection
+        :titles="['Citas de Hoy', 'Exámenes Pendientes']"
+        :todayIntervals="todayIntervals"
+        :formatTime="formatTime"
+        @patientRedirect="patientRedirect"
+      />-->
 
       <!-- Exámenes Pendientes -->
-      <div class="section">
-        <h2>Exámenes Pendientes</h2>
-        <ul>
-          <li v-for="exam in recentExams" :key="exam.id" @click="examRedirect(exam.id)">
-            {{ exam.date }} - {{ exam.patient }} ({{ exam.type }})
-          </li>
-        </ul>
-      </div>
+      <DashboardSection
+        :titles="['Exámenes Pendientes']"
+        :recentExams="recentExams"
+        @examRedirect="examRedirect"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
 import SearchBar from './Dashboard/SearchBar.vue'
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import DashboardSection from './Dashboard/DashboardSection.vue'
+import "@/assets/styles/dashboard.css"
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { getBusinessHoursForDay } from '@/services/businessHoursService'
 import { getAppointmentsForDate } from '@/services/appointmentService'
@@ -81,21 +66,6 @@ async function fetchDaySummary() {
   }
 }
 
-function handleClickOutside(event) {
-  const searchBar = document.querySelector('.search-bar')
-  if (searchBar && !searchBar.contains(event.target)) {
-    showSuggestions.value = false
-  }
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-  fetchDaySummary()
-})
-onBeforeUnmount(() => {
-  document.removeEventListener('click', handleClickOutside)
-})
-
 function formatTime(date) {
   if (!date) return ''
   const d = new Date(date)
@@ -111,6 +81,9 @@ function getApptEnd(appt) {
 
 const todayIntervals = computed(() => {
   // If no business hours, default to one interval: 08:00-20:00
+  if (!businessHours.value || !Array.isArray(businessHours.value)) {
+    return []
+  }
   const intervals = businessHours.value.length
     ? businessHours.value
     : [{ start: '08:00', end: '20:00' }]
@@ -207,6 +180,8 @@ const recentExams = [
 function examRedirect(examId) {
   alert(`Redirigir a la pagina del examen con ID ${examId})`)
 }
-</script>
 
-<style src="@/assets/styles/dashboard.css" scoped></style>
+function patientRedirect(patientId) {
+  alert(`Redirigir a pagina del paciente con ID ${patientId}`)
+}
+</script>
