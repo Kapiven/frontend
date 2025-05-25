@@ -55,6 +55,8 @@
 
 
 <script setup>
+import { nextTick } from 'vue'
+
 defineProps({
   show: Boolean,
   expandedDay: Number,
@@ -86,11 +88,13 @@ function handleBackgroundClick() {
   emit('close')
 }
 
-function handleNewAppointment(day, start) {
+async function handleNewAppointment(day, start) {
   emit('open-new-appt', { day, start })
 }
 
-function handleApptClick(appt) {
+async function handleApptClick(appt) {
+  emit('close')
+  await nextTick()
   emit('open-appt-details', appt)
 }
 </script>
