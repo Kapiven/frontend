@@ -219,53 +219,20 @@
     </div>
 
     <!-- Day Details Modal -->
-    <div v-if="showDayModal" class="modal-overlay" @click.self="closeDayModal">
-      <div class="modal expanded-day-modal">
-        <div class="modal-header">
-          <h3>{{ expandedDay }} de {{ monthNames[displayMonth] }} {{ displayYear }}</h3>
-          <button class="close-button" @click="closeDayModal">×</button>
-        </div>
-        <div class="modal-content">
-          <div class="day-summary-header" style="margin-bottom: 1rem">
-            <span class="day-summary-title">
-              Horario laboral:
-              <span v-if="dayModalBusinessHours.length">
-                <span v-for="(interval, idx) in dayModalBusinessHours" :key="idx">
-                  {{ interval.start }} - {{ interval.end
-                  }}<span v-if="idx < dayModalBusinessHours.length - 1">,&nbsp;</span>
-                </span>
-              </span>
-              <span v-else>Dia Libre</span>
-            </span>
-          </div>
-
-          <ul>
-            <template v-for="(item, idx) in dayModalIntervals" :key="idx">
-              <li
-                v-if="item.type === 'free'"
-                class="interval-row free-interval"
-                @click="openNewAppointmentModalForInterval(expandedDay, item.start)"
-                style="cursor: pointer"
-              >
-                <span class="interval-time">
-                  {{ formatTime(item.start) }} - {{ formatTime(item.end) }}
-                </span>
-                <span class="interval-label">Libre (Click para agendar)</span>
-              </li>
-              <li v-else class="interval-row" @click="openAppointmentDetails(item.appt)">
-                <span class="interval-time">
-                  {{ formatTime(item.appt.start) }} - {{ formatTime(getApptEnd(item.appt)) }}
-                </span>
-                <span class="interval-label">{{ item.appt.name }}</span>
-              </li>
-            </template>
-            <li v-if="dayModalIntervals.length === 0" class="no-appointments">
-              No hay citas ni intervalos libres de 20+ minutos
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <DayModal
+      :show="showDayModal"
+      :expandedDay="expandedDay"
+      :displayMonth="displayMonth"
+      :displayYear="displayYear"
+      :monthNames="monthNames"
+      :dayModalBusinessHours="dayModalBusinessHours"
+      :dayModalIntervals="dayModalIntervals"
+      :formatTime="formatTime"
+      :getApptEnd="getApptEnd"
+      @close="closeDayModal"
+      @open-new-appt="({ day, start }) => openNewAppointmentModalForInterval(day, start)"
+      @open-appt-details="openAppointmentDetails"
+    />
   </div>
 </template>
 
@@ -273,6 +240,7 @@
 import CalendarHeader from './Calendar/CalendarHeader.vue'
 import WeekDaysHeader from './Calendar/WeekDaysHeader.vue'
 import CalendarGrid from './Calendar/CalendarGrid.vue'
+import DayModal from './Calendar/DayModal.vue'
 import '@/assets/styles/calendar.css'
 import { ref, computed, onMounted, watch, onBeforeUnmount } from 'vue'
 import debounce from 'lodash.debounce'
