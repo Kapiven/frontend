@@ -11,17 +11,11 @@
     </div>
     
     <div class="section-wrapper">
-      <!-- Citas de Hoy (with free intervals) 
       <DashboardSection
         :titles="['Citas de Hoy', 'Exámenes Pendientes']"
         :todayIntervals="todayIntervals"
         :formatTime="formatTime"
         @patientRedirect="patientRedirect"
-      />-->
-
-      <!-- Exámenes Pendientes -->
-      <DashboardSection
-        :titles="['Exámenes Pendientes']"
         :recentExams="recentExams"
         @examRedirect="examRedirect"
       />

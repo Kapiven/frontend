@@ -4,7 +4,6 @@
         :todayIntervals="props.todayIntervals"
         :formatTime="props.formatTime"
         @patientRedirect="handlePatientRedirect"
-        @click="printTitles"
     />
     <PendingExams
         :title="props.titles[1]"
