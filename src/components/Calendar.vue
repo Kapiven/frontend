@@ -30,7 +30,7 @@
     </div>
 
     <!-- Add/Edit Appointment Modal -->
-    <div v-if="showAppointmentModal" class="modal-overlay">
+    <div v-if="showAppointmentModal" class="modal-overlay" @click.self="closeAppointmentModal">
       <div class="modal appointment-form-modal">
         <div class="modal-header">
           <h3>{{ isEditMode ? 'Editar Cita' : 'Nueva Cita' }}</h3>
