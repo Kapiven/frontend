@@ -1,22 +1,6 @@
 <template>
   <div class="dashboard">
-    <div class="search-bar">
-      <input
-        type="text"
-        v-model="searchQuery"
-        @input="onSearchInput"
-        placeholder="Buscar paciente..."
-        autocomplete="off"
-      />
-      <ul v-if="showSuggestions" class="suggestions-list">
-        <li v-for="patient in suggestions" :key="patient.id" @click="selectPatient(patient)">
-          {{ patient.name }} ({{ patient.id }})
-        </li>
-        <li v-if="!suggestions.length && searchQuery.length >= 2" class="no-results">
-          No se encontraron pacientes
-        </li>
-      </ul>
-    </div>
+    <SearchBar/>
 
     <div class="quick-actions">
       <button @click="calendarRedirect">Calendario</button>
@@ -63,34 +47,18 @@
 </template>
 
 <script setup>
-import '@/assets/styles/dashboard.css'
+import SearchBar from './Dashboard/SearchBar.vue'
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
-import { searchPatients } from '@/services/patientService'
 import { getBusinessHoursForDay } from '@/services/businessHoursService'
 import { getAppointmentsForDate } from '@/services/appointmentService'
-import debounce from 'lodash.debounce'
 
 const router = useRouter()
-const searchQuery = ref('')
-const suggestions = ref([])
-const showSuggestions = ref(false)
 
 const businessHours = ref([])
 const dayAppointments = ref([])
 
 const todayStr = new Date().toISOString().slice(0, 10)
-
-const fetchSuggestions = debounce(async (q) => {
-  if (q.length < 2) {
-    suggestions.value = []
-    showSuggestions.value = false
-    return
-  }
-  const results = await searchPatients(q)
-  suggestions.value = results
-  showSuggestions.value = results.length > 0
-}, 150)
 
 function calendarRedirect() {
   router.push('/calendar')
@@ -98,16 +66,6 @@ function calendarRedirect() {
 
 function consultRedirect() {
   alert('Redirigir a consultas...')
-}
-
-function onSearchInput() {
-  fetchSuggestions(searchQuery.value)
-}
-
-function selectPatient(patient) {
-  searchQuery.value = patient.name
-  showSuggestions.value = false
-  patientRedirect(patient.id)
 }
 
 async function fetchDaySummary() {
@@ -246,11 +204,9 @@ const recentExams = [
   { id: 20, date: '2025-04-05', patient: 'Laura T.', type: 'Rayos X' },
 ]
 
-function patientRedirect(patientId) {
-  alert(`Redirigir a pagina del paciente con ID ${patientId}`)
-}
-
 function examRedirect(examId) {
   alert(`Redirigir a la pagina del examen con ID ${examId})`)
 }
 </script>
+
+<style src="@/assets/styles/dashboard.css" scoped></style>
