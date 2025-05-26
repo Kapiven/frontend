@@ -120,103 +120,17 @@
     </div>
 
     <!-- Appointment Details Modal -->
-    <div v-if="showDetailsModal" class="modal-overlay" @click.self="showDetailsModal = false">
-      <div class="modal appointment-details-modal">
-        <!-- Display loading/error states -->
-        <div v-if="detailsLoading" class="details-loading">
-          <p>Cargando detalles...</p>
-        </div>
+    <AppointmentDetailsModal
+      :show="showDetailsModal"
+      :details-loading="detailsLoading"
+      :details-error="detailsError"
+      :selected-appointment="selectedAppointment"
+      :selected-patient="selectedPatient"
+      :format-full-date="formatFullDate"
+      :format-time-range="formatTimeRange"
+      @close="showDetailsModal = false"
+    />
 
-        <div v-else-if="detailsError" class="error-container">
-          <p class="error">Error al cargar detalles: {{ detailsError.message }}</p>
-        </div>
-
-        <!-- Display details if loaded and no error -->
-        <div v-else-if="selectedAppointment && selectedPatient" class="appointment-details">
-          <div class="modal-header">
-            <h3>Detalles de Cita</h3>
-            <button class="close-button" @click="showDetailsModal = false">×</button>
-          </div>
-
-          <!-- Main Section: Patient & Appointment Info -->
-          <div class="details-main-info">
-            <h2 class="patient-name">{{ selectedPatient.name }}</h2>
-            <div class="appointment-time-info">
-              <p class="appointment-date">
-                {{ formatFullDate(selectedAppointment.start) }}
-              </p>
-              <p class="appointment-time">
-                {{ formatTimeRange(selectedAppointment.start, selectedAppointment.duration) }}
-              </p>
-            </div>
-          </div>
-
-          <!-- Patient Contact Information -->
-          <div class="details-section">
-            <h4 class="section-title">Información de Contacto</h4>
-            <div class="section-content">
-              <p v-if="selectedPatient.phone" class="contact-info">
-                <strong>Teléfono:</strong> {{ selectedPatient.phone }}
-              </p>
-              <p v-if="selectedPatient.email" class="contact-info">
-                <strong>Email:</strong> {{ selectedPatient.email }}
-              </p>
-              <p v-if="!selectedPatient.phone && !selectedPatient.email" class="no-data">
-                No hay información de contacto disponible
-              </p>
-            </div>
-          </div>
-
-          <!-- Medical History (Antecedentes) -->
-          <div v-if="selectedPatient.antecedentes" class="details-section antecedentes-section">
-            <h4 class="section-title">Antecedentes</h4>
-            <div class="section-content">
-              <div v-if="hasAntecedentes" class="antecedentes-grid">
-                <div v-if="selectedPatient.antecedentes.medical" class="antecedente-item">
-                  <h5>Médicos</h5>
-                  <p>{{ selectedPatient.antecedentes.medical }}</p>
-                </div>
-                <div v-if="selectedPatient.antecedentes.family" class="antecedente-item">
-                  <h5>Familiares</h5>
-                  <p>{{ selectedPatient.antecedentes.family }}</p>
-                </div>
-                <div v-if="selectedPatient.antecedentes.ocular" class="antecedente-item">
-                  <h5>Oculares</h5>
-                  <p>{{ selectedPatient.antecedentes.ocular }}</p>
-                </div>
-                <div v-if="selectedPatient.antecedentes.allergic" class="antecedente-item">
-                  <h5>Alérgicos</h5>
-                  <p>{{ selectedPatient.antecedentes.allergic }}</p>
-                </div>
-                <div v-if="selectedPatient.antecedentes.other" class="antecedente-item">
-                  <h5>Otros</h5>
-                  <p>{{ selectedPatient.antecedentes.other }}</p>
-                </div>
-              </div>
-              <p v-else class="no-data">No hay antecedentes registrados</p>
-            </div>
-          </div>
-
-          <!-- Notes Section (if available) -->
-          <div v-if="selectedAppointment.notes" class="details-section">
-            <h4 class="section-title">Notas de la Cita</h4>
-            <div class="section-content">
-              <p class="appointment-notes">{{ selectedAppointment.notes }}</p>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="modal-actions appointment-actions">
-            <button class="action-button edit-button" @click="editAppointment(selectedAppointment)">
-              Editar Cita
-            </button>
-            <button class="action-button delete-button" @click="confirmDeleteAppointment">
-              Cancelar Cita
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Day Details Modal -->
     <DayModal
@@ -241,6 +155,7 @@ import CalendarHeader from './Calendar/CalendarHeader.vue'
 import WeekDaysHeader from './Calendar/WeekDaysHeader.vue'
 import CalendarGrid from './Calendar/CalendarGrid.vue'
 import DayModal from './Calendar/DayModal.vue'
+import AppointmentDetailsModal from '@/components/Calendar/AppointmentDetailsModal.vue'
 import '@/assets/styles/calendar.css'
 import { ref, computed, onMounted, watch, onBeforeUnmount } from 'vue'
 import debounce from 'lodash.debounce'
@@ -443,26 +358,7 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
 })
 
-function openNewAppointmentModalForInterval(day, startDate) {
-  patientSearchQuery.value = appointmentForm.value.name || ''
-  isEditMode.value = false
-  // startDate is a Date object
-  appointmentForm.value = {
-    id: null,
-    date: formatDateForInput(startDate),
-    time: formatTimeForInput(startDate),
-    duration: 20, // or suggest based on interval length
-    name: '',
-    patient_id: null,
-    notes: '',
-  }
-  patientSearchQuery.value = ''
-  patientSuggestions.value = []
-  showPatientSuggestions.value = false
-  formError.value = null
-  showAppointmentModal.value = true
-  showDayModal.value = false
-}
+
 
 function formatTime(date) {
   if (!date) return ''
@@ -645,6 +541,28 @@ function openNewAppointmentModal() {
 
   formError.value = null
   showAppointmentModal.value = true
+}
+
+// --- Open the New Appointment Modal for a specific interval ---
+function openNewAppointmentModalForInterval(day, startDate) {
+  patientSearchQuery.value = appointmentForm.value.name || ''
+  isEditMode.value = false
+  // startDate is a Date object
+  appointmentForm.value = {
+    id: null,
+    date: formatDateForInput(startDate),
+    time: formatTimeForInput(startDate),
+    duration: 20, // or suggest based on interval length
+    name: '',
+    patient_id: null,
+    notes: '',
+  }
+  patientSearchQuery.value = ''
+  patientSuggestions.value = []
+  showPatientSuggestions.value = false
+  formError.value = null
+  showAppointmentModal.value = true
+  showDayModal.value = false
 }
 
 // --- Close the Appointment Modal ---
