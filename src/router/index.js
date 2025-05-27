@@ -3,6 +3,7 @@ import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import CalendarView from '@/views/CalendarView.vue'
+import PatientPageView from '@/views/PatientPageView.vue'
 const routes = [
   {
     path: '/',
@@ -23,6 +24,11 @@ const routes = [
     path: '/calendar',
     name: 'calendar',
     component: CalendarView,
+  },
+  {
+    path: '/patient',
+    name: 'patient',
+    component: PatientPageView,
   },
 ]
 
