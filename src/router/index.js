@@ -4,6 +4,8 @@ import RegisterView from '@/views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import CalendarView from '@/views/CalendarView.vue'
 import PatientPageView from '@/views/PatientPageView.vue'
+import RegisterPageView from '@/views/RegisterPageView.vue'
+
 const routes = [
   {
     path: '/',
@@ -30,6 +32,13 @@ const routes = [
     name: 'patient',
     component: PatientPageView,
   },
+
+  {
+    path: '/register-page',
+    name: 'register-page',
+    component: RegisterPageView,
+  },
+
 ]
 
 const router = createRouter({

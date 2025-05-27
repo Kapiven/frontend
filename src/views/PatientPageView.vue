@@ -1,5 +1,5 @@
 <script setup>
-import PatienPage from '../components/PatientPage.vue'
+import PatientPage from '../components/PatientPage.vue'
 </script>
 
 <template>

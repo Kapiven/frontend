@@ -165,12 +165,11 @@ export default {
 }
 
 .btn.verde {
-  background-color: #43a047;
+  background-color: #1976d2;
   color: #fff;
 }
 
 .btn.verde:hover {
-  background-color: #388e3c;
+  background-color: #1565c0;
 }
-
 </style>

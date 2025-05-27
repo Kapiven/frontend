@@ -55,17 +55,18 @@ export default {
 }
 
 .add-button {
-  background-color: #42b983;
+  background-color: #1976d2;
   color: white;
   border: none;
   padding: 8px 15px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  transition: background 0.2s;
 }
 
 .add-button:hover {
-  background-color: #3aa876;
+  background-color: #1565c0;
 }
 
 .consultations-list {
