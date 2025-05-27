@@ -4,19 +4,8 @@
       <img src="@/assets/logo.jpg" alt="Logo de la clínica" class="auth-logo" />
       <h2 class="auth-title">Registro</h2>
       <form @submit.prevent="handleRegister">
-        <div class="admin-section">
-          <h3 class="section-title">Credenciales requeridas</h3>
-          <div class="form-group">
-            <label for="admin-username">Usuario</label>
-            <input id="admin-username" v-model="adminUsername" type="text" placeholder="Usuario" required />
-          </div>
-          <div class="form-group">
-            <label for="admin-password">Contraseña</label>
-            <input id="admin-password" v-model="adminPassword" type="password" placeholder="••••••••" required />
-          </div>
-        </div>
         <div class="new-user-section">
-          <h3 class="section-title">Datos del nuevo trabajador</h3>
+          <h3 class="section-title">Datos</h3>
           <div class="form-group">
             <label for="new-user-name">Nombre completo</label>
             <input id="new-user-name" v-model="newUserName" type="text" placeholder="Nombre Apellido" required />
