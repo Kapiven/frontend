@@ -64,9 +64,15 @@
   padding: 0.6rem 1rem;
   border: none;
   border-radius: 8px;
-  background-color: var(--vt-c-indigo);
+  background-color: #1976d2;
   color: white;
   cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+  .quick-actions button {
+    background-color: var(--vt-c-indigo);
+  }
 }
 
 .quick-actions button:hover {
@@ -175,7 +181,7 @@
   min-width: 120px;
   font-family: 'Fira Mono', monospace;
   font-size: 1.02em;
-  color: #333;
+  color: #888;
   font-weight: 500;
   letter-spacing: 0.02em;
 }
@@ -204,4 +210,16 @@
   color: #333;
   font-weight: 500;
   background: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  .interval-time {
+    color: #888 !important;
+  }
+  .interval-label {
+    color: #fff;
+  }
+  .free-interval {
+    color: #fff;
+  }
 }

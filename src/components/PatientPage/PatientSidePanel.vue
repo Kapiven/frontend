@@ -40,27 +40,5 @@ export default {
 </script>
 
 <style scoped>
-.side-panel {
-  background: #f8f9fa;
-  padding: 15px;
-  border-radius: 8px;
-  height: fit-content;
-}
-
-.panel-section {
-  margin-bottom: 20px;
-}
-
-.panel-section h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: #2c3e50;
-  font-size: 16px;
-}
-
-.panel-section p {
-  margin: 0;
-  color: #666;
-  font-size: 14px;
-}
+@import url('@/assets/styles/patientpage.css');
 </style>

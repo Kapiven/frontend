@@ -26,21 +26,5 @@ export default {
 </script>
 
 <style scoped>
-.patient-header {
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #eee;
-}
-
-.patient-header h1 {
-  margin: 0;
-  color: #2c3e50;
-}
-
-.patient-info {
-  display: flex;
-  gap: 20px;
-  margin-top: 10px;
-  color: #666;
-}
+@import url('@/assets/styles/patientpage.css');
 </style>
