@@ -222,4 +222,19 @@
   .free-interval {
     color: #fff;
   }
+  .suggestions-list {
+    background: #23272a;
+    border-color: #333;
+  }
+  .suggestions-list li {
+    background: #23272a;
+    color: #fff;
+    border-bottom: 1px solid #333;
+  }
+  .suggestions-list li:hover {
+    background: #181a1b;
+  }
+  .no-results {
+    color: #b0b0b0;
+  }
 }

@@ -176,6 +176,6 @@ function examRedirect(examId) {
 }
 
 function patientRedirect(patientId) {
-  alert(`Redirigir a pagina del paciente con ID ${patientId}`)
+  router.push({ name: 'patient', params: { patientId } })
 }
 </script>
