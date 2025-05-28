@@ -46,9 +46,51 @@ export async function searchPatients(query, limit = 10) {
     return []
   }
 }
-// You can add other functions for patient-related API calls here:
-// export async function listPatients() { ... }
-// export async function createPatient(patientData) { ... }
-// export async function updatePatient(patientId, updatedData) { ... }
-// export async function deletePatient(patientId) { ... }
 
+export const getPatientDetails = async (patientId) => {
+  try {
+    const patientInfoPromise = axios.get(`${API_BASE_URL}/patients/${patientId}`)
+    const consultationsPromise = axios.get(`${API_BASE_URL}/consultations/patient/${patientId}`)
+    const examsPromise = axios.get(`${API_BASE_URL}/exams/patient/${patientId}`)
+
+    const [patientInfoResponse, consultationsResponse, examsResponse] = await Promise.all([
+      patientInfoPromise,
+      consultationsPromise,
+      examsPromise,
+    ])
+
+    const patientInfo = patientInfoResponse.data
+    const consultations = consultationsResponse.data
+    const exams = examsResponse.data
+
+    const patientData = {
+      id: patientInfo.id,
+      name: patientInfo.name,
+      birthDate: patientInfo.date_of_birth,
+      gender: patientInfo.sex,
+      phone: patientInfo.phone,
+
+      allergies: patientInfo.antecedentes?.alergic,
+      ocularHistory: patientInfo.antecedentes?.ocular,
+      medicalHistory: patientInfo.antecedentes?.medical,
+      familyHistory: patientInfo.antecedentes?.family,
+      otherHistory: patientInfo.antecedentes?.other, // Add other history if needed
+      consultations: consultations.map((c) => ({
+        id: c.id || Math.random(), // API response doesn't have 'id', add a fallback or generate one
+        reason: c.motive, // Map 'motive' to 'reason'
+        date: c.date,
+      })),
+
+      exams: exams.map((e) => ({
+        id: e.id || Math.random(),
+        name: e.type,
+        date: e.date,
+      })),
+    }
+
+    return patientData
+  } catch (error) {
+    console.error(`Error fetching details for patient ${patientId}:`, error)
+    throw error
+  }
+}

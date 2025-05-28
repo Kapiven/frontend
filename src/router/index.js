@@ -28,9 +28,10 @@ const routes = [
     component: CalendarView,
   },
   {
-    path: '/patient',
+    path: '/patient/:patientId',
     name: 'patient',
     component: PatientPageView,
+    props: true,
   },
 
   {
@@ -38,7 +39,6 @@ const routes = [
     name: 'register-page',
     component: RegisterPageView,
   },
-
 ]
 
 const router = createRouter({

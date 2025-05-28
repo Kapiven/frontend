@@ -1,25 +1,28 @@
 <template>
   <div class="patient-page">
-    <div class="patient-container">
+    <div v-if="isLoading" class="loading-message">Cargando datos del paciente...</div>
+    <div v-else-if="error" class="error-message">{{ error }}</div>
+    <div v-else-if="patientData" class="patient-container">
       <!-- Header con información básica -->
       <patient-header :patient="patientData" />
-      
+
       <div class="patient-content">
+        <!-- PatientSidePanel needs the date_of_birth to format it -->
         <patient-side-panel :patient="patientData" class="side-panel" />
-        
+
         <div class="main-content">
-          <consultations-section 
+          <!-- Pass the fetched data (patientData.consultations) -->
+          <consultations-section
             :consultations="patientData.consultations"
             @add-consultation="handleAddConsultation"
           />
-          
-          <exams-section 
-            :exams="patientData.exams"
-            @add-exam="handleAddExam"
-          />
+
+          <!-- Pass the fetched data (patientData.exams) -->
+          <exams-section :exams="patientData.exams" @add-exam="handleAddExam" />
         </div>
       </div>
     </div>
+    <div v-else>No se encontraron datos para este paciente.</div>
   </div>
 </template>
 
@@ -29,50 +32,74 @@ import PatientSidePanel from './PatientPage/PatientSidePanel.vue'
 import ConsultationsSection from './PatientPage/ConsultationsSection.vue'
 import ExamsSection from './PatientPage/ExamsSection.vue'
 
+import { getPatientDetails } from '@/services/patientService'
+
 export default {
   name: 'PatientPage',
   components: {
     PatientHeader,
     PatientSidePanel,
     ConsultationsSection,
-    ExamsSection
+    ExamsSection,
+  },
+  props: {
+    patientId: {
+      type: [String, Number],
+      required: true,
+      default: 3,
+    },
   },
   data() {
     return {
-      patientData: {
-        id: 1,
-        name: 'Juan Pérez',
-        birthDate: '1985-03-15',
-        gender: 'Masculino',
-        phone: '+1234567890',
-        allergies: 'Penicilina, Polen',
-        ocularHistory: 'Miopía desde 2005',
-        medicalHistory: 'Hipertensión controlada',
-        familyHistory: 'Abuelo con glaucoma',
-        consultations: [
-          { id: 1, reason: 'Control anual', date: '2023-05-10' },
-          { id: 2, reason: 'Dolor ocular', date: '2023-02-15' }
-        ],
-        exams: [
-          { id: 1, name: 'Topografía corneal', date: '2023-05-10' }
-        ]
-      }
+      patientData: null,
+      isLoading: true,
+      error: null,
     }
   },
+  watch: {
+    patientId: {
+      immediate: true,
+      handler(newId) {
+        this.fetchPatientData(newId)
+      },
+    },
+  },
   methods: {
+    async fetchPatientData(id) {
+      this.isLoading = true
+      this.error = null
+      this.patientData = null
+
+      try {
+        const data = await getPatientDetails(id)
+        this.patientData = data
+      } catch (error) {
+        this.error = 'Error loading patient data.'
+        console.error('Error fetching patient data:', error)
+      } finally {
+        this.isLoading = false
+      }
+    },
     handleAddConsultation() {
-      // Lógica para añadir nueva consulta
-      console.log('Nueva consulta añadida')
+      console.log('Nueva consulta añadida para paciente:', this.patientId)
     },
     handleAddExam() {
-      // Lógica para añadir nuevo examen
-      console.log('Nuevo examen añadido')
-    }
-  }
+      console.log('Nuevo examen añadido para paciente:', this.patientId)
+    },
+  },
 }
 </script>
 
 <style scoped>
-/* Elimino variables y estilos de botón locales para usar los de patientpage.css */
 @import url('@/assets/styles/patientpage.css');
+
+.loading-message,
+.error-message {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+.error-message {
+  color: red;
+}
 </style>
