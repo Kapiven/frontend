@@ -240,6 +240,12 @@
   margin-bottom: 0.3rem;
 }
 
+@media (prefers-color-scheme: dark) {
+  .day-number {
+    color: #fff;
+  }
+}
+
 /* Appointments List */
 .appointments {
   list-style: none;
@@ -292,6 +298,12 @@
 .appointment-item span {
   color: #333;
   flex-grow: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .appointment-item span {
+    color: #fff;
+  }
 }
 
 /* No appointments message - NOT clickable */
@@ -572,6 +584,25 @@
   width: 90%;
   max-height: 85vh;
   overflow-y: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  .appointment-details-modal {
+    background: #232323;
+    color: #fff;
+  }
+  .appointment-details-modal .patient-name,
+  .appointment-details-modal .appointment-date,
+  .appointment-details-modal .appointment-time,
+  .appointment-details-modal .section-title,
+  .appointment-details-modal .suggestion-name {
+    color: #fff;
+  }
+  .appointment-details-modal .no-data,
+  .appointment-details-modal .suggestion-phone,
+  .appointment-details-modal .no-results {
+    color: #bbb;
+  }
 }
 
 .details-main-info {
@@ -863,7 +894,7 @@
   .suggestion-item {
     background: #232323;
     color: #fff;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #444;
   }
   .suggestion-item:hover {
     background: #292929;
