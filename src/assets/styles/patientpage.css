@@ -252,3 +252,138 @@ body, html {
   color: var(--color-text-secondary);
   font-size: 14px;
 }
+
+/* --- NewConsultationModal styles --- */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.modal.new-consultation-modal {
+  background: var(--color-panel);
+  border-radius: 1rem;
+  padding: 2rem;
+  min-width: 350px;
+  max-width: 95vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  color: var(--color-text);
+}
+.exam-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+.exam-label {
+  min-width: 70px;
+  font-weight: 600;
+  color: var(--color-heading);
+}
+.eye-section {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  border-radius: 20px;
+  transition: .2s;
+}
+.switch input:checked + .slider {
+  background-color: var(--color-btn);
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: .2s;
+}
+.switch input:checked + .slider:before {
+  transform: translateX(16px);
+}
+.switch-label {
+  min-width: 18px;
+  text-align: center;
+  font-weight: 500;
+  color: var(--color-text);
+}
+.number-input {
+  width: 60px;
+  padding: 0.2em 0.4em;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel);
+  color: var(--color-text);
+}
+.comment-input {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.2em 0.5em;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-panel);
+  color: var(--color-text);
+}
+.btn-primary {
+  background: var(--color-btn);
+  color: var(--color-btn-text);
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: background 0.2s;
+}
+.btn-primary:hover {
+  background: var(--color-btn-hover);
+}
+
+/* Dark mode for NewConsultationModal */
+.dark .modal.new-consultation-modal {
+  background: #23272a;
+  color: #f5f5f5;
+}
+.dark .exam-label,
+.dark .switch-label {
+  color: var(--color-heading);
+}
+.dark .number-input,
+.dark .comment-input {
+  background: #23272a;
+  color: #f5f5f5;
+  border: 1px solid #333;
+}
+.dark .slider {
+  background-color: #444;
+}
+.dark .switch input:checked + .slider {
+  background-color: #1976d2;
+}
+.dark .slider:before {
+  background-color: #fff;
+}

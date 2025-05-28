@@ -23,6 +23,8 @@
       </div>
     </div>
     <div v-else>No se encontraron datos para este paciente.</div>
+
+    <NewConsultationModal v-if="showNewConsultationModal" @close="closeNewConsultationModal" />
   </div>
 </template>
 
@@ -31,6 +33,7 @@ import PatientHeader from './PatientPage/PatientHeader.vue'
 import PatientSidePanel from './PatientPage/PatientSidePanel.vue'
 import ConsultationsSection from './PatientPage/ConsultationsSection.vue'
 import ExamsSection from './PatientPage/ExamsSection.vue'
+import NewConsultationModal from './PatientPage/NewConsultationModal.vue'
 
 import { getPatientDetails } from '@/services/patientService'
 
@@ -41,6 +44,7 @@ export default {
     PatientSidePanel,
     ConsultationsSection,
     ExamsSection,
+    NewConsultationModal,
   },
   props: {
     patientId: {
@@ -54,6 +58,7 @@ export default {
       patientData: null,
       isLoading: true,
       error: null,
+      showNewConsultationModal: false,
     }
   },
   watch: {
@@ -81,10 +86,13 @@ export default {
       }
     },
     handleAddConsultation() {
-      console.log('Nueva consulta añadida para paciente:', this.patientId)
+      this.showNewConsultationModal = true
     },
     handleAddExam() {
       console.log('Nuevo examen añadido para paciente:', this.patientId)
+    },
+    closeNewConsultationModal() {
+      this.showNewConsultationModal = false
     },
   },
 }
