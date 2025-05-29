@@ -353,6 +353,8 @@
   line-height: 1;
 }
 
+
+
 .date-selector {
   padding: 0.5rem 1rem;
   font-weight: 500;
@@ -812,7 +814,7 @@
     background: #2c3e50;
   }
   .calendar-day {
-    background: #232323;
+    background: #23272a;
     color: #fff;
     box-shadow: 0 1px 3px rgba(0,0,0,0.18);
   }
@@ -826,7 +828,7 @@
     color: #888;
   }
   .weekday-header {
-    background: #232323;
+    background: #23272a;
     color: #fff;
   }
   .appointment-item {
@@ -897,6 +899,9 @@
   }
   .suggestion-item:hover {
     background: #292929;
+  }
+  .nav-arrow {
+    color: #fff !important;
   }
   .date-picker-dropdown {
     background: #232323 !important;
