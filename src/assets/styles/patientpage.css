@@ -134,6 +134,37 @@
   box-shadow: 0 4px 16px rgba(25, 118, 210, 0.12);
 }
 
+.dashboard-btn {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  background: var(--color-btn);
+  color: var(--color-btn-text);
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 1.4em;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+  outline: none;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+}
+.dashboard-btn:hover {
+  background: var(--color-btn-hover);
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.12);
+}
+
+.dark .dashboard-btn {
+  background: #2c3e50;
+  color: #fff;
+}
+.dark .dashboard-btn:hover {
+  background: #1976d2;
+}
+
 :root {
   color-scheme: only light;
 }

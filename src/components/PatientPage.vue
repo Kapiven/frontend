@@ -1,5 +1,6 @@
 <template>
   <div class="patient-page">
+    <button class="dashboard-btn" @click="goToDashboard">Volver al Dashboard</button>
     <div v-if="isLoading" class="loading-message">Cargando datos del paciente...</div>
     <div v-else-if="error" class="error-message">{{ error }}</div>
     <div v-else-if="patientData" class="patient-container">
@@ -34,8 +35,8 @@ import PatientSidePanel from './PatientPage/PatientSidePanel.vue'
 import ConsultationsSection from './PatientPage/ConsultationsSection.vue'
 import ExamsSection from './PatientPage/ExamsSection.vue'
 import NewConsultationModal from './PatientPage/NewConsultationModal.vue'
-
 import { getPatientDetails } from '@/services/patientService'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'PatientPage',
@@ -93,6 +94,9 @@ export default {
     },
     closeNewConsultationModal() {
       this.showNewConsultationModal = false
+    },
+    goToDashboard() {
+      this.$router.push('/dashboard')
     },
   },
 }

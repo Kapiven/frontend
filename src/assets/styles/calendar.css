@@ -106,6 +106,8 @@
   background: #125ea7;
 }
 
+
+
 /* Fixed size calendar grid wrapper */
 .calendar-grid-wrapper {
   display: flex;
@@ -528,6 +530,9 @@
   font-size: 1.5rem;
 }
 
+
+
+
 .close-button {
   background: none;
   border: none;
@@ -568,6 +573,8 @@
   background: #1565c0;
 }
 
+
+
 .btn-secondary {
   background: #f5f5f5;
   color: #333;
@@ -586,24 +593,6 @@
   overflow-y: hidden;
 }
 
-@media (prefers-color-scheme: dark) {
-  .appointment-details-modal {
-    background: #232323;
-    color: #fff;
-  }
-  .appointment-details-modal .patient-name,
-  .appointment-details-modal .appointment-date,
-  .appointment-details-modal .appointment-time,
-  .appointment-details-modal .section-title,
-  .appointment-details-modal .suggestion-name {
-    color: #fff;
-  }
-  .appointment-details-modal .no-data,
-  .appointment-details-modal .suggestion-phone,
-  .appointment-details-modal .no-results {
-    color: #bbb;
-  }
-}
 
 .details-main-info {
   background-color: #f5f8ff;
@@ -696,6 +685,8 @@
   border-left: 3px solid #1976d2;
 }
 
+
+
 .appointment-actions {
   justify-content: space-between;
   border-top: 1px solid #eaeaea;
@@ -717,9 +708,13 @@
   color: white;
 }
 
+
+
 .edit-button:hover {
   background: #125ea7;
 }
+
+
 
 .delete-button {
   background: #fff;
@@ -810,8 +805,11 @@
     color: #fff;
   }
   .calendar-header button {
-    background: var(--vt-c-indigo);
-    /* color remains #fff by default */
+    background: #2c3e50;
+    color: #fff;
+  }
+  .calendar-header button:hover {
+    background: #2c3e50;
   }
   .calendar-day {
     background: #232323;
@@ -849,12 +847,13 @@
   .modal-header {
     border-bottom: 1px solid #333;
   }
+  
   .btn-primary {
-    background: #444;
+    background: #2c3e50;
     color: #fff;
   }
   .btn-primary:hover {
-    background: #666;
+    background: #2c3e50;
   }
   .btn-secondary {
     background: #232323;
@@ -883,7 +882,7 @@
   .appointment-notes {
     background: #232323;
     color: #fff;
-    border-left: 3px solid #444;
+    border-left: 3px solid #2c3e50;
   }
   .details-section {
     border-bottom: 1px solid #333;
@@ -929,5 +928,35 @@
   .date-navigator {
     background: #232323;
     color: #fff;
+  }
+  .expand-btn:hover {
+    background: #2c3e50;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.18);
+  }
+  .expand-btn svg {
+    color: #fff;
+  }
+  .edit-button {
+    background: #2c3e50;
+    color: white;
+  }
+  .edit-button:hover {
+    background: #2c3e50;
+  }
+  .appointment-details-modal {
+    background: #232323;
+    color: #fff;
+  }
+  .appointment-details-modal .patient-name,
+  .appointment-details-modal .appointment-date,
+  .appointment-details-modal .appointment-time,
+  .appointment-details-modal .section-title,
+  .appointment-details-modal .suggestion-name {
+    color: #fff;
+  }
+  .appointment-details-modal .no-data,
+  .appointment-details-modal .suggestion-phone,
+  .appointment-details-modal .no-results {
+    color: #bbb;
   }
 }
