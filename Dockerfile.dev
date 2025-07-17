@@ -4,4 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+RUN npm install -D vitest @vue/test-utils jsdom @vitest/ui
+
+COPY . .
 CMD ["npm", "run", "dev", "--", "--host"]
