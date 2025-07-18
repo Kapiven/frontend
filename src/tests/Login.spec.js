@@ -39,6 +39,7 @@ describe('Login.vue', () => {
     })
   })
 
+  // 1. Prueba de renderizado básico
   it('renderiza correctamente', () => {
     expect(wrapper.find('.auth-title').text()).toBe('Iniciar Sesión')
     expect(wrapper.findComponent(AuthForm).exists()).toBe(true)
@@ -46,6 +47,7 @@ describe('Login.vue', () => {
     expect(wrapper.find('input[type="password"]').exists()).toBe(true)
   })
 
+  // 2. Prueba de vinculación de datos
   it('actualiza v-model para email y contraseña', async () => {
     const emailInput = wrapper.find('input[type="email"]')
     const passwordInput = wrapper.find('input[type="password"]')
@@ -58,6 +60,7 @@ describe('Login.vue', () => {
     expect(passwordInput.element.value).toBe('password123')
   })
 
+  // 3. Prueba de login exitoso
   it('maneja el login exitoso', async () => {
     login.mockResolvedValue('fake-token')
 
@@ -72,6 +75,7 @@ describe('Login.vue', () => {
     expect(wrapper.find('.auth-error').exists()).toBe(false)
   })
 
+  // 4. Prueba de error en login
   it('muestra error cuando el login falla', async () => {
     login.mockRejectedValue(new Error('Credenciales inválidas'))
 
@@ -82,6 +86,7 @@ describe('Login.vue', () => {
     expect(wrapper.find('.auth-error').text()).toBe('Credenciales inválidas')
   })
 
+  // 5. Prueba de enlace a registro
   it('muestra el enlace de registro', () => {
     const registerLink = wrapper.find('.auth-link router-link-stub')
     expect(registerLink.attributes('to')).toBe('/register')
