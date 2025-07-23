@@ -19,7 +19,13 @@
           />
 
           <!-- Pass the fetched data (patientData.exams) -->
-          <exams-section :exams="patientData.exams" @add-exam="handleAddExam" />
+            <exams-section 
+              :exams="patientData.exams" 
+              :patient-id="patientId"
+              :consultations="patientData.consultations"
+              @add-exam="handleAddExam" 
+            />
+      
         </div>
       </div>
     </div>
