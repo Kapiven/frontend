@@ -15,6 +15,7 @@
       >
         <div class="exam-name">{{ exam.name }}</div>
         <div class="exam-date">{{ formattedDate(exam.date) }}</div>
+        <div class="exam-comment" v-if="exam.comment">📝 {{ exam.comment }}</div>
       </div>
     </div>
   </div>
@@ -39,4 +40,10 @@ export default {
 
 <style scoped>
 @import url('@/assets/styles/patientpage.css');
+
+.exam-comment {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 4px;
+}
 </style>
