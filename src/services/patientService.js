@@ -51,7 +51,7 @@ export const getPatientDetails = async (patientId) => {
   try {
     const patientInfoPromise = axios.get(`${API_BASE_URL}/patients/${patientId}`)
     const consultationsPromise = axios.get(`${API_BASE_URL}/consultations/patient/${patientId}`)
-    const examsPromise = axios.get(`${API_BASE_URL}/exams/patient/${patientId}`)
+    const examsPromise = axios.get(`${API_BASE_URL}/patients/${patientId}/exams`)
 
     const [patientInfoResponse, consultationsResponse, examsResponse] = await Promise.all([
       patientInfoPromise,
