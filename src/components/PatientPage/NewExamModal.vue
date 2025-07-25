@@ -1,133 +1,150 @@
 <template>
-  <div class="modal-overlay">
+  <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal new-exam-modal">
-      <h2>Subir Nuevo Examen</h2>
-      <form @submit.prevent="handleSubmit">
-        <!-- Campo: Nombre del Examen -->
+      <h2>Detalles y Subir Documento de Examen</h2>
+
+      <!-- Display Exam Details -->
+      <div v-if="selectedExam">
         <div class="form-group">
-          <label class="form-label">Nombre del Examen*</label>
-          <input
-            type="text"
-            v-model="examName"
-            class="form-input"
-            placeholder="Ej: Analítica completa, Radiografía, etc."
-            required
-          />
+          <label class="form-label">Tipo de Examen</label>
+          <input type="text" :value="selectedExam.type" class="form-input" disabled />
         </div>
 
-        <!-- Campo: ID del Paciente (automático) -->
+        <!-- Display Patient Name -->
         <div class="form-group">
           <label class="form-label">Paciente</label>
-          <input
-            type="text"
-            :value="patientId"
-            class="form-input"
-            disabled
-          />
+          <input type="text" :value="patientName || 'Cargando...'" class="form-input" disabled />
         </div>
 
-        <!-- Campo: Asociar a Consulta (requerido) -->
+        <!-- Download Existing File / Upload New File -->
         <div class="form-group">
-          <label class="form-label">Consulta Asociada*</label>
-          <select 
-            v-model="associatedConsultation" 
-            class="form-input"
-            required
-          >
-            <option 
-              v-for="consultation in consultations" 
-              :key="consultation.id" 
-              :value="consultation.id"
-            >
-              {{ consultation.reason }} - {{ formattedDate(consultation.date) }}
-            </option>
-          </select>
-        </div>
-
-        <!-- Campo: Fecha del Examen -->
-        <div class="form-group">
-          <label class="form-label">Fecha del Examen*</label>
-          <input
-            type="date"
-            v-model="examDate"
-            class="form-input"
-            :max="new Date().toISOString().split('T')[0]"
-            required
-          />
-        </div>
-
-        <!-- Campo: Subir Documento -->
-        <div class="form-group">
-          <label class="form-label">Documento del Examen*</label>
-          <div class="file-upload">
+          <label class="form-label">Documento del Examen</label>
+          <div v-if="selectedExam.has_file" class="file-info-section">
+            <p>
+              Archivo subido.
+              <button type="button" class="btn-download" @click="downloadExam">
+                Descargar PDF
+              </button>
+            </p>
+          </div>
+          <div v-else class="file-upload-section">
+            <p>No hay archivo subido. Suba uno ahora:</p>
             <input
               type="file"
               ref="fileInput"
               @change="handleFileChange"
-              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-              required
+              accept="application/pdf"
+              style="display: none"
             />
+            <button type="button" class="btn-select-file" @click="$refs.fileInput.click()">
+              Seleccionar Archivo
+            </button>
             <div class="file-info" v-if="selectedFile">
               {{ selectedFile.name }} ({{ formatFileSize(selectedFile.size) }})
             </div>
-            <button
-              type="button"
-              class="btn-select-file"
-              @click="$refs.fileInput.click()"
-            >
-              Seleccionar Archivo
-            </button>
+            <p v-if="uploadError" class="error-message">{{ uploadError }}</p>
+            <p v-if="uploadSuccess" class="success-message">¡Archivo subido exitosamente!</p>
           </div>
         </div>
 
-        <!-- Botones de acción -->
+        <!-- Action Buttons -->
         <div class="modal-actions">
-          <button type="submit" class="btn-primary" :disabled="uploading">
-            {{ uploading ? 'Subiendo...' : 'Guardar Examen' }}
-          </button>
           <button
-            type="button"
-            class="btn-secondary"
-            @click="$emit('close')"
-            :disabled="uploading"
+            v-if="!selectedExam.has_file"
+            type="submit"
+            class="btn-primary"
+            @click="uploadFile"
+            :disabled="uploading || !selectedFile"
           >
-            Cancelar
+            {{ uploading ? 'Subiendo...' : 'Subir Documento' }}
+          </button>
+          <button type="button" class="btn-secondary" @click="$emit('close')" :disabled="uploading">
+            Cerrar
           </button>
         </div>
-      </form>
+      </div>
+      <div v-else>
+        <p>No se ha seleccionado ningún examen para mostrar.</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" @click="$emit('close')">Cerrar</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue'
+import { ref, watch, defineProps } from 'vue'
+import { getExamDownloadUrl, uploadExamPdf } from '@/services/examService'
+import { getPatientById } from '@/services/patientService'
 
-const emit = defineEmits(['save-exam', 'close'])
+const emit = defineEmits(['close', 'examUpdated'])
 
-// Props recibidos
 const props = defineProps({
-  patientId: {
-    type: String,
-    required: true
+  selectedExam: {
+    type: Object,
+    default: null,
   },
-  consultations: {
-    type: Array,
-    required: true,
-    validator: (value) => value.length > 0 // Asegura que haya consultas disponibles
-  }
 })
 
-// Datos del formulario
-const examName = ref('')
-const associatedConsultation = ref(props.consultations[0]?.id || '') // Selecciona la primera consulta por defecto
-const examDate = ref(new Date().toISOString().split('T')[0])
+// Reactive states
 const selectedFile = ref(null)
 const uploading = ref(false)
 const fileInput = ref(null)
+const uploadError = ref(null)
+const uploadSuccess = ref(false)
+const patientName = ref('')
 
-// Métodos
+// Watch for changes in selectedExam prop to fetch patient details and reset upload state
+watch(
+  () => props.selectedExam,
+  async (newVal) => {
+    if (newVal) {
+      // Reset file upload state when a new exam is selected
+      selectedFile.value = null
+      uploading.value = false
+      uploadError.value = null
+      uploadSuccess.value = false
+      patientName.value = ''
+      if (fileInput.value) {
+        fileInput.value.value = ''
+      }
+
+      // Fetch patient name
+      if (newVal.patient_id) {
+        try {
+          const patient = await getPatientById(newVal.patient_id)
+          patientName.value = patient.name || `Paciente ID: ${newVal.patient_id}`
+        } catch (error) {
+          console.error('Error fetching patient details:', error)
+          patientName.value = `Paciente ID: ${newVal.patient_id}`
+        }
+      }
+    }
+  },
+  { immediate: true },
+)
+
+// Methods
 const handleFileChange = (e) => {
-  selectedFile.value = e.target.files[0]
+  uploadError.value = null
+  uploadSuccess.value = false
+  if (e.target.files.length > 0) {
+    const file = e.target.files[0]
+    if (file.type !== 'application/pdf') {
+      uploadError.value = 'Solo se permiten archivos PDF.'
+      selectedFile.value = null
+      return
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      uploadError.value = 'El archivo es demasiado grande (máx 10MB).'
+      selectedFile.value = null
+      return
+    }
+    selectedFile.value = file
+  } else {
+    selectedFile.value = null
+  }
 }
 
 const formatFileSize = (bytes) => {
@@ -138,43 +155,54 @@ const formatFileSize = (bytes) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-const formattedDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString()
-}
-
-const handleSubmit = async () => {
-  if (!selectedFile.value) {
-    alert('Por favor seleccione un archivo')
+const uploadFile = async () => {
+  if (!selectedFile.value || !props.selectedExam || !props.selectedExam.id) {
+    uploadError.value =
+      'Por favor, selecciona un archivo y asegúrate de que un examen esté seleccionado.'
     return
   }
 
   uploading.value = true
+  uploadError.value = null
+  uploadSuccess.value = false
 
   try {
-    const newExam = {
-      id: Date.now().toString(),
-      name: examName.value,
-      patientId: props.patientId,
-      consultationId: associatedConsultation.value, // Campo requerido
-      date: examDate.value,
-      file: selectedFile.value,
-      fileSize: selectedFile.value.size,
-      uploadedAt: new Date().toISOString()
-    }
-
-    emit('save-exam', newExam)
-    emit('close')
+    await uploadExamPdf(props.selectedExam.id, selectedFile.value)
+    uploadSuccess.value = true
+    emit('examUpdated', props.selectedExam.id)
   } catch (error) {
-    console.error('Error al subir el examen:', error)
-    alert('Error al subir el examen. Por favor intente nuevamente.')
+    uploadError.value = error.message || 'Error al subir el archivo.'
+    console.error('Upload failed:', error)
   } finally {
     uploading.value = false
+    selectedFile.value = null
+    if (fileInput.value) {
+      fileInput.value.value = ''
+    }
+  }
+}
+
+const downloadExam = async () => {
+  if (!props.selectedExam || !props.selectedExam.id) {
+    console.warn('No exam selected for download.')
+    return
+  }
+  try {
+    const downloadUrl = await getExamDownloadUrl(props.selectedExam.id)
+    if (downloadUrl) {
+      window.open(downloadUrl, '_blank')
+    } else {
+      alert('No se encontró URL de descarga para este examen.')
+    }
+  } catch (error) {
+    console.error('Error during download:', error)
+    alert('Error al generar la URL de descarga: ' + (error.message || 'Error desconocido.'))
   }
 }
 </script>
 
 <style scoped>
-/* Estilos se mantienen igual */
+/* Same styles as before */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -198,6 +226,12 @@ const handleSubmit = async () => {
   overflow-y: auto;
 }
 
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
 .form-group {
   margin-bottom: 20px;
 }
@@ -217,12 +251,33 @@ const handleSubmit = async () => {
   font-size: 14px;
 }
 
-.file-upload {
-  margin-top: 5px;
+.file-upload-section p {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 10px;
 }
 
-.file-upload input[type="file"] {
-  display: none;
+.file-info-section {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #e6f7ff;
+  border: 1px solid #b3e0ff;
+  border-radius: 4px;
+}
+
+.btn-download {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+  transition: background-color 0.2s ease;
+}
+.btn-download:hover {
+  background-color: #0056b3;
 }
 
 .btn-select-file {
@@ -253,7 +308,7 @@ const handleSubmit = async () => {
 }
 
 .btn-primary {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -280,5 +335,25 @@ const handleSubmit = async () => {
 .btn-secondary:disabled {
   background-color: #ef9a9a;
   cursor: not-allowed;
+}
+
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #dc3545;
+  padding: 8px;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-size: 0.9em;
+}
+
+.success-message {
+  color: #28a745;
+  background-color: #d4edda;
+  border: 1px solid #28a745;
+  padding: 8px;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-size: 0.9em;
 }
 </style>

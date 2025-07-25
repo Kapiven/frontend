@@ -52,3 +52,33 @@ export async function getExamsByPatientId(patientId) {
     throw new Error(errorMessage)
   }
 }
+
+export async function getPendingExams() {
+  try {
+    const endpoint = `/exams/pending` // The endpoint you just created in the backend
+
+    const response = await axios.get(`${API_BASE_URL}${endpoint}`)
+
+    if (response.status >= 200 && response.status < 300) {
+      return response.data
+    } else {
+      const errorData = response.data || {}
+      throw new Error(errorData.error || `API call failed with status ${response.status}`)
+    }
+  } catch (error) {
+    const errorMessage = error.response?.data?.error || error.message
+    console.error('Failed to fetch pending exams:', errorMessage)
+    throw new Error(errorMessage)
+  }
+}
+
+// <--- ADD THIS NEW PLACEHOLDER FUNCTION FOR UPLOAD
+export async function uploadExamPdf(examId, file) {
+  console.warn(`[PLACEHOLDER] Simulating upload for Exam ID: ${examId}, File: ${file.name}`)
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      console.log('[PLACEHOLDER] Upload simulated successfully.')
+      resolve({ success: true, message: 'Upload simulated' })
+    }, 1000),
+  ) // Simulate a 1-second delay
+}
