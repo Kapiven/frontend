@@ -18,14 +18,13 @@
             @add-consultation="handleAddConsultation"
           />
 
-          <!-- Pass the fetched data (patientData.exams) -->
-            <exams-section 
-              :exams="patientData.exams" 
-              :patient-id="patientId"
-              :consultations="patientData.consultations"
-              @add-exam="handleAddExam" 
-            />
-      
+          <!-- Pass the separate exam data instead -->
+          <exams-section
+            :exams="examData || []"
+            :patient-id="patientId"
+            :consultations="patientData.consultations"
+            @add-exam="handleAddExam"
+          />
         </div>
       </div>
     </div>
@@ -42,6 +41,7 @@ import ConsultationsSection from './PatientPage/ConsultationsSection.vue'
 import ExamsSection from './PatientPage/ExamsSection.vue'
 import NewConsultationModal from './PatientPage/NewConsultationModal.vue'
 import { getPatientDetails } from '@/services/patientService'
+import { getExamsByPatientId } from '@/services/examService'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -63,6 +63,7 @@ export default {
   data() {
     return {
       patientData: null,
+      examData: null, // Add separate exam data
       isLoading: true,
       error: null,
       showNewConsultationModal: false,
@@ -81,10 +82,19 @@ export default {
       this.isLoading = true
       this.error = null
       this.patientData = null
+      this.examData = null
 
       try {
-        const data = await getPatientDetails(id)
-        this.patientData = data
+        // Fetch patient details and exams separately
+        const [patientDetails, exams] = await Promise.all([
+          getPatientDetails(id),
+          getExamsByPatientId(id),
+        ])
+
+        this.patientData = patientDetails
+        this.examData = exams // This will have the raw exam data with has_file
+
+        console.log('Raw exam data:', exams) // Debug - remove later
       } catch (error) {
         this.error = 'Error loading patient data.'
         console.error('Error fetching patient data:', error)
@@ -92,15 +102,30 @@ export default {
         this.isLoading = false
       }
     },
+
     handleAddConsultation() {
       this.showNewConsultationModal = true
     },
+
     handleAddExam() {
       console.log('Nuevo examen añadido para paciente:', this.patientId)
+      // Refresh exam data after adding
+      this.fetchExamData()
     },
+
+    // Add method to refresh just exam data
+    async fetchExamData() {
+      try {
+        this.examData = await getExamsByPatientId(this.patientId)
+      } catch (error) {
+        console.error('Error fetching exam data:', error)
+      }
+    },
+
     closeNewConsultationModal() {
       this.showNewConsultationModal = false
     },
+
     goToDashboard() {
       this.$router.push('/dashboard')
     },

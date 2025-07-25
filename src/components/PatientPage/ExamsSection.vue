@@ -2,16 +2,34 @@
   <div class="exams-section">
     <div class="section-header">
       <h2>Exámenes</h2>
-      <button @click="showModal = true" class="add-button">+ Añadir Examen</button>
     </div>
 
     <div class="exams-list">
-      <div v-for="exam in exams" :key="exam.id" class="exam-item" @click="selectExam(exam)">
-        <!-- Reverted to exam.name as per your patientService.js mapping -->
-        <div class="exam-name">{{ exam.name }}</div>
-        <div class="exam-date">{{ formattedDate(exam.date) }}</div>
-        <span v-if="loadingExamId === exam.id" class="loading-spinner"></span>
+      <div
+        v-for="exam in exams"
+        :key="exam.id"
+        class="exam-item"
+        :class="{ 'no-file': !exam.has_file }"
+        @click="selectExam(exam)"
+      >
+        <div class="exam-info">
+          <div class="exam-name">{{ exam.type }}</div>
+          <div class="exam-date">{{ formattedDate(exam.date) }}</div>
+        </div>
+
+        <div class="exam-actions">
+          <span v-if="loadingExamId === exam.id" class="loading-spinner"></span>
+          <button
+            v-else-if="!exam.has_file"
+            class="add-file-btn"
+            @click.stop="openUploadModal(exam)"
+          >
+            Subir Archivo
+          </button>
+          <span v-else class="file-available">📄</span>
+        </div>
       </div>
+
       <p v-if="errorDownloading" class="error-message">
         Error al obtener el archivo: {{ errorDownloading }}
       </p>
@@ -50,6 +68,7 @@ export default {
       validator: (value) => value.length > 0,
     },
   },
+  emits: ['add-exam', 'openExamUploadModal'], // Add this emit
   setup(props, { emit }) {
     const showModal = ref(false)
     const loadingExamId = ref(null)
@@ -69,23 +88,30 @@ export default {
       }
     }
 
+    // New function to handle upload modal
+    const openUploadModal = (exam) => {
+      console.log('Opening upload modal for exam:', exam)
+      emit('openExamUploadModal', exam)
+    }
+
+    // Modified selectExam function
     const selectExam = async (exam) => {
+      // If exam has no file, don't try to open it
+      if (!exam.has_file) {
+        console.log('Exam has no file, not opening PDF')
+        return
+      }
+
       console.log('Examen seleccionado:', exam)
       errorDownloading.value = null
       loadingExamId.value = exam.id
 
       try {
-        const downloadUrl = await getExamDownloadUrl(exam.id)
-
-        if (downloadUrl) {
-          window.open(downloadUrl, '_blank')
-        } else {
-          console.warn('No download URL found for exam:', exam.id)
-          errorDownloading.value = 'Archivo no disponible.'
-        }
+        const downloadUrl = getExamDownloadUrl(exam.id)
+        window.open(downloadUrl, '_blank')
       } catch (error) {
-        console.error('Failed to get download URL or open PDF:', error)
-        errorDownloading.value = error.message || 'Error desconocido al descargar el archivo.'
+        console.error('Failed to open PDF:', error)
+        errorDownloading.value = error.message || 'Error desconocido al abrir el archivo.'
       } finally {
         loadingExamId.value = null
       }
@@ -96,13 +122,13 @@ export default {
       handleSaveExam,
       formattedDate,
       selectExam,
+      openUploadModal, // Add this to return
       loadingExamId,
       errorDownloading,
     }
   },
 }
 </script>
-
 <style scoped>
 /* Styles remain unchanged */
 @import url('@/assets/styles/patientpage.css');
@@ -157,5 +183,54 @@ export default {
   border: 1px solid red;
   background-color: #ffebeb;
   border-radius: 4px;
+}
+.exam-item {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.exam-item:hover {
+  background-color: #f5f5f5;
+}
+
+.exam-item.no-file {
+  background-color: #f8f8f8;
+  opacity: 0.7;
+}
+
+.exam-item.no-file:hover {
+  background-color: #e8e8e8;
+}
+
+.exam-info {
+  flex: 1;
+}
+
+.exam-actions {
+  display: flex;
+  align-items: center;
+}
+
+.add-file-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.add-file-btn:hover {
+  background-color: #0056b3;
+}
+
+.file-available {
+  font-size: 1.2rem;
+  color: #28a745;
 }
 </style>
