@@ -2,11 +2,19 @@
   <div class="exams-section">
     <div class="section-header">
       <h2>Exámenes</h2>
+      <div class="filter-section">
+        <select v-model="selectedFilter" class="exam-filter">
+          <option value="">Todos los tipos</option>
+          <option v-for="type in uniqueExamTypes" :key="type" :value="type">
+            {{ type }}
+          </option>
+        </select>
+      </div>
     </div>
 
     <div class="exams-list">
       <div
-        v-for="exam in exams"
+        v-for="exam in filteredExams"
         :key="exam.id"
         class="exam-item"
         :class="{ 'no-file': !exam.has_file }"
@@ -30,6 +38,10 @@
         </div>
       </div>
 
+      <p v-if="filteredExams.length === 0 && exams.length > 0" class="no-results">
+        No hay exámenes del tipo seleccionado.
+      </p>
+
       <p v-if="errorDownloading" class="error-message">
         Error al obtener el archivo: {{ errorDownloading }}
       </p>
@@ -46,7 +58,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import NewExamModal from './NewExamModal.vue'
 import { getExamDownloadUrl } from '@/services/examService'
 
@@ -68,11 +80,26 @@ export default {
       validator: (value) => value.length > 0,
     },
   },
-  emits: ['add-exam', 'openExamUploadModal'], // Add this emit
+  emits: ['add-exam', 'openExamUploadModal'],
   setup(props, { emit }) {
     const showModal = ref(false)
     const loadingExamId = ref(null)
     const errorDownloading = ref(null)
+    const selectedFilter = ref('') // Add filter state
+
+    // Computed property for unique exam types
+    const uniqueExamTypes = computed(() => {
+      const types = props.exams.map((exam) => exam.type).filter(Boolean)
+      return [...new Set(types)].sort()
+    })
+
+    // Computed property for filtered exams
+    const filteredExams = computed(() => {
+      if (!selectedFilter.value) {
+        return props.exams
+      }
+      return props.exams.filter((exam) => exam.type === selectedFilter.value)
+    })
 
     const handleSaveExam = (newExam) => {
       emit('add-exam', newExam)
@@ -88,15 +115,12 @@ export default {
       }
     }
 
-    // New function to handle upload modal
     const openUploadModal = (exam) => {
       console.log('Opening upload modal for exam:', exam)
       emit('openExamUploadModal', exam)
     }
 
-    // Modified selectExam function
     const selectExam = async (exam) => {
-      // If exam has no file, don't try to open it
       if (!exam.has_file) {
         console.log('Exam has no file, not opening PDF')
         return
@@ -122,13 +146,17 @@ export default {
       handleSaveExam,
       formattedDate,
       selectExam,
-      openUploadModal, // Add this to return
+      openUploadModal,
       loadingExamId,
       errorDownloading,
+      selectedFilter, // Add to return
+      uniqueExamTypes, // Add to return
+      filteredExams, // Add to return
     }
   },
 }
 </script>
+
 <style scoped>
 /* Styles remain unchanged */
 @import url('@/assets/styles/patientpage.css');
@@ -232,5 +260,38 @@ export default {
 .file-available {
   font-size: 1.2rem;
   color: #28a745;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.filter-section {
+  display: flex;
+  align-items: center;
+}
+
+.exam-filter {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.exam-filter:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.no-results {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 20px;
 }
 </style>
