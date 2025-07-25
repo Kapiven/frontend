@@ -181,22 +181,19 @@ const uploadFile = async () => {
     }
   }
 }
-
 const downloadExam = async () => {
   if (!props.selectedExam || !props.selectedExam.id) {
     console.warn('No exam selected for download.')
     return
   }
+
   try {
-    const downloadUrl = await getExamDownloadUrl(props.selectedExam.id)
-    if (downloadUrl) {
-      window.open(downloadUrl, '_blank')
-    } else {
-      alert('No se encontró URL de descarga para este examen.')
-    }
+    // Simply redirect to the download endpoint
+    const downloadUrl = getExamDownloadUrl(props.selectedExam.id)
+    window.open(downloadUrl, '_blank')
   } catch (error) {
     console.error('Error during download:', error)
-    alert('Error al generar la URL de descarga: ' + (error.message || 'Error desconocido.'))
+    alert('Error al descargar el archivo: ' + (error.message || 'Error desconocido.'))
   }
 }
 </script>
