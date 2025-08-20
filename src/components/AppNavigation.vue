@@ -4,7 +4,7 @@
       <div class="nav-brand">
         <router-link to="/dashboard" class="brand-link">
           <img src="@/assets/logo.jpg" alt="Logo" class="nav-logo" />
-          <span class="brand-text">OftalCRM</span>
+          <span class="brand-text">Optyma</span>
         </router-link>
       </div>
       
@@ -47,7 +47,7 @@
           👤 {{ authStore.user.username || 'Usuario' }}
         </span>
         <button @click="handleLogout" class="logout-btn">
-          🚪 Salir
+          Salir
         </button>
       </div>
     </div>

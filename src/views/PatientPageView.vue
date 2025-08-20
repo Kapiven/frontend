@@ -7,8 +7,6 @@ const props = defineProps({
     required: true,
   },
 })
-
-console.log('🔍 PatientPageView: Received patientId prop:', props.patientId, typeof props.patientId)
 </script>
 
 <template>

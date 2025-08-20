@@ -22,9 +22,9 @@
           <div v-if="selectedExam.has_file" class="file-info-section">
             <p>
               Archivo subido.
-              <button type="button" class="btn-download" @click="downloadExam">
-                Descargar PDF
-              </button>
+                          <button type="button" class="btn btn-download btn-standard" @click="downloadExam">
+              Descargar PDF
+            </button>
             </p>
           </div>
           <div v-else class="file-upload-section">
@@ -36,7 +36,7 @@
               accept="application/pdf"
               style="display: none"
             />
-            <button type="button" class="btn-select-file" @click="$refs.fileInput.click()">
+            <button type="button" class="btn btn-select-file btn-standard" @click="$refs.fileInput.click()">
               Seleccionar Archivo
             </button>
             <div class="file-info" v-if="selectedFile">
@@ -52,13 +52,13 @@
           <button
             v-if="!selectedExam.has_file"
             type="submit"
-            class="btn-primary"
+            class="btn btn-primary btn-standard"
             @click="uploadFile"
             :disabled="uploading || !selectedFile"
           >
             {{ uploading ? 'Subiendo...' : 'Subir Documento' }}
           </button>
-          <button type="button" class="btn-secondary" @click="$emit('close')" :disabled="uploading">
+          <button type="button" class="btn btn-secondary btn-standard" @click="$emit('close')" :disabled="uploading">
             Cerrar
           </button>
         </div>
@@ -66,7 +66,7 @@
       <div v-else>
         <p>No se ha seleccionado ningún examen para mostrar.</p>
         <div class="modal-actions">
-          <button type="button" class="btn-secondary" @click="$emit('close')">Cerrar</button>
+          <button type="button" class="btn btn-secondary btn-standard" @click="$emit('close')">Cerrar</button>
         </div>
       </div>
     </div>
@@ -206,7 +206,7 @@ const downloadExam = async () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--color-modal-overlay);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -214,19 +214,20 @@ const downloadExam = async () => {
 }
 
 .modal {
-  background: white;
+  background: var(--color-modal-bg);
   padding: 25px;
   border-radius: 8px;
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: var(--shadow-modal);
 }
 
 h2 {
   text-align: center;
   margin-bottom: 25px;
-  color: #333;
+  color: var(--color-heading);
 }
 
 .form-group {
@@ -237,64 +238,76 @@ h2 {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text);
 }
 
 .form-input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-input-border);
   border-radius: 4px;
   font-size: 14px;
+  background-color: var(--color-input-bg);
+  color: var(--color-input-text);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-input-border-focus);
+  box-shadow: var(--shadow-focus);
+}
+
+.form-input:disabled {
+  background-color: var(--color-background-mute);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .file-upload-section p {
   font-size: 0.9rem;
-  color: #555;
+  color: var(--color-text-secondary);
   margin-bottom: 10px;
 }
 
 .file-info-section {
   margin-top: 10px;
   padding: 10px;
-  background-color: #e6f7ff;
-  border: 1px solid #b3e0ff;
+  background-color: var(--color-background-soft);
+  border: 1px solid var(--color-border);
   border-radius: 4px;
 }
 
-.btn-download {
-  background-color: #007bff;
-  color: white;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-left: 10px;
-  transition: background-color 0.2s ease;
+.file-info-section p {
+  color: var(--color-text);
+  margin: 0;
 }
+
+/* Remove local download and select-file button definitions to use global ones */
+.btn-download {
+  background: var(--color-btn);
+  color: var(--color-btn-text);
+  margin-left: 10px;
+}
+
 .btn-download:hover {
-  background-color: #0056b3;
+  background: var(--color-btn-hover);
 }
 
 .btn-select-file {
-  background-color: #f0f0f0;
-  color: #333;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
+  background: var(--color-btn);
+  color: var(--color-btn-text);
 }
 
 .btn-select-file:hover {
-  background-color: #e0e0e0;
+  background: var(--color-btn-hover);
 }
 
 .file-info {
   margin-top: 8px;
   font-size: 13px;
-  color: #555;
+  color: var(--color-text-secondary);
 }
 
 .modal-actions {
@@ -304,40 +317,71 @@ h2 {
   margin-top: 20px;
 }
 
-.btn-primary {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
+/* Complete button override to fix size consistency issues */
+.modal-actions .btn-standard {
+  /* Reset all inherited styles */
+  all: unset;
+  /* Apply consistent button styling */
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  transition: all 0.2s ease;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  /* Color styling */
+  background: var(--color-btn);
+  color: var(--color-btn-text);
+  /* Prevent any size changes */
+  min-width: 120px;
+  min-height: 40px;
+  max-width: none;
+  max-height: none;
+  width: auto;
+  height: auto;
 }
 
+.modal-actions .btn-standard:hover:not(:disabled) {
+  background: var(--color-btn-hover);
+  color: var(--color-btn-text);
+}
+
+.modal-actions .btn-standard:disabled {
+  background: var(--color-btn-disabled);
+  color: var(--color-btn-disabled-text);
+  cursor: not-allowed;
+  /* Maintain exact same dimensions */
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  min-width: 120px;
+  min-height: 40px;
+}
 .btn-primary:disabled {
-  background-color: #a5d6a7;
+  background-color: var(--color-btn-disabled);
+  color: var(--color-btn-disabled-text);
   cursor: not-allowed;
 }
 
-.btn-secondary {
-  background-color: #f44336;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
 .btn-secondary:disabled {
-  background-color: #ef9a9a;
+  background-color: var(--color-btn-disabled);
+  color: var(--color-btn-disabled-text);
   cursor: not-allowed;
 }
 
 .error-message {
-  color: #dc3545;
-  background-color: #f8d7da;
-  border: 1px solid #dc3545;
+  color: var(--color-error);
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error);
   padding: 8px;
   border-radius: 5px;
   margin-top: 10px;
@@ -345,12 +389,17 @@ h2 {
 }
 
 .success-message {
-  color: #28a745;
-  background-color: #d4edda;
-  border: 1px solid #28a745;
+  color: var(--color-success);
+  background-color: var(--color-success-bg);
+  border: 1px solid var(--color-success);
   padding: 8px;
   border-radius: 5px;
   margin-top: 10px;
   font-size: 0.9em;
+}
+
+/* General paragraph styling for consistency */
+p {
+  color: var(--color-text);
 }
 </style>

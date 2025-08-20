@@ -171,7 +171,7 @@ export default {
 }
 
 .exam-item:hover {
-  background-color: #f5f5f5;
+  background-color: var(--color-table-row-hover);
 }
 
 .exam-name {
@@ -181,7 +181,7 @@ export default {
 .exam-date,
 .exam-type {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 .loading-spinner {
@@ -222,16 +222,16 @@ export default {
 }
 
 .exam-item:hover {
-  background-color: #f5f5f5;
+  background-color: var(--color-table-row-hover);
 }
 
 .exam-item.no-file {
-  background-color: #f8f8f8;
-  opacity: 0.7;
+  background-color: var(--color-background-mute);
+  opacity: 0.8;
 }
 
 .exam-item.no-file:hover {
-  background-color: #e8e8e8;
+  background-color: var(--color-table-row-hover);
 }
 
 .exam-info {
@@ -244,8 +244,8 @@ export default {
 }
 
 .add-file-btn {
-  background-color: #007bff;
-  color: white;
+  background: var(--color-btn);
+  color: var(--color-btn-text);
   border: none;
   padding: 5px 10px;
   border-radius: 4px;
@@ -254,12 +254,12 @@ export default {
 }
 
 .add-file-btn:hover {
-  background-color: #0056b3;
+  background: var(--color-btn-hover);
 }
 
 .file-available {
   font-size: 1.2rem;
-  color: #28a745;
+  color: var(--color-success);
 }
 
 .section-header {
@@ -276,21 +276,24 @@ export default {
 
 .exam-filter {
   padding: 5px 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-input-border);
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--color-input-bg);
+  color: var(--color-input-text);
   font-size: 0.9rem;
   cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .exam-filter:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: var(--color-input-border-focus);
+  box-shadow: var(--shadow-focus);
 }
 
 .no-results {
   text-align: center;
-  color: #666;
+  color: var(--color-text-secondary);
   font-style: italic;
   padding: 20px;
 }

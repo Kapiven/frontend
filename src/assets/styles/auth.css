@@ -4,17 +4,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to right, #e3f2fd, #ffffff);
+  background: var(--color-auth-gradient);
   padding: 2rem 1rem;
   box-sizing: border-box;
   overflow-y: auto;
 }
 
 .auth-card {
-  background-color: white;
+  background-color: var(--color-card-bg);
   padding: 2rem;
   border-radius: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-large);
   width: 100%;
   max-width: 400px;
   text-align: center;
@@ -30,14 +30,14 @@
 
 .auth-title {
   font-size: 1.3rem;
-  color: #1976d2;
+  color: var(--color-primary);
   margin-bottom: 0.5rem;
 }
 
 .auth-subtitle {
   font-size: 1.1rem;
   margin-bottom: 1.5rem;
-  color: #2e2d2d;
+  color: var(--color-text);
 }
 
 .auth-form {
@@ -49,24 +49,33 @@
 
 .auth-form label {
   font-size: 1rem;
-  color: #444;
+  color: var(--color-text);
 }
 
 .auth-form input {
   padding: 0.6rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-input-border);
   border-radius: 0.5rem;
   font-size: 1rem;
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 0.5rem;
+  background-color: var(--color-input-bg);
+  color: var(--color-input-text);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: var(--color-input-border-focus);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
 }
 
 .auth-button {
   padding: 0.7rem;
   margin-top: 0.3rem;
-  background-color: #1976d2;
-  color: white;
+  background-color: var(--color-btn-primary);
+  color: var(--color-btn-primary-text);
   border: none;
   border-radius: 0.5rem;
   font-weight: bold;
@@ -76,31 +85,31 @@
 }
 
 .auth-button:hover {
-  background-color: #125ea7;
+  background-color: var(--color-btn-primary-hover);
 }
 
 .auth-link {
   margin-top: 1.5rem;
   text-align: center;
   font-size: 0.95rem;
-  color: #000;
+  color: var(--color-text);
 }
 
 .auth-link a {
-  color: #1976d2;
+  color: var(--color-primary);
   text-decoration: underline;
   cursor: pointer;
 }
 
 .auth-error {
   margin-top: 1rem;
-  color: red;
+  color: var(--color-error);
   font-size: 0.9rem;
 }
 
 .auth-success {
   margin-top: 1rem;
-  color: green;
+  color: var(--color-success);
   font-size: 0.9rem;
 }
 

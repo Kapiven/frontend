@@ -10,7 +10,7 @@
   margin: 0 auto;
   background: var(--color-background-soft);
   border-radius: 1rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-medium);
   padding: 2rem;
 }
 
@@ -19,7 +19,7 @@
   align-items: center;
   gap: 1.2rem;
   padding: 0.5rem 0.7rem;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--color-border);
   font-size: 1rem;
   background: transparent;
   transition: background 0.18s;
@@ -48,7 +48,7 @@
   min-width: 120px;
   font-family: 'Fira Mono', 'monospace';
   font-size: 1.02em;
-  color: #333;
+  color: var(--color-text);
   font-weight: 500;
   letter-spacing: 0.02em;
   align-items: flex-start;
@@ -56,13 +56,13 @@
 
 .interval-label {
   flex: 1;
-  color: #333;
+  color: var(--color-text);
   font-weight: 500;
   white-space: pre-line;
 }
 
 .free-interval .interval-label {
-  color: #888;
+  color: var(--color-text-secondary);
   font-style: italic;
   font-weight: 400;
 }
@@ -72,7 +72,7 @@
 }
 
 .appointment-item:hover {
-  background: #f0f4fa;
+  background: var(--color-table-row-hover);
 }
 
 .calendar-header {
@@ -91,14 +91,14 @@
 
 .calendar-header h2 {
   margin: 0;
-  color: #111;
+  color: var(--color-heading);
   font-size: 2.2rem;
   flex-shrink: 0;
 }
 
 .calendar-header button {
-  background: #1976d2;
-  color: #fff;
+  background: var(--color-btn-primary);
+  color: var(--color-btn-primary-text);
   border: none;
   border-radius: 0.5rem;
   padding: 0.7rem 1.5rem;
@@ -108,7 +108,7 @@
 }
 
 .calendar-header button:hover {
-  background: #125ea7;
+  background: var(--color-btn-primary-hover);
 }
 
 
@@ -134,8 +134,8 @@
 
 /* Weekday headers */
 .weekday-header {
-  background: #e9ecef;
-  color: #495057;
+  background: var(--color-table-header-bg);
+  color: var(--color-text);
   font-weight: 600;
   text-align: center;
   padding: 0.7rem 0;
@@ -170,16 +170,16 @@
 
 /* Individual Day Cell */
 .calendar-day {
-  background: #f8f9fa; /* Very light gray */
+  background: var(--color-background-soft); /* Very light gray */
   border-radius: 0.5rem; /* Slightly more rounded for modern look */
   padding: 0.6rem;
   position: relative;
-  color: #333;
+  color: var(--color-text);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   min-height: 80px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-small);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -587,29 +587,37 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
-  border: none;
+  border: 1px solid transparent;
   font-size: 1rem;
+  box-sizing: border-box;
+  min-width: 120px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-primary {
-  background: #1976d2;
-  color: white;
+  background: var(--color-btn-primary);
+  color: var(--color-btn-primary-text);
+  border-color: var(--color-btn-primary);
 }
 
 .btn-primary:hover {
-  background: #1565c0;
+  background: var(--color-btn-primary-hover);
+  border-color: var(--color-btn-primary-hover);
 }
 
 
 
 .btn-secondary {
-  background: #f5f5f5;
-  color: #333;
-  border: 1px solid #e0e0e0;
+  background: var(--color-btn-secondary);
+  color: var(--color-btn-secondary-text);
+  border-color: var(--color-border);
 }
 
 .btn-secondary:hover {
-  background: #e0e0e0;
+  background: var(--color-btn-secondary-hover);
 }
 
 /* Appointment Details Modal specific styles */
@@ -731,14 +739,14 @@
 }
 
 .edit-button {
-  background: #1976d2;
-  color: white;
+  background: var(--color-btn-primary);
+  color: var(--color-btn-primary-text);
 }
 
 
 
 .edit-button:hover {
-  background: #125ea7;
+  background: var(--color-btn-primary-hover);
 }
 
 
@@ -832,11 +840,11 @@
     color: #fff;
   }
   .calendar-header button {
-    background: #2c3e50;
+    background: #1c2b46;
     color: #fff;
   }
   .calendar-header button:hover {
-    background: #2c3e50;
+    background: #1c2b46;
   }
   .calendar-day {
     background: #23272a;
@@ -876,19 +884,21 @@
   }
   
   .btn-primary {
-    background: #2c3e50;
-    color: #fff;
+    background: var(--color-btn-primary);
+    color: var(--color-btn-primary-text);
+    border-color: var(--color-btn-primary);
   }
   .btn-primary:hover {
-    background: #2c3e50;
+    background: var(--color-btn-primary-hover);
+    border-color: var(--color-btn-primary-hover);
   }
   .btn-secondary {
-    background: #232323;
-    color: #fff;
-    border: 1px solid #444;
+    background: var(--color-btn-secondary);
+    color: var(--color-btn-secondary-text);
+    border-color: var(--color-border);
   }
   .btn-secondary:hover {
-    background: #292929;
+    background: var(--color-btn-secondary-hover);
   }
   .form-input, .form-textarea {
     background: #232323;
@@ -909,7 +919,7 @@
   .appointment-notes {
     background: #232323;
     color: #fff;
-    border-left: 3px solid #2c3e50;
+    border-left: 3px solid #1c2b46;
   }
   .details-section {
     border-bottom: 1px solid #333;
@@ -978,18 +988,18 @@
     color: #fff;
   }
   .expand-btn:hover {
-    background: #2c3e50;
-    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.18);
+    background: #1c2b46;
+    box-shadow: 0 2px 8px rgba(28, 43, 70, 0.18);
   }
   .expand-btn svg {
     color: #fff;
   }
   .edit-button {
-    background: #2c3e50;
+    background: #1c2b46;
     color: white;
   }
   .edit-button:hover {
-    background: #2c3e50;
+    background: #1c2b46;
   }
   .appointment-details-modal {
     background: #232323;
@@ -1007,4 +1017,35 @@
   .appointment-details-modal .no-results {
     color: #bbb;
   }
+}
+
+/* Dark mode styles using .dark class */
+.dark .btn-primary {
+  background: var(--color-btn-primary) !important;
+  color: var(--color-btn-primary-text) !important;
+  border-color: var(--color-btn-primary) !important;
+}
+
+.dark .btn-primary:hover {
+  background: var(--color-btn-primary-hover) !important;
+  border-color: var(--color-btn-primary-hover) !important;
+}
+
+.dark .btn-secondary {
+  background: var(--color-btn-secondary) !important;
+  color: var(--color-btn-secondary-text) !important;
+  border-color: var(--color-border) !important;
+}
+
+.dark .btn-secondary:hover {
+  background: var(--color-btn-secondary-hover) !important;
+}
+
+.dark .edit-button {
+  background: var(--color-btn-primary) !important;
+  color: var(--color-btn-primary-text) !important;
+}
+
+.dark .edit-button:hover {
+  background: var(--color-btn-primary-hover) !important;
 }
