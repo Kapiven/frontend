@@ -1,15 +1,12 @@
 <template>
   <div class="dashboard">
-    <SearchBar
-      :fetchDaySummary="fetchDaySummary"
-      :patientRedirect="patientRedirect"
-    />
+    <SearchBar :fetchDaySummary="fetchDaySummary" :patientRedirect="patientRedirect" />
 
     <div class="quick-actions">
       <button @click="calendarRedirect">Calendario</button>
       <button @click="consultRedirect">Consultas</button>
     </div>
-    
+
     <div class="section-wrapper">
       <DashboardSection
         :titles="['Citas de Hoy', 'Exámenes Pendientes']"
@@ -17,28 +14,46 @@
         :formatTime="formatTime"
         @patientRedirect="patientRedirect"
         :recentExams="recentExams"
-        @examRedirect="examRedirect"
+        @openExamUploadModal="handleOpenExamUploadModal"
       />
     </div>
+
+    <NewExamModal
+      v-if="showExamModal"
+      :selected-exam="selectedExamForModal"
+      @close="closeNewExamModal"
+      @examUpdated="handleExamFileUploaded"
+    />
   </div>
 </template>
-
 <script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { getPatientById } from '@/services/patientService'
 import SearchBar from './Dashboard/SearchBar.vue'
 import DashboardSection from './Dashboard/DashboardSection.vue'
-import "@/assets/styles/dashboard.css"
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import NewExamModal from '@/components/PatientPage/NewExamModal.vue'
 import { getBusinessHoursForDay } from '@/services/businessHoursService'
 import { getAppointmentsForDate } from '@/services/appointmentService'
+import { getPendingExams } from '@/services/examService'
+import '@/assets/styles/dashboard.css'
 
 const router = useRouter()
 
+// Estados reactivos
+const showExamModal = ref(false)
+const selectedExamForModal = ref(null)
 const businessHours = ref([])
 const dayAppointments = ref([])
+const recentExams = ref([])
 
 const todayStr = new Date().toISOString().slice(0, 10)
 
+onMounted(() => {
+  fetchPendingExamsIntoRecentExams()
+})
+
+// Funciones de redirección
 function calendarRedirect() {
   router.push('/calendar')
 }
@@ -47,6 +62,11 @@ function consultRedirect() {
   alert('Redirigir a consultas...')
 }
 
+function patientRedirect(patientId) {
+  router.push({ name: 'patient', params: { patientId } })
+}
+
+// Lógica de citas
 async function fetchDaySummary() {
   try {
     businessHours.value = await getBusinessHoursForDay(todayStr)
@@ -57,6 +77,68 @@ async function fetchDaySummary() {
     dayAppointments.value = await getAppointmentsForDate(todayStr)
   } catch (e) {
     dayAppointments.value = []
+  }
+}
+
+// Handle opening exam upload modal
+function handleOpenExamUploadModal(exam) {
+  selectedExamForModal.value = exam
+  showExamModal.value = true
+}
+
+// Close modal handler
+function closeNewExamModal() {
+  showExamModal.value = false
+  selectedExamForModal.value = null
+}
+
+// Handle exam file uploaded
+async function handleExamFileUploaded(examId) {
+  console.log(`Exam ID ${examId} file uploaded successfully. Re-fetching exams.`)
+  await fetchPendingExamsIntoRecentExams()
+  // Update the currently selected exam object in the modal to reflect new has_file status
+  const updatedExam = recentExams.value.find((e) => e.id === examId)
+  if (updatedExam) {
+    selectedExamForModal.value = updatedExam
+  }
+}
+
+async function fetchPendingExamsIntoRecentExams() {
+  try {
+    const rawExams = await getPendingExams() // Get exams from backend (contains patient_id)
+
+    // Collect unique patient IDs from the raw exams
+    const patientIds = [...new Set(rawExams.map((exam) => exam.patient_id))]
+
+    // Fetch all unique patient details in parallel using getPatientById
+    const patientPromises = patientIds.map((id) =>
+      getPatientById(id)
+        .then((patient) => ({ id: patient.id, name: patient.name })) // Assuming patient.name exists
+        .catch((error) => {
+          console.warn(`Could not fetch name for patient ID ${id}:`, error)
+          return { id, name: `Paciente Desconocido (ID:${id})` } // Fallback name for error
+        }),
+    )
+
+    // Wait for all patient name fetches to complete
+    const patients = await Promise.all(patientPromises)
+    // Create a map for quick lookup: patient_id -> patient_name
+    const patientNameMap = new Map(patients.map((p) => [p.id, p.name]))
+
+    // Map the raw exams, enriching each with the patient's name
+    recentExams.value = rawExams.map((exam) => ({
+      id: exam.id,
+      date: new Date(exam.date).toLocaleDateString(),
+      patient: patientNameMap.get(exam.patient_id) || `Paciente ID: ${exam.patient_id}`, // Get name from map, fallback to ID if not found
+      type: exam.type,
+      patient_id: exam.patient_id, // Include for modal to fetch patient details again if needed
+      has_file: exam.has_file || false, // Include file status
+    }))
+
+    console.log('Fetched and enriched pending exams into recentExams:', recentExams.value)
+  } catch (error) {
+    console.error('Error fetching or enriching pending exams:', error)
+    recentExams.value = [] // Set to empty array on error
   }
 }
 
@@ -74,30 +156,26 @@ function getApptEnd(appt) {
 }
 
 const todayIntervals = computed(() => {
-  // If no business hours, default to one interval: 08:00-20:00
   if (!businessHours.value || !Array.isArray(businessHours.value)) {
     return []
   }
+
   const intervals = businessHours.value.length
     ? businessHours.value
     : [{ start: '08:00', end: '20:00' }]
 
-  // Build Date objects for today for each interval
   const today = new Date()
   const y = today.getFullYear()
   const m = String(today.getMonth() + 1).padStart(2, '0')
   const d = String(today.getDate()).padStart(2, '0')
 
-  // Sort appointments by start time
   const appts = [...dayAppointments.value].sort((a, b) => new Date(a.start) - new Date(b.start))
-
   const result = []
 
   for (const interval of intervals) {
     const intervalStart = new Date(`${y}-${m}-${d}T${interval.start}:00`)
     const intervalEnd = new Date(`${y}-${m}-${d}T${interval.end}:00`)
 
-    // Appointments that start within this interval
     const apptsInInterval = appts.filter((a) => {
       const s = new Date(a.start)
       return s >= intervalStart && s < intervalEnd
@@ -106,7 +184,6 @@ const todayIntervals = computed(() => {
     let lastEnd = intervalStart
 
     if (apptsInInterval.length === 0) {
-      // Whole interval is free
       if (intervalEnd - intervalStart >= 20 * 60 * 1000) {
         result.push({
           type: 'free',
@@ -120,7 +197,7 @@ const todayIntervals = computed(() => {
     for (const appt of apptsInInterval) {
       const apptStart = new Date(appt.start)
       const apptEnd = new Date(apptStart.getTime() + Number(appt.duration || 0) / 1_000_000)
-      // Free before this appointment
+
       if (apptStart - lastEnd >= 20 * 60 * 1000) {
         result.push({
           type: 'free',
@@ -128,14 +205,14 @@ const todayIntervals = computed(() => {
           end: new Date(apptStart),
         })
       }
-      // The appointment itself
+
       result.push({
         type: 'appt',
         appt,
       })
       lastEnd = apptEnd
     }
-    // Free after last appointment in interval
+
     if (intervalEnd - lastEnd >= 20 * 60 * 1000) {
       result.push({
         type: 'free',
@@ -147,35 +224,4 @@ const todayIntervals = computed(() => {
 
   return result
 })
-// Demo/mock data for pending exams
-const recentExams = [
-  { id: 1, date: '2025-04-22', patient: 'Luis G.', type: 'Rayos X' },
-  { id: 2, date: '2025-04-21', patient: 'María F.', type: 'Examen de sangre' },
-  { id: 3, date: '2025-04-20', patient: 'Carlos M.', type: 'Electrocardiograma' },
-  { id: 4, date: '2025-04-19', patient: 'Ana R.', type: 'Tomografía' },
-  { id: 5, date: '2025-04-18', patient: 'Mario P.', type: 'Análisis de orina' },
-  { id: 6, date: '2025-04-18', patient: 'Sofía T.', type: 'Ultrasonido' },
-  { id: 7, date: '2025-04-17', patient: 'Daniel K.', type: 'Rayos X' },
-  { id: 8, date: '2025-04-17', patient: 'José A.', type: 'Resonancia magnética' },
-  { id: 9, date: '2025-04-16', patient: 'Camila D.', type: 'Examen de sangre' },
-  { id: 10, date: '2025-04-15', patient: 'Elena Z.', type: 'Tomografía' },
-  { id: 11, date: '2025-04-14', patient: 'Felipe R.', type: 'Electrocardiograma' },
-  { id: 12, date: '2025-04-13', patient: 'Marta P.', type: 'Tomografía' },
-  { id: 13, date: '2025-04-12', patient: 'Juan S.', type: 'Análisis de orina' },
-  { id: 14, date: '2025-04-11', patient: 'Paola G.', type: 'Rayos X' },
-  { id: 15, date: '2025-04-10', patient: 'Samuel F.', type: 'Resonancia magnética' },
-  { id: 16, date: '2025-04-09', patient: 'Raquel H.', type: 'Examen de sangre' },
-  { id: 17, date: '2025-04-08', patient: 'Nina L.', type: 'Ultrasonido' },
-  { id: 18, date: '2025-04-07', patient: 'Oscar J.', type: 'Electrocardiograma' },
-  { id: 19, date: '2025-04-06', patient: 'José M.', type: 'Tomografía' },
-  { id: 20, date: '2025-04-05', patient: 'Laura T.', type: 'Rayos X' },
-]
-
-function examRedirect(examId) {
-  alert(`Redirigir a la pagina del examen con ID ${examId})`)
-}
-
-function patientRedirect(patientId) {
-  router.push({ name: 'patient', params: { patientId } })
-}
 </script>

@@ -6,7 +6,9 @@ import DashboardView from '@/views/DashboardView.vue'
 import CalendarView from '@/views/CalendarView.vue'
 import PatientPageView from '@/views/PatientPageView.vue'
 import RegisterPageView from '@/views/RegisterPageView.vue'
+import { useAuthStore } from '@/stores/auth'
 import AdminView from '@/views/AdminView.vue'
+
 
 const routes = [
   {
@@ -23,6 +25,7 @@ const routes = [
     path: '/dashboard',
     name: 'dashboard',
     component: DashboardView,
+    meta: { requiresAuth: true },
   },
   {
     path: '/calendar',
@@ -52,6 +55,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    next('/')
+  } else {
+    next()
+  }
 })
 
 export default router

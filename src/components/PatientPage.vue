@@ -18,14 +18,28 @@
             @add-consultation="handleAddConsultation"
           />
 
-          <!-- Pass the fetched data (patientData.exams) -->
-          <exams-section :exams="patientData.exams" @add-exam="handleAddExam" />
+          <!-- Add the missing event handler -->
+          <exams-section
+            :exams="examData || []"
+            :patient-id="patientId"
+            :consultations="patientData.consultations"
+            @add-exam="handleAddExam"
+            @openExamUploadModal="handleOpenExamUploadModal"
+          />
         </div>
       </div>
     </div>
     <div v-else>No se encontraron datos para este paciente.</div>
 
     <NewConsultationModal v-if="showNewConsultationModal" @close="closeNewConsultationModal" />
+
+    <!-- Add the upload modal -->
+    <NewExamModal
+      v-if="showUploadModal"
+      :selected-exam="selectedExamForUpload"
+      @close="closeUploadModal"
+      @examUpdated="handleExamFileUploaded"
+    />
   </div>
 </template>
 
@@ -35,7 +49,9 @@ import PatientSidePanel from './PatientPage/PatientSidePanel.vue'
 import ConsultationsSection from './PatientPage/ConsultationsSection.vue'
 import ExamsSection from './PatientPage/ExamsSection.vue'
 import NewConsultationModal from './PatientPage/NewConsultationModal.vue'
+import NewExamModal from './PatientPage/NewExamModal.vue' // Add this import
 import { getPatientDetails } from '@/services/patientService'
+import { getExamsByPatientId } from '@/services/examService'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -46,6 +62,7 @@ export default {
     ConsultationsSection,
     ExamsSection,
     NewConsultationModal,
+    NewExamModal, // Add this component
   },
   props: {
     patientId: {
@@ -57,9 +74,12 @@ export default {
   data() {
     return {
       patientData: null,
+      examData: null,
       isLoading: true,
       error: null,
       showNewConsultationModal: false,
+      showUploadModal: false, // Add this
+      selectedExamForUpload: null, // Add this
     }
   },
   watch: {
@@ -75,10 +95,16 @@ export default {
       this.isLoading = true
       this.error = null
       this.patientData = null
+      this.examData = null
 
       try {
-        const data = await getPatientDetails(id)
-        this.patientData = data
+        const [patientDetails, exams] = await Promise.all([
+          getPatientDetails(id),
+          getExamsByPatientId(id),
+        ])
+
+        this.patientData = patientDetails
+        this.examData = exams
       } catch (error) {
         this.error = 'Error loading patient data.'
         console.error('Error fetching patient data:', error)
@@ -86,22 +112,51 @@ export default {
         this.isLoading = false
       }
     },
+
     handleAddConsultation() {
       this.showNewConsultationModal = true
     },
+
     handleAddExam() {
       console.log('Nuevo examen añadido para paciente:', this.patientId)
+      this.fetchExamData()
     },
+
+    // Add these new methods
+    handleOpenExamUploadModal(exam) {
+      this.selectedExamForUpload = exam
+      this.showUploadModal = true
+    },
+
+    closeUploadModal() {
+      this.showUploadModal = false
+      this.selectedExamForUpload = null
+    },
+
+    async handleExamFileUploaded(examId) {
+      console.log(`Exam ID ${examId} file uploaded successfully. Re-fetching exams.`)
+      await this.fetchExamData()
+      this.closeUploadModal()
+    },
+
+    async fetchExamData() {
+      try {
+        this.examData = await getExamsByPatientId(this.patientId)
+      } catch (error) {
+        console.error('Error fetching exam data:', error)
+      }
+    },
+
     closeNewConsultationModal() {
       this.showNewConsultationModal = false
     },
+
     goToDashboard() {
       this.$router.push('/dashboard')
     },
   },
 }
 </script>
-
 <style scoped>
 @import url('@/assets/styles/patientpage.css');
 
