@@ -1,13 +1,15 @@
 <template>
-  <div class="calendar-page">
-    <CalendarHeader
-      v-model:showDatePicker="showDatePicker"
-      :displayMonth="displayMonth"
-      :displayYear="displayYear"
-      @update:month="displayMonth = $event"
-      @update:year="displayYear = $event"
-      @dashboard-redirect="dashboardRedirect"
-    />
+  <div class="calendar-wrapper">
+    <AppNavigation />
+    
+    <div class="calendar-page">
+      <CalendarHeader
+        v-model:showDatePicker="showDatePicker"
+        :displayMonth="displayMonth"
+        :displayYear="displayYear"
+        @update:month="displayMonth = $event"
+        @update:year="displayYear = $event"
+      />
 
     <!-- Day of week headers -->
     <WeekDaysHeader/>
@@ -147,10 +149,12 @@
       @open-new-appt="({ day, start }) => openNewAppointmentModalForInterval(day, start)"
       @open-appt-details="openAppointmentDetails"
     />
+    </div>
   </div>
 </template>
 
 <script setup>
+import AppNavigation from '@/components/AppNavigation.vue'
 import CalendarHeader from './Calendar/CalendarHeader.vue'
 import WeekDaysHeader from './Calendar/WeekDaysHeader.vue'
 import CalendarGrid from './Calendar/CalendarGrid.vue'
@@ -220,10 +224,6 @@ const dayModalDateStr = computed(() => {
   if (!expandedDay.value) return null
   return `${displayYear.value}-${String(displayMonth.value + 1).padStart(2, '0')}-${String(expandedDay.value).padStart(2, '0')}`
 })
-
-function dashboardRedirect() {
-  router.push('/dashboard')
-}
 
 // Check if a day is the current day
 function isCurrentDay(day) {

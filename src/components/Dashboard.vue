@@ -1,36 +1,35 @@
 <template>
-  <div class="dashboard">
-    <SearchBar :fetchDaySummary="fetchDaySummary" :patientRedirect="patientRedirect" />
+  <div class="dashboard-wrapper">
+    <AppNavigation 
+      :fetchDaySummary="fetchDaySummary" 
+    />
+    
+    <div class="dashboard">
+      <div class="section-wrapper">
+        <DashboardSection
+          :titles="['Citas de Hoy', 'Exámenes Pendientes']"
+          :todayIntervals="todayIntervals"
+          :formatTime="formatTime"
+          @patientRedirect="patientRedirect"
+          :recentExams="recentExams"
+          @openExamUploadModal="handleOpenExamUploadModal"
+        />
+      </div>
 
-    <div class="quick-actions">
-      <button @click="calendarRedirect">Calendario</button>
-      <button @click="consultRedirect">Consultas</button>
-    </div>
-
-    <div class="section-wrapper">
-      <DashboardSection
-        :titles="['Citas de Hoy', 'Exámenes Pendientes']"
-        :todayIntervals="todayIntervals"
-        :formatTime="formatTime"
-        @patientRedirect="patientRedirect"
-        :recentExams="recentExams"
-        @openExamUploadModal="handleOpenExamUploadModal"
+      <NewExamModal
+        v-if="showExamModal"
+        :selected-exam="selectedExamForModal"
+        @close="closeNewExamModal"
+        @examUpdated="handleExamFileUploaded"
       />
     </div>
-
-    <NewExamModal
-      v-if="showExamModal"
-      :selected-exam="selectedExamForModal"
-      @close="closeNewExamModal"
-      @examUpdated="handleExamFileUploaded"
-    />
   </div>
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { getPatientById } from '@/services/patientService'
-import SearchBar from './Dashboard/SearchBar.vue'
+import AppNavigation from '@/components/AppNavigation.vue'
 import DashboardSection from './Dashboard/DashboardSection.vue'
 import NewExamModal from '@/components/PatientPage/NewExamModal.vue'
 import { getBusinessHoursForDay } from '@/services/businessHoursService'
@@ -54,14 +53,6 @@ onMounted(() => {
 })
 
 // Funciones de redirección
-function calendarRedirect() {
-  router.push('/calendar')
-}
-
-function consultRedirect() {
-  alert('Redirigir a consultas...')
-}
-
 function patientRedirect(patientId) {
   router.push({ name: 'patient', params: { patientId } })
 }

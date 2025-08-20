@@ -1,8 +1,14 @@
+.dashboard-wrapper {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
 .dashboard {
   max-width: 1200px;
-  margin: 2rem auto;
-  padding: 1rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
   color: var(--color-text);
+  background: var(--color-background);
 }
 
 .search-bar input {
@@ -18,7 +24,7 @@
 .suggestions-list {
   position: absolute;
   left: 0;
-  background: white;
+  background: var(--color-background-soft);
   border: 1px solid var(--color-border);
   border-radius: 0 0 8px 8px;
   width: 100%;
@@ -35,7 +41,7 @@
   cursor: pointer;
   color: var(--color-text);
   border-bottom: 1px solid var(--color-border);
-  background: white;
+  background: var(--color-background-soft);
   transition: background 0.2s;
 }
 

@@ -6,6 +6,11 @@ html, body, #app {
   font-family: 'Inter', sans-serif;
 }
 
+.admin-wrapper {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
 .min-h-screen {
   min-height: 100vh;
 }

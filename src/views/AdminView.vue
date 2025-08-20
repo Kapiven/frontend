@@ -1,32 +1,37 @@
 <template>
-  <div class="max-h-screen h-full bg-gray-100 p-8 pb-12 flex flex-col">
-    <div class="flex-grow w-full container-card">
-      <AdminHeader @create-role="openCreateModal" />
-      <AdminFilters
-        v-model:search="searchQuery"
-        v-model:role="selectedRole"
+  <div class="admin-wrapper">
+    <AppNavigation />
+    
+    <div class="max-h-screen h-full bg-gray-100 p-8 pb-12 flex flex-col">
+      <div class="flex-grow w-full container-card">
+        <AdminHeader @create-role="openCreateModal" />
+        <AdminFilters
+          v-model:search="searchQuery"
+          v-model:role="selectedRole"
+          :role-options="roleOptions"
+        />
+        <AdminTable
+          :users="filteredUsers"
+          @edit-user="editUser"
+          @delete-user="deleteUser"
+        />
+      </div>
+      <AdminModal
+        v-if="showModal"
+        :is-editing="isEditing"
+        :form="form"
         :role-options="roleOptions"
-      />
-      <AdminTable
-        :users="filteredUsers"
-        @edit-user="editUser"
-        @delete-user="deleteUser"
+        @close="closeModal"
+        @save="saveUser"
+        @update-form="updateForm"
       />
     </div>
-    <AdminModal
-      v-if="showModal"
-      :is-editing="isEditing"
-      :form="form"
-      :role-options="roleOptions"
-      @close="closeModal"
-      @save="saveUser"
-      @update-form="updateForm"
-    />
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
+import AppNavigation from '../components/AppNavigation.vue'
 import AdminHeader from '../components/Admin/AdminHeader.vue'
 import AdminFilters from '../components/Admin/AdminFilters.vue'
 import AdminTable from '../components/Admin/AdminTable.vue'

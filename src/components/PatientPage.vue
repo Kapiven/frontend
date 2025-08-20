@@ -1,49 +1,53 @@
 <template>
-  <div class="patient-page">
-    <button class="dashboard-btn" @click="goToDashboard">Volver al Dashboard</button>
-    <div v-if="isLoading" class="loading-message">Cargando datos del paciente...</div>
-    <div v-else-if="error" class="error-message">{{ error }}</div>
-    <div v-else-if="patientData" class="patient-container">
-      <!-- Header con información básica -->
-      <patient-header :patient="patientData" />
+  <div class="patient-wrapper">
+    <AppNavigation />
+    
+    <div class="patient-page">
+      <div v-if="isLoading" class="loading-message">Cargando datos del paciente...</div>
+      <div v-else-if="error" class="error-message">{{ error }}</div>
+      <div v-else-if="patientData" class="patient-container">
+        <!-- Header con información básica -->
+        <patient-header :patient="patientData" />
 
-      <div class="patient-content">
-        <!-- PatientSidePanel needs the date_of_birth to format it -->
-        <patient-side-panel :patient="patientData" class="side-panel" />
+        <div class="patient-content">
+          <!-- PatientSidePanel needs the date_of_birth to format it -->
+          <patient-side-panel :patient="patientData" class="side-panel" />
 
-        <div class="main-content">
-          <!-- Pass the fetched data (patientData.consultations) -->
-          <consultations-section
-            :consultations="patientData.consultations"
-            @add-consultation="handleAddConsultation"
-          />
+          <div class="main-content">
+            <!-- Pass the fetched data (patientData.consultations) -->
+            <consultations-section
+              :consultations="patientData.consultations"
+              @add-consultation="handleAddConsultation"
+            />
 
-          <!-- Add the missing event handler -->
-          <exams-section
-            :exams="examData || []"
-            :patient-id="patientId"
-            :consultations="patientData.consultations"
-            @add-exam="handleAddExam"
-            @openExamUploadModal="handleOpenExamUploadModal"
-          />
+            <!-- Add the missing event handler -->
+            <exams-section
+              :exams="examData || []"
+              :patient-id="patientId"
+              :consultations="patientData.consultations"
+              @add-exam="handleAddExam"
+              @openExamUploadModal="handleOpenExamUploadModal"
+            />
+          </div>
         </div>
       </div>
+      <div v-else>No se encontraron datos para este paciente.</div>
+
+      <NewConsultationModal v-if="showNewConsultationModal" @close="closeNewConsultationModal" />
+
+      <!-- Add the upload modal -->
+      <NewExamModal
+        v-if="showUploadModal"
+        :selected-exam="selectedExamForUpload"
+        @close="closeUploadModal"
+        @examUpdated="handleExamFileUploaded"
+      />
     </div>
-    <div v-else>No se encontraron datos para este paciente.</div>
-
-    <NewConsultationModal v-if="showNewConsultationModal" @close="closeNewConsultationModal" />
-
-    <!-- Add the upload modal -->
-    <NewExamModal
-      v-if="showUploadModal"
-      :selected-exam="selectedExamForUpload"
-      @close="closeUploadModal"
-      @examUpdated="handleExamFileUploaded"
-    />
   </div>
 </template>
 
 <script>
+import AppNavigation from '@/components/AppNavigation.vue'
 import PatientHeader from './PatientPage/PatientHeader.vue'
 import PatientSidePanel from './PatientPage/PatientSidePanel.vue'
 import ConsultationsSection from './PatientPage/ConsultationsSection.vue'
@@ -57,6 +61,7 @@ import { useRouter } from 'vue-router'
 export default {
   name: 'PatientPage',
   components: {
+    AppNavigation,
     PatientHeader,
     PatientSidePanel,
     ConsultationsSection,
@@ -149,10 +154,6 @@ export default {
 
     closeNewConsultationModal() {
       this.showNewConsultationModal = false
-    },
-
-    goToDashboard() {
-      this.$router.push('/dashboard')
     },
   },
 }

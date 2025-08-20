@@ -1,9 +1,14 @@
+.calendar-wrapper {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
 .calendar-page {
   max-width: 98vw;
   min-width: 320px;
   width: 98vw;
-  margin: 2rem auto;
-  background: #fff;
+  margin: 0 auto;
+  background: var(--color-background-soft);
   border-radius: 1rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   padding: 2rem;
@@ -374,7 +379,7 @@
 .date-picker-dropdown {
   position: absolute;
   top: 100%;
-  left: 0;
+  right: 0;
   background: white;
   border-radius: 0.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -382,6 +387,26 @@
   padding: 1rem;
   z-index: 1001;
   animation: dropdown-fade 0.2s ease;
+  
+  /* Auto-adjust position to prevent overflow */
+  transform: translateX(0);
+}
+
+/* Dynamic positioning classes */
+.date-picker-dropdown.dropdown-left {
+  right: 0;
+  left: auto;
+}
+
+.date-picker-dropdown.dropdown-right {
+  left: 0;
+  right: auto;
+}
+
+.date-picker-dropdown.dropdown-center {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
 }
 
 @keyframes dropdown-fade {
@@ -908,6 +933,24 @@
     color: #fff !important;
     border: 1px solid #444 !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.45) !important;
+    right: 0 !important;
+    left: auto !important;
+  }
+  
+  .date-picker-dropdown.dropdown-left {
+    right: 0 !important;
+    left: auto !important;
+  }
+
+  .date-picker-dropdown.dropdown-right {
+    left: 0 !important;
+    right: auto !important;
+  }
+
+  .date-picker-dropdown.dropdown-center {
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
   }
   .month-item {
     color: #fff;

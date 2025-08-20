@@ -28,6 +28,11 @@
   --color-background-soft: #23272a;
 }
 
+.patient-wrapper {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
 .patient-page {
   font-family: 'Arial', sans-serif;
   padding: 20px;
