@@ -216,9 +216,11 @@
   display: block;
   pointer-events: none; /* So only the button, not the SVG, handles clicks */
 }
-/* Current day styling - ONLY light blue background, NO border */
+/* Current day styling - Notable but not exaggerated */
 .current-day {
-  background: rgba(25, 118, 210, 0.05); /* Very light blue */
+  background: rgba(25, 118, 210, 0.15) !important; /* More visible blue background */
+  border: 2px solid rgba(25, 118, 210, 0.3) !important; /* Subtle blue border */
+  box-shadow: 0 0 8px rgba(25, 118, 210, 0.2) !important; /* Gentle glow effect */
 }
 
 /* Modern hover effect with elevation instead of border */
@@ -250,6 +252,12 @@
 @media (prefers-color-scheme: dark) {
   .day-number {
     color: #fff;
+  }
+  
+  .current-day {
+    background: rgba(59, 130, 246, 0.25) !important; /* More visible blue for dark mode */
+    border: 2px solid rgba(59, 130, 246, 0.5) !important; /* Brighter blue border for dark mode */
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.3) !important; /* Enhanced glow for dark mode */
   }
 }
 
@@ -1048,4 +1056,10 @@
 
 .dark .edit-button:hover {
   background: var(--color-btn-primary-hover) !important;
+}
+
+.dark .current-day {
+  background: rgba(59, 130, 246, 0.25) !important; /* More visible blue for dark mode */
+  border: 2px solid rgba(59, 130, 246, 0.5) !important; /* Brighter blue border for dark mode */
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3) !important; /* Enhanced glow for dark mode */
 }
