@@ -91,12 +91,14 @@ export default {
     patientId: {
       immediate: true,
       handler(newId) {
+        console.log('🔍 PatientPage: patientId changed to:', newId)
         this.fetchPatientData(newId)
       },
     },
   },
   methods: {
     async fetchPatientData(id) {
+      console.log('🔍 PatientPage: Fetching data for patient ID:', id)
       this.isLoading = true
       this.error = null
       this.patientData = null

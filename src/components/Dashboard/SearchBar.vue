@@ -59,8 +59,10 @@ function onSearchInput() {
 }
 
 function selectPatient(patient) {
+  console.log('🔍 SearchBar: Patient selected:', patient)
   searchQuery.value = patient.name
   showSuggestions.value = false
+  console.log('🔍 SearchBar: Calling patientRedirect with ID:', patient.id)
   props.patientRedirect(patient.id)
 }
 

@@ -11,7 +11,7 @@
       <!-- Patient Search Bar -->
       <div class="nav-search" v-if="showSearchBar">
         <SearchBar 
-          :fetchDaySummary="fetchDaySummary" 
+          :fetchDaySummary="handleFetchDaySummary" 
           :patientRedirect="handlePatientRedirect" 
         />
       </div>
@@ -83,13 +83,18 @@ const showSearchBar = computed(() => {
 
 // Universal patient redirect function
 function handlePatientRedirect(patientId) {
-  // If parent component provided a redirect function, use it
-  if (props.patientRedirect && typeof props.patientRedirect === 'function') {
-    props.patientRedirect(patientId)
-  } else {
-    // Default universal redirect to patient page
-    router.push({ name: 'patient', params: { patientId } })
+  console.log('🔍 AppNavigation: Redirecting to patient:', patientId)
+  // Always use the default universal redirect to patient page
+  router.push({ name: 'patient', params: { patientId: String(patientId) } })
+}
+
+// Universal fetchDaySummary function
+function handleFetchDaySummary() {
+  // If parent component provided a fetchDaySummary function, use it
+  if (props.fetchDaySummary && typeof props.fetchDaySummary === 'function') {
+    props.fetchDaySummary()
   }
+  // Otherwise, do nothing (this is fine for non-dashboard pages)
 }
 
 function handleLogout() {

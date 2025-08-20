@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { defineModel, defineProps, defineEmits, ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 
 const props = defineProps({
   displayMonth: Number,

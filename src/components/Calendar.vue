@@ -131,6 +131,8 @@
       :format-full-date="formatFullDate"
       :format-time-range="formatTimeRange"
       @close="showDetailsModal = false"
+      @edit="handleEditAppointment"
+      @delete="handleDeleteAppointment"
     />
 
 
@@ -167,12 +169,13 @@ import { useRouter } from 'vue-router'
 // Import the service function to fetch appointments
 import {
   getAppointmentsForMonth,
+  getAppointmentsForDate,
   updateAppointment,
   createAppointment,
+  deleteAppointment,
 } from '@/services/appointmentService'
 import { getPatientById, searchPatients } from '@/services/patientService'
 import { getBusinessHoursForDay } from '@/services/businessHoursService'
-import { getAppointmentsForDate, deleteAppointment } from '@/services/appointmentService'
 
 const patientSearchQuery = ref('')
 const patientSuggestions = ref('')
@@ -673,6 +676,16 @@ function confirmDeleteAppointment() {
     removeAppointment(selectedAppointment.value.id)
     showDetailsModal.value = false
   }
+}
+
+// --- Handlers for modal events ---
+function handleEditAppointment(appointment) {
+  editAppointment(appointment)
+}
+
+function handleDeleteAppointment(appointment) {
+  selectedAppointment.value = appointment
+  confirmDeleteAppointment()
 }
 
 // --- Remove Appointment Logic ---

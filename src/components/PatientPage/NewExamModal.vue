@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import { ref, watch, defineProps } from 'vue'
+import { ref, watch } from 'vue'
 import { getExamDownloadUrl, uploadExamPdf } from '@/services/examService'
 import { getPatientById } from '@/services/patientService'
 
