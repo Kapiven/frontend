@@ -1063,3 +1063,52 @@
   border: 2px solid rgba(59, 130, 246, 0.5) !important; /* Brighter blue border for dark mode */
   box-shadow: 0 0 12px rgba(59, 130, 246, 0.3) !important; /* Enhanced glow for dark mode */
 }
+
+/* ============================================
+   CALENDAR SCROLLBAR STYLES
+   ============================================ */
+
+/* Calendar grid wrapper scrollbar */
+.calendar-grid-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.calendar-grid-wrapper::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 4px;
+}
+
+.calendar-grid-wrapper::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.calendar-grid-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Calendar container scrollbar */
+.calendar-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.calendar-container::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 4px;
+}
+
+.calendar-container::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.calendar-container::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Apply Firefox scrollbar styles */
+.calendar-grid-wrapper,
+.calendar-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}

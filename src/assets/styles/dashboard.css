@@ -116,6 +116,30 @@
   overflow-y: auto;
 }
 
+/* Apply thin scrollbar to section lists */
+.section ul {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+.section ul::-webkit-scrollbar {
+  width: 8px;
+}
+
+.section ul::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 4px;
+}
+
+.section ul::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.section ul::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
 .section li {
   padding: 0.5rem 0.25rem;
   border-bottom: 1px solid var(--color-border);

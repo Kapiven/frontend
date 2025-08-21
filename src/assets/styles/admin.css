@@ -635,3 +635,32 @@ tbody tr:last-child td {
 .dark .btn-cancel:hover {
   background: var(--color-btn-secondary-hover) !important;
 }
+
+/* ============================================
+   ADMIN SCROLLBAR STYLES
+   ============================================ */
+
+/* Admin table container scrollbar */
+.admin-table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.admin-table-container::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 4px;
+}
+
+.admin-table-container::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.admin-table-container::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Apply Firefox scrollbar styles */
+.admin-table-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}

@@ -261,133 +261,464 @@ body, html {
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2000;
-}
-.modal.new-consultation-modal {
-  background: var(--color-panel);
-  border-radius: 1rem;
-  padding: 2rem;
-  min-width: 350px;
-  max-width: 95vw;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-  color: var(--color-text);
-}
-.exam-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.2rem;
-}
-.exam-label {
-  min-width: 70px;
-  font-weight: 600;
-  color: var(--color-heading);
-}
-.eye-section {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 36px;
-  height: 20px;
-}
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc;
-  border-radius: 20px;
-  transition: .2s;
-}
-.switch input:checked + .slider {
-  background-color: var(--color-btn);
-}
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 2px;
-  bottom: 2px;
-  background-color: #fff;
-  border-radius: 50%;
-  transition: .2s;
-}
-.switch input:checked + .slider:before {
-  transform: translateX(16px);
-}
-.switch-label {
-  min-width: 18px;
-  text-align: center;
-  font-weight: 500;
-  color: var(--color-text);
-}
-.number-input {
-  width: 60px;
-  padding: 0.2em 0.4em;
-  border-radius: 6px;
-  border: 1px solid var(--color-border);
-  background: var(--color-panel);
-  color: var(--color-text);
-}
-.comment-input {
-  flex: 1;
-  min-width: 120px;
-  padding: 0.2em 0.5em;
-  border-radius: 6px;
-  border: 1px solid var(--color-border);
-  background: var(--color-panel);
-  color: var(--color-text);
-}
-.btn-primary {
-  background: var(--color-btn);
-  color: var(--color-btn-text);
-  border: none;
-  border-radius: 8px;
-  padding: 0.6em 1.2em;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 1.5rem;
-  transition: background 0.2s;
-}
-.btn-primary:hover {
-  background: var(--color-btn-hover);
+  padding: 20px;
 }
 
-/* Dark mode for NewConsultationModal */
-.dark .modal.new-consultation-modal {
-  background: #23272a;
-  color: #f5f5f5;
+.modal.new-consultation-modal {
+  background: var(--color-panel);
+  border-radius: 12px;
+  padding: 0;
+  width: 90vw;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
 }
-.dark .exam-label,
-.dark .switch-label {
+
+/* Header de la consulta (similar a encabezado de papel médico) */
+.consultation-header {
+  background: var(--color-background-soft);
+  padding: 24px 32px;
+  border-bottom: 2px solid var(--color-border);
+  border-radius: 12px 12px 0 0;
+}
+
+.consultation-header h2 {
+  margin: 0 0 12px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-heading);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.consultation-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--color-text-2);
+  font-weight: 500;
+}
+
+/* Formulario principal */
+.consultation-form {
+  padding: 32px;
+  max-height: calc(90vh - 140px);
+  overflow-y: auto;
+}
+
+/* Secciones de examen */
+.exam-section {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-heading);
+  margin: 0 0 20px 0;
+  padding: 12px 16px;
+  background: var(--color-background-soft);
+  border-radius: 8px;
+  border-left: 4px solid var(--color-btn-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 16px;
+}
+
+/* Grupos de examen individuales */
+.exam-group {
+  margin-bottom: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--color-card-bg);
+}
+
+/* Tablas de examen (estilo plantilla física) */
+.exam-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.exam-table thead th {
+  background: var(--color-background-soft);
+  color: var(--color-heading);
+  font-weight: 700;
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 2px solid var(--color-border);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.exam-table tbody td {
+  padding: 16px;
+  border-bottom: 1px solid var(--color-border-light);
+  vertical-align: middle;
+}
+
+/* Columnas específicas */
+.exam-name,
+.exam-name-wide {
+  font-weight: 600;
+  color: var(--color-heading);
+  width: 40%;
+}
+
+.exam-name-wide {
+  width: 60%;
+}
+
+.eye-header {
+  width: 25%;
+  text-align: center;
+}
+
+.general-header {
+  width: 40%;
+  text-align: center;
+}
+
+.exam-name-cell {
+  font-weight: 500;
+  color: var(--color-text);
+  background: var(--color-background-mute);
+}
+
+.eye-cell,
+.general-cell {
+  text-align: center;
+  background: var(--color-background);
+}
+
+/* Fila de comentarios */
+.comment-row {
+  background: var(--color-background-mute) !important;
+  border-top: 1px dashed var(--color-border) !important;
+}
+
+.comment-label {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-right: 12px;
+  font-size: 13px;
+}
+
+.comment-input {
+  flex: 1;
+  width: calc(100% - 120px);
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
+  font-size: 13px;
+  margin-left: 12px;
+}
+
+.comment-input:focus {
+  outline: none;
+  border-color: var(--color-btn-primary);
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+}
+
+/* Checkbox personalizado (estilo médico) */
+.checkbox-container {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  gap: 8px;
+}
+
+.checkbox-container input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-input-bg);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.checkbox-container input[type="checkbox"]:checked + .checkmark {
+  background: var(--color-btn-primary);
+  border-color: var(--color-btn-primary);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-container input[type="checkbox"]:checked + .checkmark:after {
+  display: block;
+}
+
+.checkbox-label {
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 13px;
+}
+
+/* Inputs de valores */
+.value-input {
+  width: 80px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
+  text-align: center;
+  font-weight: 500;
+}
+
+.value-input-wide {
+  width: 140px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
+  text-align: center;
+  font-weight: 500;
+}
+
+.value-input:focus,
+.value-input-wide:focus {
+  outline: none;
+  border-color: var(--color-btn-primary);
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+}
+
+/* Botones de acción */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 24px 32px;
+  border-top: 2px solid var(--color-border);
+  background: var(--color-background-soft);
+  border-radius: 0 0 12px 12px;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary {
+  background: var(--color-btn-primary);
+  color: var(--color-btn-primary-text);
+}
+
+.btn-primary:hover {
+  background: var(--color-btn-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+}
+
+.btn-secondary {
+  background: var(--color-btn-secondary);
+  color: var(--color-btn-secondary-text);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+  background: var(--color-btn-secondary-hover);
+  transform: translateY(-1px);
+}
+
+/* Dark mode para NewConsultationModal */
+.dark .modal.new-consultation-modal {
+  background: var(--color-modal-bg);
+  border-color: var(--color-border);
+}
+
+.dark .consultation-header {
+  background: var(--color-background-soft);
+  border-bottom-color: var(--color-border);
+}
+
+.dark .consultation-header h2 {
   color: var(--color-heading);
 }
-.dark .number-input,
-.dark .comment-input {
-  background: #23272a;
-  color: #f5f5f5;
-  border: 1px solid #333;
+
+.dark .consultation-info {
+  color: var(--color-text-2);
 }
-.dark .slider {
-  background-color: #444;
+
+.dark .section-title {
+  background: var(--color-background-soft);
+  color: var(--color-heading);
+  border-left-color: var(--color-btn-primary);
 }
-.dark .switch input:checked + .slider {
-  background-color: #1976d2;
+
+.dark .exam-group {
+  background: var(--color-card-bg);
+  border-color: var(--color-border);
 }
-.dark .slider:before {
-  background-color: #fff;
+
+.dark .exam-table thead th {
+  background: var(--color-background-soft);
+  color: var(--color-heading);
+  border-bottom-color: var(--color-border);
+}
+
+.dark .exam-table tbody td {
+  border-bottom-color: var(--color-border-light);
+}
+
+.dark .exam-name-cell {
+  background: var(--color-background-mute);
+  color: var(--color-text);
+}
+
+.dark .eye-cell,
+.dark .general-cell {
+  background: var(--color-background);
+}
+
+.dark .comment-row {
+  background: var(--color-background-mute) !important;
+  border-top-color: var(--color-border) !important;
+}
+
+.dark .comment-input,
+.dark .value-input,
+.dark .value-input-wide {
+  background: var(--color-input-bg) !important;
+  color: var(--color-input-text) !important;
+  border-color: var(--color-input-border) !important;
+}
+
+.dark .comment-input:focus,
+.dark .value-input:focus,
+.dark .value-input-wide:focus {
+  border-color: var(--color-input-border-focus) !important;
+}
+
+.dark .checkmark {
+  background: var(--color-input-bg) !important;
+  border-color: var(--color-input-border) !important;
+}
+
+.dark .checkbox-container input[type="checkbox"]:checked + .checkmark {
+  background: var(--color-btn-primary) !important;
+  border-color: var(--color-btn-primary) !important;
+}
+
+.dark .modal-actions {
+  background: var(--color-background-soft);
+  border-top-color: var(--color-border);
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .modal.new-consultation-modal {
+    width: 95vw;
+    max-height: 95vh;
+  }
+  
+  .consultation-header {
+    padding: 16px 20px;
+  }
+  
+  .consultation-form {
+    padding: 20px;
+  }
+  
+  .consultation-info {
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+  }
+  
+  .exam-table {
+    font-size: 12px;
+  }
+  
+  .exam-table thead th,
+  .exam-table tbody td {
+    padding: 8px 12px;
+  }
+  
+  .value-input,
+  .value-input-wide {
+    width: 60px;
+  }
+  
+  .comment-input {
+    width: calc(100% - 80px);
+  }
+  
+  .modal-actions {
+    padding: 16px 20px;
+    flex-direction: column;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   PATIENT PAGE SCROLLBAR STYLES
+   ============================================ */
+
+/* Consultation form scrollbar */
+.consultation-form::-webkit-scrollbar {
+  width: 8px;
+}
+
+.consultation-form::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 4px;
+}
+
+.consultation-form::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.consultation-form::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Apply Firefox scrollbar styles to consultation form */
+.consultation-form {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
