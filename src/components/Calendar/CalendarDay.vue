@@ -5,43 +5,22 @@
       'empty-day': !day,
       'current-day': isCurrent,
     }"
+    @click="handleDayClick"
   >
     <div v-if="day" class="day-number">
       {{ day }}
       <button 
         class="expand-btn" 
-        @click="$emit('day-clicked', day)"
-        aria-label="Detalles"
+        @click.stop="$emit('day-clicked', day)"
+        aria-label="Agregar cita"
       >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <polyline
-            points="3,8 3,3 8,3"
-            stroke="#1976d2"
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path
+            d="M8 2v12M2 8h12"
+            stroke="currentColor"
             stroke-width="2"
-            fill="none"
             stroke-linecap="round"
-            />
-            <polyline
-            points="12,3 17,3 17,8"
-            stroke="#1976d2"
-            stroke-width="2"
-            fill="none"
-            stroke-linecap="round"
-            />
-            <polyline
-            points="17,12 17,17 12,17"
-            stroke="#1976d2"
-            stroke-width="2"
-            fill="none"
-            stroke-linecap="round"
-            />
-            <polyline
-            points="8,17 3,17 3,12"
-            stroke="#1976d2"
-            stroke-width="2"
-            fill="none"
-            stroke-linecap="round"
-            />
+          />
         </svg>
       </button>
     </div>
@@ -49,7 +28,7 @@
       <li
         v-for="appt in appointments"
         :key="appt.id"
-        @click="$emit('appointment-clicked', appt)"
+        @click.stop="$emit('appointment-clicked', appt)"
         class="appointment-item"
       >
         <span>{{ formatStartTime(appt.start) }} - {{ appt.name }}</span>
@@ -77,19 +56,11 @@ const formatStartTime = (startStr) => {
   return `${pad(start.getHours())}:${pad(start.getMinutes())}`
 }
 
-async function openDayModal(day) {
-  expandedDay.value = day
-  showDayModal.value = true
-  if (!day) return
-  try {
-    dayModalBusinessHours.value = await getBusinessHoursForDay(dayModalDateStr.value)
-  } catch (e) {
-    dayModalBusinessHours.value = []
-  }
-  try {
-    dayModalAppointments.value = await getAppointmentsForDate(dayModalDateStr.value)
-  } catch (e) {
-    dayModalAppointments.value = []
+// Función para manejar el clic en el día
+const handleDayClick = () => {
+  // Solo emitir el evento si hay un día válido
+  if (props.day) {
+    emit('day-clicked', props.day)
   }
 }
 </script>
