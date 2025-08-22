@@ -52,6 +52,8 @@ export default {
   width: 70px;
   height: 70px;
   margin-bottom: 1rem;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 h1 {

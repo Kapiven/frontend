@@ -26,6 +26,8 @@
   width: 200px;
   max-width: 30%;
   height: auto;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .auth-title {
@@ -149,6 +151,8 @@
   .auth-logo {
     width: 60px;
     max-width: 30%;
+    border-radius: 50%;
+    object-fit: cover;
   }
 }
 

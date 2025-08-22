@@ -70,6 +70,8 @@ function handleRegister() {
 .auth-logo {
   width: 80px;
   margin-bottom: 1.5rem;
+  border-radius: 50%;
+  object-fit: cover;
 }
 .auth-title {
   color: #1976d2;
