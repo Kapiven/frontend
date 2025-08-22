@@ -40,6 +40,13 @@ const routes = [
     props: true,
     meta: { requiresAuth: true },
   },
+  {
+    path: '/patients/:patientId/edit',
+    name: 'edit-patient',
+    component: () => import('@/views/EditPatientView.vue'),
+    props: true,
+    meta: { requiresAuth: true },
+  },
 
   {
     path: '/register-page',

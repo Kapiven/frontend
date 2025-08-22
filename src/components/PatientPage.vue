@@ -11,7 +11,16 @@
 
         <div class="patient-content">
           <!-- PatientSidePanel needs the date_of_birth to format it -->
-          <patient-side-panel :patient="patientData" class="side-panel" />
+          <div class="side-panel-container">
+            <patient-side-panel :patient="patientData" class="side-panel" />
+            <button @click="handleEditPatient" class="edit-patient-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="m18.5 2.5 3 3L12 15l-4 1 1-4Z"></path>
+              </svg>
+              Editar
+            </button>
+          </div>
 
           <div class="main-content">
             <!-- Pass the fetched data (patientData.consultations) -->
@@ -156,6 +165,11 @@ export default {
 
     closeNewConsultationModal() {
       this.showNewConsultationModal = false
+    },
+
+    handleEditPatient() {
+      // Navigate to edit patient page
+      this.$router.push(`/patients/${this.patientId}/edit`)
     },
   },
 }

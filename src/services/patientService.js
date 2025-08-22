@@ -94,3 +94,29 @@ export const getPatientDetails = async (patientId) => {
     throw error
   }
 }
+
+// Function to update patient information
+export async function updatePatient(patientId, patientData) {
+  try {
+    // Update patient contact information (telefono)
+    if (patientData.telefono !== undefined) {
+      const patientUpdateData = { telefono: patientData.telefono }
+      await axios.put(`${API_BASE_URL}/patients/${patientId}`, patientUpdateData)
+    }
+
+    // Update antecedentes (medical backgrounds)
+    if (patientData.medicos !== undefined || patientData.oculares !== undefined || patientData.alergicos !== undefined) {
+      const antecedentesData = {
+        medicos: patientData.medicos,
+        oculares: patientData.oculares,
+        alergicos: patientData.alergicos,
+      }
+      await axios.put(`${API_BASE_URL}/patients/${patientId}/antecedentes`, antecedentesData)
+    }
+
+    return { success: true }
+  } catch (error) {
+    console.error(`Failed to update patient with ID ${patientId}:`, error)
+    throw error
+  }
+}
