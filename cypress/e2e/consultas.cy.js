@@ -1,7 +1,7 @@
 describe('template spec', () => {
   it('passes', () => {
     cy.visit('http://localhost:8080/register')
-
+    
     cy.get('a').click()
     cy.get('#username').click()
     cy.get('#username').clear()
@@ -12,5 +12,14 @@ describe('template spec', () => {
     cy.get('#password').clear()
     cy.get('#password').type('Contrasena1!')
     cy.get('.auth-button').click()
+    cy.get('input').click();
+    cy.get('input').clear();
+    cy.get('input').type('ms');
+    cy.get('input').clear();
+    cy.get('input').type('mar');
+    cy.get('.suggestions-list :nth-child(2)').click();
+    cy.get('.consultations-list > :nth-child(1)').should('be.visible');
+    cy.get('.consultations-list > :nth-child(2)').should('be.visible');
+    cy.get('.consultations-list :nth-child(3)').should('be.visible');
   })
 })
