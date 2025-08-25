@@ -12,8 +12,5 @@ describe('template spec', () => {
     cy.get('#password').clear()
     cy.get('#password').type('Contrasena1!')
     cy.get('.auth-button').click()
-    cy.get('input').click()
-    cy.get('input').clear()
-    cy.get('input').type('ma')
   })
 })
