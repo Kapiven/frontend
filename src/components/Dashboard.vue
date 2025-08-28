@@ -7,7 +7,7 @@
     <div class="dashboard">
       <div class="section-wrapper">
         <DashboardSection
-          :titles="['Citas de Hoy', 'Exámenes Pendientes']"
+          :titles="['Citas de Hoy', 'Exámenes Pendientes', 'Diagnósticos', 'Tratamientos']"
           :todayIntervals="todayIntervals"
           :formatTime="formatTime"
           @patientRedirect="patientRedirect"

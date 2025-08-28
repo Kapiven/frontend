@@ -10,11 +10,21 @@
     :recentExams="props.recentExams"
     @openExamUploadModal="handleOpenExamUploadModal"
   />
+  <Diagnostics
+    :title="props.titles[2] || 'Diagnósticos'"
+    @patientRedirect="handlePatientRedirect"
+  />
+  <Treatments
+    :title="props.titles[3] || 'Tratamientos'"
+    @patientRedirect="handlePatientRedirect"
+  />
 </template>
 
 <script setup>
 import TodayAppointments from './TodayAppointments.vue'
 import PendingExams from './PendingExams.vue'
+import Diagnostics from './Diagnostics.vue'
+import Treatments from './Treatments.vue'
 
 const emit = defineEmits(['patientRedirect', 'openExamUploadModal'])
 

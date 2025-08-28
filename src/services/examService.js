@@ -50,6 +50,25 @@ export async function getPendingExams() {
     throw new Error(errorMessage)
   }
 }
+
+// Search exams by patient name or exam type
+export async function searchExams(query, limit = 10) {
+  if (!query || query.length < 2) return []
+  try {
+    const response = await axios.get(`${API_BASE_URL}/exams/search`, {
+      params: { q: query, limit },
+    })
+    if (response.status >= 200 && response.status < 300) {
+      return response.data
+    } else {
+      return []
+    }
+  } catch (error) {
+    console.error('Failed to search exams:', error)
+    return []
+  }
+}
+
 //
 // // <--- ADD THIS NEW PLACEHOLDER FUNCTION FOR UPLOAD
 // export async function uploadExamPdf(examId, file) {
