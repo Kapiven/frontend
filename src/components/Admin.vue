@@ -1,7 +1,7 @@
 <template>
   <div class="admin-wrapper">
     <AppNavigation />
-    
+
     <div class="admin-container">
       <div class="admin-content">
         <AdminHeader @create-role="openCreateModal" />
@@ -15,9 +15,14 @@
           @edit-user="editUser"
           @delete-user="deleteUser"
         />
+
+        <div class="eventos-section">
+          <ReprogramacionesTable :reprogramaciones="reprogramaciones" />
+          <CancelacionesTable :cancelaciones="cancelaciones" />
+        </div>
       </div>
     </div>
-    
+
     <AdminModal
       v-if="showModal"
       :is-editing="isEditing"
@@ -37,6 +42,9 @@ import AdminHeader from './Admin/AdminHeader.vue'
 import AdminFilters from './Admin/AdminFilters.vue'
 import AdminTable from './Admin/AdminTable.vue'
 import AdminModal from './Admin/AdminModal.vue'
+
+import ReprogramacionesTable from '@/components/Events/ReprogramacionesTable.vue'
+import CancelacionesTable from '@/components/Events/CancelacionesTable.vue'
 
 const users = ref([
   { id: 1, name: 'Ana Martínez', role: 'Administrador' },
@@ -60,6 +68,16 @@ const filteredUsers = computed(() =>
     (selectedRole.value === '' || user.role === selectedRole.value)
   )
 )
+
+const reprogramaciones = [
+  { id: "P001", nombre: "Ana López", fechaAnterior: "2025-08-20", nuevaFecha: "2025-08-25" },
+  { id: "P002", nombre: "Carlos Pérez", fechaAnterior: "2025-08-22", nuevaFecha: "2025-08-30" }
+]
+
+const cancelaciones = [
+  { id: "P003", nombre: "María García", fecha: "2025-08-21" },
+  { id: "P004", nombre: "Luis Fernández", fecha: "2025-08-23" }
+]
 
 const openCreateModal = () => {
   form.value = { id: null, name: '', role: '' }
@@ -98,4 +116,8 @@ const updateForm = (newForm) => {
 
 <style>
 @import '@/assets/styles/admin.css';
+
+.eventos-section {
+  margin-top: 3rem;
+}
 </style>

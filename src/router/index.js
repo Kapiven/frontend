@@ -70,10 +70,10 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   try {
     const authStore = useAuthStore()
-    
+
     // Re-initialize auth state on each navigation to ensure consistency
     authStore.initializeAuth()
-    
+
     console.log(`🚀 Navigating to: ${to.path}`, {
       requiresAuth: to.meta.requiresAuth,
       isAuthenticated: authStore.isAuthenticated,
