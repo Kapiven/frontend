@@ -91,7 +91,7 @@
               <li
                 v-for="patient in patientSuggestions"
                 :key="patient.id"
-                @click="selectPatientSuggestion(patient)"
+                @mousedown.prevent="selectPatientSuggestion(patient)"
                 class="suggestion-item"
               >
                 <span class="suggestion-name">{{ patient.name }}</span>
@@ -178,7 +178,7 @@ import { getPatientById, searchPatients } from '@/services/patientService'
 import { getBusinessHoursForDay } from '@/services/businessHoursService'
 
 const patientSearchQuery = ref('')
-const patientSuggestions = ref('')
+const patientSuggestions = ref([])
 const showPatientSuggestions = ref(false)
 const today = new Date()
 const currentYear = today.getFullYear()
