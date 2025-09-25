@@ -18,10 +18,12 @@ export async function login(email, password) {
 
 export async function register(email, username, password) {
   try {
-    const response = await axios.post(`${API_URL}/register`, { email: String(email).trim().toLowerCase(), username: String(username).trim(), password })
-    return response.data
+    await axios.post(`${API_URL}/register`, { email: String(email).trim().toLowerCase(), username: String(username).trim(), password })
+    // No devolvemos el payload completo; el caller solo necesita saber que fue exitoso
+    return
   } catch (error) {
     console.error('Error al registrarse:', error)
-    throw new Error(error.response?.data?.error || 'Error al registrarse')
+    const backendMsg = error.response?.data?.message || error.response?.data?.error || error.response?.data || null
+    throw new Error(backendMsg || 'Error al registrarse')
   }
 }

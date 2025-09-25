@@ -44,6 +44,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { register } from '@/services/authService'
 import AuthForm from '@/components/Auth/AuthForm.vue'
 import AuthInput from '@/components/Auth/AuthInput.vue'
@@ -54,13 +55,15 @@ const username = ref('')
 const password = ref('')
 const error = ref('')
 const success = ref('')
+const router = useRouter()
 
 async function handleRegister() {
   error.value = ''
   success.value = ''
   try {
-    const message = await register(email.value, username.value, password.value)
-    success.value = message
+    await register(email.value, username.value, password.value)
+    // Redirige al login tras registro exitoso
+    await router.push({ path: '/', query: { registered: '1' } })
   } catch (err) {
     error.value = err.message
   }
