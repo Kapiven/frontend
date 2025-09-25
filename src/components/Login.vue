@@ -6,11 +6,11 @@
 
       <AuthForm :onSubmit="handleLogin" buttonText="Iniciar sesión">
         <AuthInput
-          id="username"
-          label="Nombre de Usuario"
-          type="text"
-          placeholder="Usuario"
-          v-model="username"
+          id="email"
+          label="Correo electrónico"
+          type="email"
+          placeholder="usuario@ejemplo.com"
+          v-model="email"
         />
 
         <AuthInput
@@ -42,14 +42,14 @@ import '@/assets/styles/auth.css'
 import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
-const username = ref('')
+const email = ref('')
 const password = ref('')
 const error = ref('')
 
 async function handleLogin() {
   error.value = ''
   try {
-    const response = await login(username.value, password.value)
+    const response = await login(email.value, password.value)
     const authStore = useAuthStore()
 
     console.log('Login response:', response)
@@ -59,7 +59,7 @@ async function handleLogin() {
       throw new Error('Token no recibido del servidor')
     }
 
-    authStore.setAuth(response.token, response.user || { username: username.value })
+  authStore.setAuth(response.token, response.user || { email: email.value })
     
     // Use router instead of window.location for better navigation
     await router.push('/dashboard')
