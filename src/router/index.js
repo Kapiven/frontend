@@ -8,8 +8,7 @@ import PatientPageView from '@/views/PatientPageView.vue'
 import RegisterPageView from '@/views/RegisterPageView.vue'
 import { useAuthStore } from '@/stores/auth'
 import AdminView from '@/views/AdminView.vue'
-
-
+import QuestionnairesView from '@/views/QuestionnaireView.vue'
 const routes = [
   {
     path: '/',
@@ -49,6 +48,12 @@ const routes = [
   },
 
   {
+    path: '/questionnaires',
+    name: 'Questionnaires',
+    component: QuestionnairesView,
+  },
+
+  {
     path: '/register-page',
     name: 'register-page',
     component: RegisterPageView,
@@ -59,7 +64,7 @@ const routes = [
     name: 'admin',
     component: AdminView,
     meta: { requiresAuth: true },
-  }
+  },
 ]
 
 const router = createRouter({
@@ -78,7 +83,7 @@ router.beforeEach(async (to, from, next) => {
       requiresAuth: to.meta.requiresAuth,
       isAuthenticated: authStore.isAuthenticated,
       hasToken: !!authStore.token,
-      hasUser: !!authStore.user
+      hasUser: !!authStore.user,
     })
 
     // Check if route requires authentication

@@ -77,7 +77,7 @@ export const getPatientDetails = async (patientId) => {
       otherHistory: patientInfo.antecedentes?.other, // Add other history if needed
       consultations: consultations.map((c) => ({
         id: c.id || Math.random(), // API response doesn't have 'id', add a fallback or generate one
-        reason: c.motive, // Map 'motive' to 'reason'
+        reason: c.reason, // Map 'motive' to 'reason'
         date: c.date,
       })),
 
@@ -105,7 +105,11 @@ export async function updatePatient(patientId, patientData) {
     }
 
     // Update antecedentes (medical backgrounds)
-    if (patientData.medicos !== undefined || patientData.oculares !== undefined || patientData.alergicos !== undefined) {
+    if (
+      patientData.medicos !== undefined ||
+      patientData.oculares !== undefined ||
+      patientData.alergicos !== undefined
+    ) {
       const antecedentesData = {
         medicos: patientData.medicos,
         oculares: patientData.oculares,

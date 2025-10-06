@@ -1,7 +1,7 @@
 <template>
   <div class="patient-wrapper">
     <AppNavigation />
-    
+
     <div class="patient-page">
       <div v-if="isLoading" class="loading-message">Cargando datos del paciente...</div>
       <div v-else-if="error" class="error-message">{{ error }}</div>
@@ -14,7 +14,14 @@
           <div class="side-panel-container">
             <patient-side-panel :patient="patientData" class="side-panel" />
             <button @click="handleEditPatient" class="edit-patient-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                 <path d="m18.5 2.5 3 3L12 15l-4 1 1-4Z"></path>
               </svg>
@@ -42,7 +49,12 @@
       </div>
       <div v-else>No se encontraron datos para este paciente.</div>
 
-      <NewConsultationModal v-if="showNewConsultationModal" @close="closeNewConsultationModal" />
+      <NewConsultationModal
+        v-if="showNewConsultationModal"
+        :patient-name="patientData?.name"
+        :patient-id="patientId"
+        @close="closeNewConsultationModal"
+      />
 
       <!-- Add the upload modal -->
       <NewExamModal
