@@ -17,6 +17,8 @@ COPY . .
 # Accept build arg and set as environment variable
 ARG VITE_BACKEND_URL
 ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
+
+RUN echo "VITE_BACKEND_URL is: $VITE_BACKEND_URL"
 # Build the frontend, VITE_BACKEND_URL will be baked into the build
 RUN npm run build
 
