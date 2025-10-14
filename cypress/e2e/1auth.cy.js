@@ -1,33 +1,33 @@
 describe('template spec', () => {
   it('passes', () => {
     cy.visit('http://localhost:8080/register')
-    cy.get('#email').click();
-    cy.get('#email').clear();
-    cy.get('#email').type('joseameridac@gmail.com');
-    cy.get('#username').click();
-    cy.get('#username').clear();
-    cy.get('#username').type('to');
-    cy.get('#username').clear();
-    cy.get('#username').type('tono');
-    cy.get('#password').click();
-    cy.get('#password').clear();
-    cy.get('#password').type('Contrasena');
-    cy.get('#password').clear();
-    cy.get('#password').type('Contrasena1!');
-    cy.get('.auth-button').click();
-    cy.get('a').click();
-    cy.get('#username').click();
-    cy.get('#username').clear();
-    cy.get('#username').type('tono');
-    cy.get('#password').click();
-    cy.get('#password').clear();
-    cy.get('#password').type('Contrasena');
-    cy.get('#password').clear();
-    cy.get('#password').type('Contrasena1');
-    cy.get('#password').clear();
-    cy.get('#password').type('Contrasena1!');
-    cy.get('.auth-button').click();
-    cy.get(':nth-child(2) > ul > :nth-child(1)').click();
-    cy.get('.btn-secondary').click();
+    cy.get('#email').click()
+    cy.get('#email').clear()
+    cy.get('#email').type('joseameridac@gmail.com')
+    cy.get('#username').click()
+    cy.get('#username').clear()
+    cy.get('#username').type('to')
+    cy.get('#username').clear()
+    cy.get('#username').type('tono')
+    cy.get('#password').click()
+    cy.get('#password').clear()
+    cy.get('#password').type('Contrasena')
+    cy.get('#password').clear()
+    cy.get('#password').type('Contrasena1!')
+    cy.get('.auth-button').click()
+    cy.get('a').click()
+    cy.get('#username').click()
+    cy.get('#username').clear()
+    cy.get('#username').type('tono')
+    cy.get('#password').click()
+    cy.get('#password').clear()
+    cy.get('#password').type('Contrasena')
+    cy.get('#password').clear()
+    cy.get('#password').type('Contrasena1')
+    cy.get('#password').clear()
+    cy.get('#password').type('Contrasena1!')
+    cy.get('.auth-button').click()
+    cy.get(':nth-child(2) > ul > :nth-child(1)').click()
+    cy.get('.btn-secondary').click()
   })
 })
