@@ -4,7 +4,7 @@
       <img src="@/assets/logo.jpg" alt="Logo de la clínica" class="auth-logo" />
       <h2 class="auth-title">Iniciar Sesión</h2>
 
-      <AuthForm :onSubmit="handleLogin" buttonText="Iniciar sesión">
+      <AuthForm :onSubmit="handleLogin" buttonText="HOLA BUENOS DIAS">
         <AuthInput
           id="username"
           label="Nombre de Usuario"
@@ -53,14 +53,14 @@ async function handleLogin() {
     const authStore = useAuthStore()
 
     console.log('Login response:', response)
-    
+
     // Ensure we have both token and user data
     if (!response.token) {
       throw new Error('Token no recibido del servidor')
     }
 
     authStore.setAuth(response.token, response.user || { username: username.value })
-    
+
     // Use router instead of window.location for better navigation
     await router.push('/dashboard')
   } catch (err) {
