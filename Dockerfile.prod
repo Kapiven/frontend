@@ -17,7 +17,7 @@ COPY . .
 # Accept build arg and set as environment variable
 
 # Create production env file with build arg
-ARG VITE_BACKEND_URL
+ENV VITE_BACKEND_URL=http://18.219.58.209:4000
 RUN echo "VITE_BACKEND_URL=$VITE_BACKEND_URL" > .env.production
 
 # Build the frontend, VITE_BACKEND_URL will be baked into the build
