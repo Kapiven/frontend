@@ -1,13 +1,11 @@
 <template>
   <div class="dashboard-wrapper">
-    <AppNavigation 
-      :fetchDaySummary="fetchDaySummary" 
-    />
-    
+    <AppNavigation :fetchDaySummary="fetchDaySummary" />
+
     <div class="dashboard">
       <div class="section-wrapper">
         <DashboardSection
-          :titles="['Citas de Hoy', 'Exámenes Pendientes']"
+          :titles="['Citas de Hoy', 'Exámenes Pendientes.']"
           :todayIntervals="todayIntervals"
           :formatTime="formatTime"
           @patientRedirect="patientRedirect"
