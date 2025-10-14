@@ -8,7 +8,7 @@
       <AuthForm :onSubmit="handleRegister" buttonText="Registrarse">
         <AuthInput
           id="email"
-          label="Correo electrónico"
+          label="Correo Electrónico"
           type="email"
           placeholder="usuario@ejemplo.com"
           v-model="email"
