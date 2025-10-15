@@ -1,8 +1,12 @@
 import { api } from '@/services/api'
 
-export async function login(username, password) {
+export async function login(email, password) {
   try {
-    const response = await api.post(`/login`, { username, password })
+    const response = await api.post(`/login`, { email, password })
+
+    if (!response.data.token) {
+      throw new Error('Token no recibido del servidor')
+    }
 
     localStorage.setItem('authToken', response.data.token)
 
@@ -13,9 +17,9 @@ export async function login(username, password) {
   }
 }
 
-export async function register(email, username, password) {
+export async function register(username, email, password) {
   try {
-    const response = await api.post(`/register`, { email, username, password })
+    const response = await api.post(`/register`, { username, email, password })
     return response.data
   } catch (error) {
     console.error('Error al registrarse:', error)

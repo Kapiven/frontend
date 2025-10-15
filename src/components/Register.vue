@@ -44,11 +44,13 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { register } from '@/services/authService'
 import AuthForm from '@/components/Auth/AuthForm.vue'
 import AuthInput from '@/components/Auth/AuthInput.vue'
 import '@/assets/styles/auth.css'
 
+const router = useRouter()
 const email = ref('')
 const username = ref('')
 const password = ref('')
@@ -59,8 +61,13 @@ async function handleRegister() {
   error.value = ''
   success.value = ''
   try {
-    const message = await register(email.value, username.value, password.value)
-    success.value = message
+    const response = await register(username.value, email.value, password.value)
+    success.value = response.message || 'Registro exitoso'
+    
+    // Redirigir al login después de 1.5 segundos
+    setTimeout(() => {
+      router.push('/login')
+    }, 1500)
   } catch (err) {
     error.value = err.message
   }

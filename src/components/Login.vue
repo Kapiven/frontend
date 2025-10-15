@@ -4,12 +4,12 @@
       <img src="@/assets/logo.jpg" alt="Logo de la clínica" class="auth-logo" />
       <h2 class="auth-title">Iniciar Sesión</h2>
 
-      <AuthForm :onSubmit="handleLogin" buttonText="HOLA BUENOS DIAS">
+      <AuthForm :onSubmit="handleLogin" buttonText="Iniciar sesión">
         <AuthInput
           id="username"
-          label="Nombre de Usuario"
+          label="Correo o Usuario"
           type="text"
-          placeholder="Usuario"
+          placeholder="correo@ejemplo.com o usuario"
           v-model="username"
         />
 
