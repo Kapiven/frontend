@@ -1,9 +1,6 @@
 // frontend/src/services/patientService.js
 
-import axios from 'axios'
-
-// Define your backend API base URL (adjust if different from appointment service)
-const API_BASE_URL = 'http://localhost:4000' // Your backend's URL
+import { api } from '@/services/api'
 
 // Import the helper function for authenticated API calls if using auth
 // import { authenticatedApiCall } from './authService'; // Use if /patients/:id is protected
@@ -15,7 +12,7 @@ export async function getPatientById(patientId) {
     const endpoint = `/patients/${patientId}` // Adjust path if needed (e.g., /api/v1/patients/:id)
 
     // Use axios directly for public endpoint
-    const response = await axios.get(`${API_BASE_URL}${endpoint}`) // <--- Use axios.get directly
+    const response = await api.get(`${endpoint}`) // <--- Use axios.get directly
 
     // Check if the request was successful (status code 2xx)
     if (response.status >= 200 && response.status < 300) {
@@ -33,7 +30,7 @@ export async function getPatientById(patientId) {
 export async function searchPatients(query, limit = 10) {
   if (!query || query.length < 2) return []
   try {
-    const response = await axios.get(`${API_BASE_URL}/patients/search`, {
+    const response = await api.get(`/patients/search`, {
       params: { q: query, limit },
     })
     if (response.status >= 200 && response.status < 300) {
@@ -49,9 +46,9 @@ export async function searchPatients(query, limit = 10) {
 
 export const getPatientDetails = async (patientId) => {
   try {
-    const patientInfoPromise = axios.get(`${API_BASE_URL}/patients/${patientId}`)
-    const consultationsPromise = axios.get(`${API_BASE_URL}/consultations/patient/${patientId}`)
-    const examsPromise = axios.get(`${API_BASE_URL}/patients/${patientId}/exams`)
+    const patientInfoPromise = api.get(`/patients/${patientId}`)
+    const consultationsPromise = api.get(`/consultations/patient/${patientId}`)
+    const examsPromise = api.get(`/patients/${patientId}/exams`)
 
     const [patientInfoResponse, consultationsResponse, examsResponse] = await Promise.all([
       patientInfoPromise,
@@ -101,7 +98,7 @@ export async function updatePatient(patientId, patientData) {
     // Update patient contact information (telefono)
     if (patientData.telefono !== undefined) {
       const patientUpdateData = { telefono: patientData.telefono }
-      await axios.put(`${API_BASE_URL}/patients/${patientId}`, patientUpdateData)
+      await api.put(`/patients/${patientId}`, patientUpdateData)
     }
 
     // Update antecedentes (medical backgrounds)
@@ -115,7 +112,7 @@ export async function updatePatient(patientId, patientData) {
         oculares: patientData.oculares,
         alergicos: patientData.alergicos,
       }
-      await axios.put(`${API_BASE_URL}/patients/${patientId}/antecedentes`, antecedentesData)
+      await api.put(`/patients/${patientId}/antecedentes`, antecedentesData)
     }
 
     return { success: true }

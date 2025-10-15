@@ -19,11 +19,6 @@ export default defineConfig({
     },
     historyApiFallback: true,
   },
-  define: {
-    'process.env.VITE_BACKEND_URL': JSON.stringify(
-      process.env.VITE_BACKEND_URL || 'http://localhost:4000',
-    ),
-  },
   test: {
     include: ['**/*.{test,spec}.{js,ts}'],
     globals: true,

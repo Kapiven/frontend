@@ -1,7 +1,7 @@
 <template>
   <div class="calendar-wrapper">
     <AppNavigation />
-    
+
     <div class="calendar-page">
       <CalendarHeader
         v-model:showDatePicker="showDatePicker"
@@ -11,146 +11,145 @@
         @update:year="displayYear = $event"
       />
 
-    <!-- Day of week headers -->
-    <WeekDaysHeader/>
+      <!-- Day of week headers -->
+      <WeekDaysHeader />
 
-    <!-- Display loading or error states -->
-    <p v-if="loading" class="loading">Cargando citas...</p>
-    <p v-if="error" class="error">Error al cargar citas: {{ error.message }}</p>
+      <!-- Display loading or error states -->
+      <p v-if="loading" class="loading">Cargando citas...</p>
+      <p v-if="error" class="error">Error al cargar citas: {{ error.message }}</p>
 
-    <div v-if="!loading && !error" class="calendar-grid-wrapper">
-      <!-- Calendar grid with transition -->
-      <CalendarGrid
-        :year="displayYear"
-        :month="displayMonth"
-        :days="calendarDays"
-        :get-appointments-for-day="getAppointmentsForDay"
-        :is-current-day="isCurrentDay"
-        @day-clicked="openDayModal"
-        @appointment-clicked="openAppointmentDetails"
-      />
-    </div>
-
-    <!-- Add/Edit Appointment Modal -->
-    <div v-if="showAppointmentModal" class="modal-overlay" @click.self="closeAppointmentModal">
-      <div class="modal appointment-form-modal">
-        <div class="modal-header">
-          <h3>{{ isEditMode ? 'Editar Cita' : 'Nueva Cita' }}</h3>
-          <button class="close-button" @click="closeAppointmentModal">×</button>
-        </div>
-
-        <form @submit.prevent="submitAppointmentForm">
-          <div class="form-group">
-            <label for="appt-date">Fecha</label>
-            <input
-              id="appt-date"
-              type="date"
-              v-model="appointmentForm.date"
-              required
-              class="form-input"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="appt-time">Hora</label>
-            <input
-              id="appt-time"
-              type="time"
-              v-model="appointmentForm.time"
-              required
-              class="form-input"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="appt-duration">Duración (minutos)</label>
-            <input
-              id="appt-duration"
-              type="number"
-              v-model="appointmentForm.duration"
-              min="1"
-              required
-              class="form-input"
-            />
-          </div>
-
-          <div class="form-group" v-if="!isEditMode" style="position: relative">
-            <label for="appt-patient">Paciente (Nombre o ID)</label>
-            <input
-              id="appt-patient"
-              type="text"
-              v-model="patientSearchQuery"
-              @input="onPatientInput"
-              @blur="hidePatientSuggestions"
-              placeholder="Nombre del paciente"
-              required
-              class="form-input"
-              autocomplete="off"
-            />
-            <ul v-if="showPatientSuggestions" class="suggestions-list">
-              <li
-                v-for="patient in patientSuggestions"
-                :key="patient.id"
-                @click="selectPatientSuggestion(patient)"
-                class="suggestion-item"
-              >
-                <span class="suggestion-name">{{ patient.name }}</span>
-                <span class="suggestion-phone">{{ patient.phone }}</span>
-              </li>
-              <li
-                v-if="!patientSuggestions.length && patientSearchQuery.length >= 2"
-                class="no-results"
-              >
-                No se encontraron pacientes
-              </li>
-            </ul>
-          </div>
-
-          <div class="modal-actions">
-            <button type="submit" class="btn-primary">
-              {{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}
-            </button>
-            <button type="button" class="btn-secondary" @click="closeAppointmentModal">
-              Cancelar
-            </button>
-          </div>
-        </form>
-
-        <!-- Display potential errors from adding/editing appointment -->
-        <p v-if="formError" class="error">{{ formError.message }}</p>
+      <div v-if="!loading && !error" class="calendar-grid-wrapper">
+        <!-- Calendar grid with transition -->
+        <CalendarGrid
+          :year="displayYear"
+          :month="displayMonth"
+          :days="calendarDays"
+          :get-appointments-for-day="getAppointmentsForDay"
+          :is-current-day="isCurrentDay"
+          @day-clicked="openDayModal"
+          @appointment-clicked="openAppointmentDetails"
+        />
       </div>
-    </div>
 
-    <!-- Appointment Details Modal -->
-    <AppointmentDetailsModal
-      :show="showDetailsModal"
-      :details-loading="detailsLoading"
-      :details-error="detailsError"
-      :selected-appointment="selectedAppointment"
-      :selected-patient="selectedPatient"
-      :format-full-date="formatFullDate"
-      :format-time-range="formatTimeRange"
-      @close="showDetailsModal = false"
-      @edit="handleEditAppointment"
-      @delete="handleDeleteAppointment"
-    />
+      <!-- Add/Edit Appointment Modal -->
+      <div v-if="showAppointmentModal" class="modal-overlay" @click.self="closeAppointmentModal">
+        <div class="modal appointment-form-modal">
+          <div class="modal-header">
+            <h3>{{ isEditMode ? 'Editar Cita' : 'Nuevas Citas' }}</h3>
+            <button class="close-button" @click="closeAppointmentModal">×</button>
+          </div>
 
+          <form @submit.prevent="submitAppointmentForm">
+            <div class="form-group">
+              <label for="appt-date">Fecha</label>
+              <input
+                id="appt-date"
+                type="date"
+                v-model="appointmentForm.date"
+                required
+                class="form-input"
+              />
+            </div>
 
-    <!-- Day Details Modal -->
-    <DayModal
-      :show="showDayModal"
-      :expandedDay="expandedDay"
-      :displayMonth="displayMonth"
-      :displayYear="displayYear"
-      :monthNames="monthNames"
-      :dayModalBusinessHours="dayModalBusinessHours"
-      :dayModalIntervals="dayModalIntervals"
-      :formatTime="formatTime"
-      :getApptEnd="getApptEnd"
-      @close="closeDayModal"
-      @open-new-appt="({ day, start }) => openNewAppointmentModalForInterval(day, start)"
-      @open-appt-details="openAppointmentDetails"
-    />
+            <div class="form-group">
+              <label for="appt-time">Hora</label>
+              <input
+                id="appt-time"
+                type="time"
+                v-model="appointmentForm.time"
+                required
+                class="form-input"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="appt-duration">Duración (minutos)</label>
+              <input
+                id="appt-duration"
+                type="number"
+                v-model="appointmentForm.duration"
+                min="1"
+                required
+                class="form-input"
+              />
+            </div>
+
+            <div class="form-group" v-if="!isEditMode" style="position: relative">
+              <label for="appt-patient">Paciente (Nombre o ID)</label>
+              <input
+                id="appt-patient"
+                type="text"
+                v-model="patientSearchQuery"
+                @input="onPatientInput"
+                @blur="hidePatientSuggestions"
+                placeholder="Nombre del paciente"
+                required
+                class="form-input"
+                autocomplete="off"
+              />
+              <ul v-if="showPatientSuggestions" class="suggestions-list">
+                <li
+                  v-for="patient in patientSuggestions"
+                  :key="patient.id"
+                  @click="selectPatientSuggestion(patient)"
+                  class="suggestion-item"
+                >
+                  <span class="suggestion-name">{{ patient.name }}</span>
+                  <span class="suggestion-phone">{{ patient.phone }}</span>
+                </li>
+                <li
+                  v-if="!patientSuggestions.length && patientSearchQuery.length >= 2"
+                  class="no-results"
+                >
+                  No se encontraron pacientes
+                </li>
+              </ul>
+            </div>
+
+            <div class="modal-actions">
+              <button type="submit" class="btn-primary">
+                {{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}
+              </button>
+              <button type="button" class="btn-secondary" @click="closeAppointmentModal">
+                Cancelar
+              </button>
+            </div>
+          </form>
+
+          <!-- Display potential errors from adding/editing appointment -->
+          <p v-if="formError" class="error">{{ formError.message }}</p>
+        </div>
+      </div>
+
+      <!-- Appointment Details Modal -->
+      <AppointmentDetailsModal
+        :show="showDetailsModal"
+        :details-loading="detailsLoading"
+        :details-error="detailsError"
+        :selected-appointment="selectedAppointment"
+        :selected-patient="selectedPatient"
+        :format-full-date="formatFullDate"
+        :format-time-range="formatTimeRange"
+        @close="showDetailsModal = false"
+        @edit="handleEditAppointment"
+        @delete="handleDeleteAppointment"
+      />
+
+      <!-- Day Details Modal -->
+      <DayModal
+        :show="showDayModal"
+        :expandedDay="expandedDay"
+        :displayMonth="displayMonth"
+        :displayYear="displayYear"
+        :monthNames="monthNames"
+        :dayModalBusinessHours="dayModalBusinessHours"
+        :dayModalIntervals="dayModalIntervals"
+        :formatTime="formatTime"
+        :getApptEnd="getApptEnd"
+        @close="closeDayModal"
+        @open-new-appt="({ day, start }) => openNewAppointmentModalForInterval(day, start)"
+        @open-appt-details="openAppointmentDetails"
+      />
     </div>
   </div>
 </template>
@@ -218,9 +217,18 @@ const appointmentForm = ref({
 const formError = ref(null)
 
 const monthNames = [
-  'Enero', 'Febrero', 'Marzo', 'Abril',
-  'Mayo', 'Junio', 'Julio', 'Agosto',
-  'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  'Enero',
+  'Febrero',
+  'Marzo',
+  'Abril',
+  'Mayo',
+  'Junio',
+  'Julio',
+  'Agosto',
+  'Septiembre',
+  'Octubre',
+  'Noviembre',
+  'Diciembre',
 ]
 
 const dayModalDateStr = computed(() => {
@@ -360,8 +368,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
 })
-
-
 
 function formatTime(date) {
   if (!date) return ''

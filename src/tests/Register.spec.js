@@ -10,6 +10,13 @@ vi.mock('@/services/authService', () => ({
   register: vi.fn()
 }))
 
+// Mock del router
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    push: vi.fn()
+  })
+}))
+
 describe('Register.vue', () => {
   let wrapper
 
@@ -44,7 +51,7 @@ describe('Register.vue', () => {
 
   // 3. Prueba de registro exitoso
   it('maneja el registro exitoso mostrando mensaje de éxito', async () => {
-    register.mockResolvedValue('Registro completado!')
+    register.mockResolvedValue({ message: 'Registro completado!' })
 
     await wrapper.find('#email').setValue('test@example.com')
     await wrapper.find('#username').setValue('testuser')
@@ -54,8 +61,8 @@ describe('Register.vue', () => {
     await nextTick()
 
     expect(register).toHaveBeenCalledWith(
-      'test@example.com',
       'testuser',
+      'test@example.com',
       'secure123'
     )
     expect(wrapper.find('.auth-error').exists()).toBe(false)

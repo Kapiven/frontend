@@ -8,7 +8,7 @@
       <AuthForm :onSubmit="handleRegister" buttonText="Registrarse">
         <AuthInput
           id="email"
-          label="Correo electrónico"
+          label="EMAIL"
           type="email"
           placeholder="usuario@ejemplo.com"
           v-model="email"
@@ -66,8 +66,8 @@ async function handleRegister() {
     
     // Redirigir al login después de 1.5 segundos
     setTimeout(() => {
-      router.push('/')
-    }, 500)
+      router.push('/login')
+    }, 1500)
   } catch (err) {
     error.value = err.message
   }
