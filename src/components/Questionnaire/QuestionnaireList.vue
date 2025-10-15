@@ -70,19 +70,19 @@ export default {
 }
 
 .questionnaire-group {
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 1.5rem;
-  background: #f8f9fa;
+  background: var(--color-background-soft);
 }
 
 .group-title {
-  color: #2c3e50;
+  color: var(--color-heading);
   font-size: 1.4rem;
   font-weight: 600;
   margin: 0 0 1rem 0;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .versions-grid {
@@ -95,7 +95,7 @@ export default {
 .empty {
   text-align: center;
   padding: 3rem;
-  color: #6c757d;
+  color: var(--color-text-secondary);
   font-size: 1.1rem;
 }
 </style>

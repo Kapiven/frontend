@@ -1,9 +1,20 @@
 <template>
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal new-exam-modal">
-      <h2>Detalles y Subir Documento de Examen</h2>
+      <div class="modal-header">
+        <div class="header-content">
+          <h2>Detalles y Subir Documento de Examen</h2>
+          <div class="header-meta">
+            <span class="version-tag">{{ selectedExam?.date || 'Examen' }}</span>
+            <span class="edit-badge">{{ patientName || 'Paciente' }}</span>
+          </div>
+        </div>
+        <button @click="$emit('close')" class="close-btn" aria-label="Cerrar">
+          ×
+        </button>
+      </div>
 
-      <!-- Display Exam Details -->
+  <!-- Display Exam Details -->
       <div v-if="selectedExam">
         <div class="form-group">
           <label class="form-label">Tipo de Examen</label>
@@ -47,8 +58,8 @@
           </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="modal-actions">
+  <!-- Action Buttons -->
+  <div class="modal-actions">
           <button
             v-if="!selectedExam.has_file"
             type="submit"
@@ -215,19 +226,68 @@ const downloadExam = async () => {
 
 .modal {
   background: var(--color-modal-bg);
-  padding: 25px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 640px;
   max-height: 90vh;
-  overflow-y: auto;
+  overflow: hidden;
   box-shadow: var(--shadow-modal);
+  display: flex;
+  flex-direction: column;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  color: var(--color-heading);
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--gradient-primary);
+  color: var(--color-on-primary);
+}
+
+.header-content h2 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-on-primary);
+}
+
+.header-meta {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.version-tag,
+.edit-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.version-tag { background: rgba(255, 255, 255, 0.15); }
+.edit-badge { background: rgba(255, 255, 255, 0.25); font-weight: 600; }
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 8px;
+  padding: 0.35rem 0.5rem;
+  cursor: pointer;
+  color: var(--color-on-primary);
+  transition: all 0.2s ease;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.close-btn:hover { background: rgba(255, 255, 255, 0.3); }
+
+.modal-form, .modal-body {
+  padding: 1.25rem 1.5rem;
+  overflow-y: auto;
 }
 
 .form-group {
@@ -314,7 +374,8 @@ h2 {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 1rem;
+  padding: 0 1.5rem 1.25rem;
 }
 
 /* Complete button override to fix size consistency issues */

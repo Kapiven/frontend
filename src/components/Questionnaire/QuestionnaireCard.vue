@@ -90,16 +90,14 @@ export default {
 
 <style scoped>
 .questionnaire-card {
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--color-card-border);
   border-radius: 8px;
   padding: 1rem;
-  background: white;
+  background: var(--color-card-bg);
   transition: all 0.2s ease;
 }
 
-.questionnaire-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+.questionnaire-card:hover { box-shadow: 0 2px 8px var(--color-card-shadow); }
 
 .questionnaire-card.compact {
   padding: 0.75rem;
@@ -107,7 +105,7 @@ export default {
 
 .inactive {
   opacity: 0.7;
-  background: #f8f9fa;
+  background: var(--color-background-soft);
 }
 
 .card-header {
@@ -124,8 +122,8 @@ export default {
 }
 
 .version-badge {
-  background: #007bff;
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-weight: 600;
@@ -133,8 +131,8 @@ export default {
 }
 
 .id-badge {
-  background: #6c757d;
-  color: white;
+  background: var(--color-btn-secondary);
+  color: var(--color-btn-secondary-text);
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-size: 0.75rem;
@@ -148,13 +146,13 @@ export default {
 }
 
 .status.active {
-  background: #d4edda;
-  color: #155724;
+  background: rgba(212, 237, 218, 0.25);
+  color: var(--color-success);
 }
 
 .status:not(.active) {
-  background: #f8d7da;
-  color: #721c24;
+  background: rgba(248, 215, 218, 0.25);
+  color: var(--color-error);
 }
 
 .card-actions {
@@ -193,41 +191,5 @@ export default {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.btn-outline {
-  background: white;
-  color: #007bff;
-  border: 1px solid #007bff;
-}
-
-.btn-outline:hover {
-  background: #007bff;
-  color: white;
-}
-
-.btn-primary {
-  background: #007bff;
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #0056b3;
-}
-
-.btn-success {
-  background: #28a745;
-  color: white;
-}
-
-.btn-success:hover {
-  background: #1e7e34;
-}
-
-.btn-warning {
-  background: #ffc107;
-  color: #212529;
-}
-
-.btn-warning:hover {
-  background: #e0a800;
-}
+/* Use global .btn variants */
 </style>

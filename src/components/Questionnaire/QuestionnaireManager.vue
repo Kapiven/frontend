@@ -148,11 +148,11 @@ export default {
   align-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 2px solid var(--color-border);
 }
 
 .header h1 {
-  color: #2c3e50;
+  color: var(--color-heading);
   font-size: 2.2rem;
   font-weight: 700;
   margin: 0;
@@ -181,22 +181,8 @@ export default {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.btn-outline {
-  background-color: transparent;
-  color: #007bff;
-  border: 2px solid #007bff;
-}
-
-.btn-outline:hover {
-  background-color: #007bff;
-  color: white;
-}
-
-.btn-outline.active {
-  background-color: #007bff;
-  color: white;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
-}
+/* Use global .btn-outline; emphasize active state */
+.btn-outline.active { box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); }
 
 /* Fade transition */
 .fade-enter-active,

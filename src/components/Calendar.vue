@@ -35,8 +35,14 @@
       <div v-if="showAppointmentModal" class="modal-overlay" @click.self="closeAppointmentModal">
         <div class="modal appointment-form-modal">
           <div class="modal-header">
-            <h3>{{ isEditMode ? 'Editar Cita' : 'Nuevas Citas' }}</h3>
-            <button class="close-button" @click="closeAppointmentModal">×</button>
+            <div class="header-content">
+              <h3>{{ isEditMode ? 'Editar Cita' : 'Nuevas Citas' }}</h3>
+              <div class="header-meta">
+                <span class="version-tag">{{ formattedAppointmentDate }}</span>
+                <span v-if="appointmentPatientLabel" class="edit-badge">{{ appointmentPatientLabel }}</span>
+              </div>
+            </div>
+            <button class="close-button" @click="closeAppointmentModal" aria-label="Cerrar">×</button>
           </div>
 
           <form @submit.prevent="submitAppointmentForm">
@@ -107,10 +113,10 @@
             </div>
 
             <div class="modal-actions">
-              <button type="submit" class="btn-primary">
+              <button type="submit" class="btn btn-primary">
                 {{ isEditMode ? 'Guardar Cambios' : 'Guardar' }}
               </button>
-              <button type="button" class="btn-secondary" @click="closeAppointmentModal">
+              <button type="button" class="btn btn-secondary" @click="closeAppointmentModal">
                 Cancelar
               </button>
             </div>
@@ -215,6 +221,24 @@ const appointmentForm = ref({
   notes: '',
 })
 const formError = ref(null)
+
+// Header meta helpers for New Appointment modal
+const formattedAppointmentDate = computed(() => {
+  const iso = appointmentForm.value?.date
+  if (iso) {
+    const [y, m, d] = iso.split('-').map(Number)
+    if (y && m && d) return `Fecha ${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/${y}`
+  }
+  const now = new Date()
+  const dd = String(now.getDate()).padStart(2, '0')
+  const mm = String(now.getMonth() + 1).padStart(2, '0')
+  const yyyy = now.getFullYear()
+  return `Fecha ${dd}/${mm}/${yyyy}`
+})
+
+const appointmentPatientLabel = computed(() => {
+  return appointmentForm.value?.name || patientSearchQuery.value || ''
+})
 
 const monthNames = [
   'Enero',

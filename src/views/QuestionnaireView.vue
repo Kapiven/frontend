@@ -25,7 +25,7 @@ export default {
 <style scoped>
 .questionnaire-wrapper {
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: var(--color-background-soft);
 }
 
 .questionnaire-page {
@@ -35,16 +35,16 @@ export default {
 }
 
 .questionnaire-container {
-  background: white;
+  background: var(--color-card-bg);
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 8px var(--color-card-shadow);
+  border: 1px solid var(--color-card-border);
 }
 
 .questionnaire-wrapper {
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: var(--color-background-soft);
 }
 
 .questionnaire-page {
@@ -54,11 +54,11 @@ export default {
 }
 
 .questionnaire-container {
-  background: white;
+  background: var(--color-card-bg);
   border-radius: 16px; /* More rounded */
   padding: 2.5rem; /* More padding */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Better shadow */
-  border: 1px solid #e9ecef;
+  box-shadow: 0 4px 20px var(--color-card-shadow); /* Better shadow */
+  border: 1px solid var(--color-card-border);
   min-height: 80vh; /* Takes up more vertical space */
 }
 </style>

@@ -18,6 +18,13 @@ export default defineConfig({
       usePolling: true,
     },
     historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   test: {
     include: ['**/*.{test,spec}.{js,ts}'],

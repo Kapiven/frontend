@@ -63,11 +63,11 @@ async function handleRegister() {
   try {
     const response = await register(username.value, email.value, password.value)
     success.value = response.message || 'Registro exitoso'
-    
-    // Redirigir al login después de 1.5 segundos
+
+    // Redirigir al login después de 1.5 segundos, login está en la ruta "/"
     setTimeout(() => {
-      router.push('/login')
-    }, 1500)
+      router.push('/')
+    }, 500)
   } catch (err) {
     error.value = err.message
   }

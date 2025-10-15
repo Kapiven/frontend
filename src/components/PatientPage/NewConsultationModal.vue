@@ -429,7 +429,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--color-modal-overlay);
   backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
@@ -439,13 +439,13 @@ export default {
 }
 
 .modal-content {
-  background: white;
+  background: var(--color-modal-bg);
   border-radius: 16px;
   width: 100%;
   max-width: 1000px;
   max-height: 90vh;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-modal);
   display: flex;
   flex-direction: column;
 }
@@ -455,16 +455,16 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
   padding: 2rem;
-  border-bottom: 1px solid #e9ecef;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--gradient-primary);
+  color: var(--color-on-primary);
 }
 
 .header-content h2 {
   margin: 0 0 0.5rem 0;
   font-size: 1.75rem;
   font-weight: 700;
-  color: white;
+  color: var(--color-on-primary);
 }
 
 .header-meta {
@@ -497,7 +497,7 @@ export default {
   border-radius: 8px;
   padding: 0.5rem;
   cursor: pointer;
-  color: white;
+  color: var(--color-on-primary);
   transition: all 0.2s ease;
 }
 
@@ -514,8 +514,8 @@ export default {
 .loading-spinner {
   width: 48px;
   height: 48px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #667eea;
+  border: 4px solid var(--color-border);
+  border-top: 4px solid var(--color-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem;
@@ -545,7 +545,7 @@ export default {
 }
 
 .questions-section h3 {
-  color: #2c3e50;
+  color: var(--color-heading);
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0;
@@ -558,13 +558,13 @@ export default {
   content: '';
   width: 4px;
   height: 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
   border-radius: 2px;
 }
 
 .questions-count {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(102, 126, 234, 0.12);
+  color: var(--color-primary);
   padding: 0.25rem 0.5rem;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -582,20 +582,20 @@ export default {
   align-items: flex-start;
   gap: 1rem;
   padding: 1.5rem;
-  background: #f8f9fa;
+  background: var(--color-background-soft);
   border-radius: 12px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
   transition: all 0.2s ease;
 }
 
 .question-edit-card:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px var(--color-card-shadow);
 }
 
 .question-number {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--gradient-primary);
+  color: var(--color-on-primary);
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -627,7 +627,7 @@ export default {
 
 .form-group-label {
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--color-heading);
   margin-bottom: 0.5rem;
   font-size: 1rem;
   display: block;
@@ -644,13 +644,13 @@ export default {
 }
 
 .question-type-badge.bilateral {
-  background: rgba(52, 152, 219, 0.1);
-  color: #3498db;
+  background: rgba(52, 152, 219, 0.12);
+  color: var(--color-info);
 }
 
 .question-type-badge.general {
-  background: rgba(46, 204, 113, 0.1);
-  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.12);
+  color: var(--color-success);
 }
 
 .question-controls {
@@ -680,7 +680,7 @@ export default {
 .control-group label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #6c757d;
+  color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.025em;
 }
@@ -691,28 +691,30 @@ export default {
 
 .form-input {
   padding: 0.75rem;
-  border: 2px solid #e9ecef;
+  border: 2px solid var(--color-input-border);
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.2s ease;
   min-width: 120px;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--color-input-border-focus);
+  box-shadow: var(--shadow-focus);
 }
 
 .input-error {
-  border-color: #dc3545 !important;
+  border-color: var(--color-error) !important;
   box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
 }
 
 .form-checkbox {
   width: 18px;
   height: 18px;
-  accent-color: #667eea;
+  accent-color: var(--color-primary);
 }
 
 .comment-section {
@@ -725,7 +727,7 @@ export default {
 }
 
 .error-message {
-  color: #dc3545;
+  color: var(--color-error);
   font-size: 0.75rem;
   margin-top: 0.25rem;
   font-weight: 500;
@@ -734,7 +736,7 @@ export default {
 .no-questions {
   text-align: center;
   padding: 4rem 2rem;
-  color: #6c757d;
+  color: var(--color-text-secondary);
 }
 
 .no-questions svg {
@@ -749,9 +751,10 @@ export default {
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid var(--color-border);
 }
 
+/* Use global button styles if available; keep minimal shape here */
 .btn {
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -771,26 +774,7 @@ export default {
   transform: none !important;
 }
 
-.btn-outline {
-  background: white;
-  color: #6c757d;
-  border: 2px solid #e9ecef;
-}
-
-.btn-outline:hover {
-  background: #f8f9fa;
-  border-color: #6c757d;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
+/* remove local color variants to use global .btn, .btn-outline, .btn-primary */
 
 .btn-sm {
   padding: 0.5rem 1rem;

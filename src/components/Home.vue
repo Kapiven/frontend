@@ -6,8 +6,8 @@
       <p>Tu salud visual en buenas manos</p>
 
       <div class="botones">
-        <button @click="iniciarSesion">Iniciar Sesión</button>
-        <button @click="registrarse">Registrarse</button>
+        <button @click="iniciarSesion" class="btn btn-primary">Iniciar Sesión</button>
+        <button @click="registrarse" class="btn btn-outline">Registrarse</button>
       </div>
     </div>
   </div>
@@ -35,14 +35,14 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(to bottom right, #e0f2fe, #ffffff);
+  background: var(--color-auth-gradient);
 }
 
 .card {
-  background-color: white;
+  background-color: var(--color-card-bg);
   padding: 2rem;
   border-radius: 20px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-large);
   text-align: center;
   max-width: 350px;
   width: 100%;
@@ -58,12 +58,12 @@ export default {
 
 h1 {
   font-size: 1.8rem;
-  color: #0f172a;
+  color: var(--color-heading);
   margin-bottom: 0.5rem;
 }
 
 p {
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin-bottom: 1.5rem;
 }
 
@@ -76,24 +76,5 @@ p {
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s ease;
-}
-
-.botones button:first-child {
-  background-color: #0284c7;
-  color: white;
-}
-
-.botones button:first-child:hover {
-  background-color: #0369a1;
-}
-
-.botones button:last-child {
-  background-color: white;
-  color: #0284c7;
-  border: 2px solid #0284c7;
-}
-
-.botones button:last-child:hover {
-  background-color: #e0f2fe;
 }
 </style>

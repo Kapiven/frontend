@@ -511,15 +511,9 @@ tbody tr:last-child td {
 /* === DARK MODE COMPATIBILITY === */
 @media (prefers-color-scheme: dark) {
   .btn-primary,
-  .btn-action-edit {
-    background: #1c2b46;
-    color: #fff;
-  }
-  
+  .btn-action-edit { background: var(--color-btn-primary); color: var(--color-btn-primary-text); }
   .btn-primary:hover,
-  .btn-action-edit:hover {
-    background: #243654;
-  }
+  .btn-action-edit:hover { background: var(--color-btn-primary-hover); }
   
   .form-label {
     color: var(--color-text);

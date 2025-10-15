@@ -74,7 +74,7 @@ export async function deleteAppointment(id) {
  * @returns {Promise<Object>} The created appointment.
  */
 export async function createAppointment(appointment) {
-  const res = await api.post(`/appointments`, appointment)
+  const res = await api.post(`/api/consultations`, appointment)
   return res.data
 }
 

@@ -4,15 +4,22 @@
     
     <div class="edit-patient-page">
       <div class="edit-patient-container">
-        <div class="edit-patient-header">
-          <button @click="goBack" class="back-btn">
+        <!-- Gradient header (Nueva Consulta style) -->
+        <div class="page-header">
+          <div class="header-content">
+            <h1>Editar Paciente</h1>
+            <div class="header-meta">
+              <span class="version-tag">ID {{ patientId }}</span>
+              <span class="edit-badge">{{ patientData?.name || 'Cargando…' }}</span>
+            </div>
+          </div>
+          <button @click="goBack" class="back-btn" aria-label="Volver">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="m12 19-7-7 7-7"/>
               <path d="M19 12H5"/>
             </svg>
-            Volver
+            <span class="back-text">Volver</span>
           </button>
-          <h1>Editar Paciente</h1>
         </div>
 
         <div v-if="isLoading" class="loading-message">Cargando datos del paciente...</div>
@@ -76,10 +83,10 @@
           </div>
 
           <div class="form-actions">
-            <button type="button" @click="goBack" class="cancel-btn">
+            <button type="button" @click="goBack" class="btn btn-secondary">
               Cancelar
             </button>
-            <button type="submit" class="save-btn" :disabled="isSaving">
+            <button type="submit" class="btn btn-primary" :disabled="isSaving">
               <span v-if="isSaving">Guardando...</span>
               <span v-else>Guardar Cambios</span>
             </button>
@@ -120,42 +127,27 @@ export default {
     }
   },
   async mounted() {
-    await this.fetchPatientData()
+    try {
+      const details = await getPatientDetails(this.patientId)
+      this.patientData = details
+      // Prefill form fields from fetched details
+      this.editForm.telefono = details.phone || ''
+      this.editForm.medicos = details.medicalHistory || ''
+      this.editForm.oculares = details.ocularHistory || ''
+      this.editForm.alergicos = details.allergies || ''
+    } catch (e) {
+      console.error('Error fetching patient:', e)
+      this.error = 'No se pudo cargar la información del paciente'
+    } finally {
+      this.isLoading = false
+    }
   },
   methods: {
-    async fetchPatientData() {
-      this.isLoading = true
-      this.error = null
-
-      try {
-        const patientDetails = await getPatientDetails(this.patientId)
-        this.patientData = patientDetails
-        
-        // Populate form with current data
-        this.editForm = {
-          telefono: patientDetails.phone || '',
-          medicos: patientDetails.medicalHistory || '',
-          oculares: patientDetails.ocularHistory || '',
-          alergicos: patientDetails.allergies || '',
-        }
-      } catch (error) {
-        this.error = 'Error loading patient data.'
-        console.error('Error fetching patient data:', error)
-      } finally {
-        this.isLoading = false
-      }
-    },
-
     async handleSave() {
       this.isSaving = true
-      
       try {
         await updatePatient(this.patientId, this.editForm)
-        
-        // Show success message
         alert('Datos del paciente actualizados correctamente')
-        
-        // Navigate back to patient page
         this.$router.push(`/patient/${this.patientId}`)
       } catch (error) {
         console.error('Error updating patient:', error)
@@ -164,7 +156,6 @@ export default {
         this.isSaving = false
       }
     },
-
     goBack() {
       this.$router.push(`/patient/${this.patientId}`)
     },
@@ -195,40 +186,63 @@ export default {
   padding: 2.5rem;
 }
 
-.edit-patient-header {
+/* Gradient page header (consistent with Nueva Consulta) */
+.page-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
   margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  background: var(--gradient-primary);
+  color: var(--color-on-primary);
 }
 
-.back-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--color-btn-secondary);
-  color: var(--color-btn-secondary-text);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-}
-
-.back-btn:hover {
-  background: var(--color-btn-secondary-hover);
-}
-
-.edit-patient-header h1 {
+.header-content h1 {
   margin: 0;
-  color: var(--color-heading);
-  font-size: 2rem;
+  color: var(--color-on-primary);
+  font-size: 1.5rem;
   font-weight: 700;
 }
+
+.header-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.version-tag, .edit-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: transparent;
+  color: var(--color-on-primary);
+  font-size: 0.75rem;
+}
+
+.edit-badge { background: rgba(255,255,255,0.12); }
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--color-on-primary);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 0.625rem;
+  padding: 0.5rem 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.back-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-1px); }
+.back-btn .back-text { display: inline; }
 
 .edit-patient-form {
   max-width: 100%;
@@ -360,15 +374,7 @@ textarea.form-input {
   box-shadow: 0 0 0 2px #23272a, 0 8px 32px rgba(0,0,0,0.40), 0 1.5px 8px rgba(0,0,0,0.22);
 }
 
-.dark .back-btn {
-  background: var(--color-btn-secondary) !important;
-  color: var(--color-btn-secondary-text) !important;
-  border-color: var(--color-border) !important;
-}
-
-.dark .back-btn:hover {
-  background: var(--color-btn-secondary-hover) !important;
-}
+/* Back button adapts over gradient automatically via on-primary */
 
 .dark .save-btn {
   background: var(--color-btn-primary) !important;
@@ -394,10 +400,8 @@ textarea.form-input {
   .edit-patient-container {
     padding: 1.5rem;
   }
-  
-  .edit-patient-header h1 {
-    font-size: 1.5rem;
-  }
+
+  .header-content h1 { font-size: 1.25rem; }
   
   .form-actions {
     flex-direction: column-reverse;

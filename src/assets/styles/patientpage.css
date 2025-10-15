@@ -22,10 +22,6 @@
   padding: 2.5rem 2.5rem 2rem 2.5rem;
 }
 
-.dark .patient-container {
-  background: #181818 !important;
-  box-shadow: 0 0 0 2px #23272a, 0 8px 32px rgba(0,0,0,0.40), 0 1.5px 8px rgba(0,0,0,0.22);
-}
 
 .patient-content {
   display: flex;
@@ -45,9 +41,7 @@
   gap: 1.5rem;
 }
 
-.dark .side-panel {
-  background: #23272a !important;
-}
+/* Dark specifics are driven by CSS variables in :root.dark; avoid local overrides */
 
 /* Side panel container with edit button */
 .side-panel-container {
@@ -184,17 +178,7 @@
   box-shadow: 0 4px 16px rgba(25, 118, 210, 0.12);
 }
 
-.dark .dashboard-btn {
-  background: #2c3e50;
-  color: #fff;
-}
-.dark .dashboard-btn:hover {
-  background: #1976d2;
-}
-
-:root {
-  color-scheme: only light;
-}
+/* theme handled via CSS variables and :root.dark */
 
 body, html {
   background: var(--color-background) !important;

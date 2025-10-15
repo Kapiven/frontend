@@ -98,20 +98,20 @@ export default {
   max-width: 800px;
   margin: 40px auto;
   padding: 24px;
-  background-color: #fff;
+  background-color: var(--color-card-bg);
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px var(--color-card-shadow);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  color: var(--color-text);
 }
 
 .titulo {
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 24px;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid var(--color-border);
   padding-bottom: 8px;
-  color: #222;
+  color: var(--color-heading);
 }
 
 .seccion {
@@ -121,7 +121,7 @@ export default {
 .subtitulo {
   font-size: 20px;
   margin-bottom: 16px;
-  color: #444;
+  color: var(--color-heading);
 }
 
 .grid {
@@ -146,30 +146,5 @@ export default {
   transition: background-color 0.3s ease;
 }
 
-.btn.azul {
-  background-color: #1976d2;
-  color: #fff;
-}
-
-.btn.azul:hover {
-  background-color: #1565c0;
-}
-
-.btn.gris {
-  background-color: #e0e0e0;
-  color: #333;
-}
-
-.btn.gris:hover {
-  background-color: #d5d5d5;
-}
-
-.btn.verde {
-  background-color: #1976d2;
-  color: #fff;
-}
-
-.btn.verde:hover {
-  background-color: #1565c0;
-}
+/* Use global button variants instead */
 </style>

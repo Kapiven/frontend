@@ -524,7 +524,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--color-modal-overlay);
   backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
@@ -534,13 +534,13 @@ export default {
 }
 
 .modal-content {
-  background: white;
+  background: var(--color-modal-bg);
   border-radius: 16px;
   width: 100%;
   max-width: 1000px;
   max-height: 90vh;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-modal);
   display: flex;
   flex-direction: column;
 }
@@ -550,9 +550,9 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
   padding: 2rem;
-  border-bottom: 1px solid #e9ecef;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--gradient-primary);
+  color: var(--color-on-primary);
 }
 
 .header-content h2 {
@@ -609,14 +609,14 @@ export default {
 .info-section {
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: #f8f9fa;
+  background: var(--color-background-soft);
   border-radius: 12px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
 }
 
 .info-section h3,
 .questions-section h3 {
-  color: #2c3e50;
+  color: var(--color-heading);
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0 0 1.5rem 0;
@@ -629,13 +629,13 @@ export default {
   content: '';
   width: 4px;
   height: 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
   border-radius: 2px;
 }
 
 .questions-count {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(102, 126, 234, 0.12);
+  color: var(--color-primary);
   padding: 0.25rem 0.5rem;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -655,27 +655,29 @@ export default {
 
 .form-group label {
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--color-heading);
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
 }
 
 .form-input {
   padding: 0.75rem;
-  border: 2px solid #e9ecef;
+  border: 2px solid var(--color-input-border);
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.2s ease;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--color-input-border-focus);
+  box-shadow: var(--shadow-focus);
 }
 
 .input-error {
-  border-color: #dc3545 !important;
+  border-color: var(--color-error) !important;
   box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
 }
 
@@ -685,8 +687,8 @@ export default {
 }
 
 .version-increment-btn {
-  background: #667eea;
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
   border: none;
   border-radius: 6px;
   padding: 0.5rem;
@@ -697,9 +699,7 @@ export default {
   justify-content: center;
 }
 
-.version-increment-btn:hover {
-  background: #5a6fd8;
-}
+.version-increment-btn:hover { filter: brightness(1.05); }
 
 /* Questions Section */
 .questions-section {
@@ -726,25 +726,25 @@ export default {
   align-items: flex-start;
   gap: 1rem;
   padding: 1.5rem;
-  background: #f8f9fa;
+  background: var(--color-background-soft);
   border-radius: 12px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
   transition: all 0.2s ease;
 }
 
 .question-edit-card:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px var(--color-card-shadow);
 }
 
 .question-error {
-  border-color: #dc3545;
-  background: #fdf2f2;
+  border-color: var(--color-error);
+  background: rgba(220, 53, 69, 0.05);
 }
 
 .question-number {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--gradient-primary);
+  color: var(--color-on-primary);
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -774,17 +774,19 @@ export default {
 .question-name-input {
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid #e9ecef;
+  border: 2px solid var(--color-input-border);
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
   transition: all 0.2s ease;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
 }
 
 .question-name-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--color-input-border-focus);
+  box-shadow: var(--shadow-focus);
 }
 
 .question-actions {
@@ -794,8 +796,8 @@ export default {
 }
 
 .order-btn {
-  background: #6c757d;
-  color: white;
+  background: var(--color-btn-secondary);
+  color: var(--color-btn-secondary-text);
   border: none;
   border-radius: 4px;
   padding: 0.375rem;
@@ -806,9 +808,7 @@ export default {
   justify-content: center;
 }
 
-.order-btn:hover:not(:disabled) {
-  background: #5a6268;
-}
+.order-btn:hover:not(:disabled) { background: var(--color-btn-secondary-hover); }
 
 .order-btn:disabled {
   opacity: 0.5;
@@ -816,8 +816,8 @@ export default {
 }
 
 .remove-btn {
-  background: #dc3545;
-  color: white;
+  background: var(--color-btn-danger);
+  color: var(--color-btn-danger-text);
   border: none;
   border-radius: 4px;
   padding: 0.375rem;
@@ -828,9 +828,7 @@ export default {
   justify-content: center;
 }
 
-.remove-btn:hover:not(:disabled) {
-  background: #c82333;
-}
+.remove-btn:hover:not(:disabled) { background: var(--color-btn-danger-hover); }
 
 .remove-btn:disabled {
   opacity: 0.5;
@@ -838,7 +836,7 @@ export default {
 }
 
 .error-message {
-  color: #dc3545;
+  color: var(--color-error);
   font-size: 0.75rem;
   margin-top: 0.25rem;
   font-weight: 500;
@@ -864,23 +862,25 @@ export default {
 .control-group label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #6c757d;
+  color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.025em;
 }
 
 .form-select {
   padding: 0.5rem 0.75rem;
-  border: 2px solid #e9ecef;
+  border: 2px solid var(--color-input-border);
   border-radius: 6px;
   font-size: 0.875rem;
   transition: all 0.2s ease;
   min-width: 140px;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
 }
 
 .form-select:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--color-input-border-focus);
 }
 
 .checkbox-label {
@@ -890,14 +890,14 @@ export default {
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #2c3e50;
+  color: var(--color-text);
   padding: 0.5rem 0;
 }
 
 .form-checkbox {
   width: 16px;
   height: 16px;
-  accent-color: #667eea;
+  accent-color: var(--color-primary);
 }
 
 .checkbox-text {
@@ -909,7 +909,7 @@ export default {
 .no-questions {
   text-align: center;
   padding: 4rem 2rem;
-  color: #6c757d;
+  color: var(--color-text-secondary);
 }
 
 .no-questions svg {
@@ -924,7 +924,7 @@ export default {
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid var(--color-border);
 }
 
 .btn {
@@ -946,26 +946,7 @@ export default {
   transform: none !important;
 }
 
-.btn-outline {
-  background: white;
-  color: #6c757d;
-  border: 2px solid #e9ecef;
-}
-
-.btn-outline:hover {
-  background: #f8f9fa;
-  border-color: #6c757d;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
+/* Use global .btn, .btn-outline, .btn-primary */
 
 .btn-sm {
   padding: 0.5rem 1rem;

@@ -190,7 +190,7 @@
 /* Modern hover effect with elevation instead of border */
 .calendar-day:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px var(--color-card-shadow);
   z-index: 1;
   background: var(--color-background); /* Cambio sutil de color en hover */
 }
@@ -237,23 +237,14 @@
 }
 
 /* Empty cells */
-.empty-day {
-  background: #f0f0f0;
-  border: 1px dashed #ddd;
-  opacity: 0.7;
-}
+.empty-day { background: var(--color-background); border: 1px dashed var(--color-border); opacity: 0.7; }
 
 .empty-day:hover {
   transform: none;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.day-number {
-  padding-left: 0.25rem;
-  font-weight: bold;
-  color: #111;
-  margin-bottom: 0.3rem;
-}
+.day-number { padding-left: 0.25rem; font-weight: bold; color: var(--color-text); margin-bottom: 0.3rem; }
 
 @media (prefers-color-scheme: dark) {
   .day-number {
@@ -287,12 +278,12 @@
 .appointment-item {
   background-color: transparent;
   padding: 0.5rem 0.25rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-start;
   align-items: center;
   font-size: 0.8rem;
-  color: #333;
+  color: var(--color-text);
   width: 100%;
   word-break: break-word;
   line-height: 1.3;
@@ -313,13 +304,13 @@
 }
 
 .appointment-item:hover {
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: var(--color-background-soft);
   z-index: 3; /* Asegurar que las citas estén por encima del día en hover */
   position: relative;
 }
 
 .appointment-item span {
-  color: #333;
+  color: var(--color-text);
   flex-grow: 1;
   pointer-events: none; /* Evitar conflictos de clic con el span interno */
 }
@@ -338,7 +329,7 @@
 
 /* No appointments message - NOT clickable */
 .no-appointments {
-  color: #888;
+  color: var(--color-text-secondary);
   font-style: italic;
   cursor: default;
   padding: 0.5rem 0.25rem;
@@ -350,18 +341,11 @@
 }
 
 /* Modern date navigation styles */
-.date-navigator {
-  display: flex;
-  align-items: center;
-  background: #f5f5f5;
-  border-radius: 0.5rem;
-  padding: 0.2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
+.date-navigator { display: flex; align-items: center; background: var(--color-background-soft); border-radius: 0.5rem; padding: 0.2rem; box-shadow: var(--shadow-small); }
 
 .nav-arrow {
   background: transparent !important;
-  color: #333 !important;
+  color: var(--color-text) !important;
   border: none;
   font-size: 1.5rem;
   padding: 0.2rem 0.7rem !important;
@@ -373,9 +357,7 @@
   transition: background 0.2s;
 }
 
-.nav-arrow:hover {
-  background: rgba(0, 0, 0, 0.05) !important;
-}
+.nav-arrow:hover { background: var(--color-background) !important; }
 
 .arrow-icon {
   line-height: 1;
@@ -386,7 +368,7 @@
 .date-selector {
   padding: 0.5rem 1rem;
   font-weight: 500;
-  color: #333;
+  color: var(--color-text);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -394,18 +376,15 @@
   position: relative;
 }
 
-.dropdown-icon {
-  font-size: 0.8rem;
-  color: #666;
-}
+.dropdown-icon { font-size: 0.8rem; color: var(--color-text-secondary); }
 
 .date-picker-dropdown {
   position: absolute;
   top: 100%;
   right: 0;
-  background: white;
+  background: var(--color-card-bg);
   border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-medium);
   width: 280px;
   padding: 1rem;
   z-index: 1001;
@@ -452,7 +431,7 @@
 
 .picker-header button {
   background: transparent !important;
-  color: #333 !important;
+  color: var(--color-text) !important;
   border: none;
   font-size: 1.2rem;
   padding: 0.2rem 0.5rem !important;
@@ -473,22 +452,17 @@
   transition: all 0.2s ease;
 }
 
-.month-item:hover {
-  background: #f0f0f0;
-}
+.month-item:hover { background: var(--color-background-soft); }
 
-.month-item.selected {
-  background: #1976d2;
-  color: white;
-}
+.month-item.selected { background: var(--color-btn-primary); color: var(--color-btn-primary-text); }
 
 /* Updated Appointment Form Modal styles */
 .appointment-form-modal {
   width: 90%;
   max-width: 480px;
   border-radius: 1rem;
-  background: white;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  background: var(--color-card-bg);
+  box-shadow: var(--shadow-medium);
 }
 
 .form-group {
@@ -499,11 +473,11 @@
 .form-textarea {
   width: 100%;
   padding: 0.8rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-input-border);
   border-radius: 0.5rem;
-  background: #f9f9f9;
+  background: var(--color-input-bg);
   font-size: 1rem;
-  color: #333;
+  color: var(--color-input-text);
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
@@ -511,9 +485,9 @@
 
 .form-input:focus,
 .form-textarea:focus {
-  border-color: #1976d2;
+  border-color: var(--color-input-border-focus);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+  box-shadow: var(--shadow-focus);
 }
 
 .form-textarea {
@@ -528,7 +502,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.25);
+  background: var(--color-modal-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -546,11 +520,11 @@
 }
 
 .modal {
-  background: #fff;
+  background: var(--color-modal-bg);
   border-radius: 1rem;
   padding: 2rem;
   min-width: 320px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-medium);
   animation: modal-slide 0.3s ease;
 }
 
@@ -570,30 +544,72 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: 1rem;
 }
 
-.modal-header h3 {
-  margin: 0;
-  color: #1976d2;
-  font-size: 1.5rem;
-}
+.modal-header h3 { margin: 0; color: var(--color-primary); font-size: 1.5rem; }
 
 
 
 
-.close-button {
-  background: none;
+.close-button { background: none; border: none; font-size: 1.5rem; color: var(--color-text-secondary); cursor: pointer; }
+
+.close-button:hover { color: var(--color-text); }
+
+/* --- Nueva Cita (appointment form) header: gradient + meta + on-primary --- */
+.appointment-form-modal .modal-header {
+  background: var(--gradient-primary);
+  color: var(--color-on-primary);
   border: none;
-  font-size: 1.5rem;
-  color: #666;
-  cursor: pointer;
+  padding: 0.9rem 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.25rem;
 }
 
-.close-button:hover {
-  color: #333;
+.appointment-form-modal .header-content h3 {
+  margin: 0;
+  color: var(--color-on-primary);
 }
+
+.appointment-form-modal .header-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.appointment-form-modal .version-tag,
+.appointment-form-modal .edit-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  color: var(--color-on-primary);
+  font-size: 0.8rem;
+}
+
+.appointment-form-modal .edit-badge { background: rgba(255, 255, 255, 0.12); }
+
+.appointment-form-modal .close-button {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--color-on-primary);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  font-size: 1rem;
+}
+
+.appointment-form-modal .close-button:hover { background: rgba(255, 255, 255, 0.24); }
 
 .modal-actions {
   display: flex;
@@ -774,59 +790,25 @@
 
 
 
-.delete-button {
-  background: #fff;
-  color: #d32f2f;
-  border: 1px solid #d32f2f;
-}
+.delete-button { background: var(--color-card-bg); color: var(--color-error); border: 1px solid var(--color-error); }
 
-.delete-button:hover {
-  background: #fff8f8;
-}
+.delete-button:hover { background: var(--color-background-soft); }
 
-.details-loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  color: #666;
-}
+.details-loading { display: flex; justify-content: center; align-items: center; min-height: 200px; color: var(--color-text-secondary); }
 
-.error-container {
-  padding: 1rem;
-  color: #d32f2f;
-  text-align: center;
-}
+.error-container { padding: 1rem; color: var(--color-error); text-align: center; }
 
-.suggestion-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  border-bottom: 1px solid #eee;
-  background: white;
-  transition: background 0.18s;
-}
+.suggestion-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; cursor: pointer; border-bottom: 1px solid var(--color-border); background: var(--color-card-bg); transition: background 0.18s; }
 
 .suggestion-item:last-child {
   border-bottom: none;
 }
 
-.suggestion-name {
-  font-weight: 500;
-  color: #333;
-}
+.suggestion-name { font-weight: 500; color: var(--color-text); }
 
-.suggestion-phone {
-  color: #888;
-  font-size: 0.95em;
-  margin-left: 1.5em;
-}
+.suggestion-phone { color: var(--color-text-secondary); font-size: 0.95em; margin-left: 1.5em; }
 
-.suggestion-item:hover {
-  background: #f0f4fa;
-}
+.suggestion-item:hover { background: var(--color-background-soft); }
 
 .no-results {
   color: #888;

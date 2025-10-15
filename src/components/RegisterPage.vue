@@ -54,12 +54,12 @@ function handleRegister() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f6f8fa;
+  background: var(--color-background);
 }
 .auth-card {
-  background: #fff;
+  background: var(--color-card-bg);
   border-radius: 1.5rem;
-  box-shadow: 0 8px 32px rgba(25, 118, 210, 0.08), 0 1.5px 8px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-medium);
   padding: 2.5rem 2.5rem 2rem 2.5rem;
   max-width: 420px;
   width: 100%;
@@ -74,14 +74,14 @@ function handleRegister() {
   object-fit: cover;
 }
 .auth-title {
-  color: #1976d2;
+  color: var(--color-primary);
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   text-align: center;
 }
 .auth-subtitle {
-  color: #222;
+  color: var(--color-text);
   font-size: 1.1rem;
   margin-bottom: 2rem;
   text-align: center;
@@ -94,7 +94,7 @@ form {
 }
 .section-title {
   font-size: 1rem;
-  color: #1976d2;
+  color: var(--color-primary);
   margin-top: 0;
   margin-bottom: 1rem;
   text-align: left;
@@ -106,52 +106,38 @@ form {
 }
 .form-group label {
   font-size: 0.97rem;
-  color: #222;
+  color: var(--color-text);
   margin-bottom: 0.3rem;
 }
 .form-group input {
   padding: 0.6rem 0.9rem;
-  border: 1px solid #e3e8ee;
+  border: 1px solid var(--color-input-border);
   border-radius: 0.5rem;
   font-size: 1rem;
-  background: #f8f9fa;
-  color: #222;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
   outline: none;
   transition: border 0.2s;
 }
 .form-group input:focus {
-  border: 1.5px solid #1976d2;
+  border: 1.5px solid var(--color-input-border-focus);
 }
-.auth-btn {
-  background-color: #1976d2;
-  color: white;
-  border: none;
-  padding: 0.8rem 0;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-top: 1rem;
-  width: 100%;
-  transition: background 0.2s;
-}
-.auth-btn:hover {
-  background-color: #1565c0;
-}
+.auth-btn { background: var(--color-btn-primary); color: var(--color-btn-primary-text); border: none; padding: 0.8rem 0; border-radius: 0.5rem; cursor: pointer; font-size: 1.1rem; font-weight: 600; margin-top: 1rem; width: 100%; transition: background 0.2s; }
+.auth-btn:hover { background: var(--color-btn-primary-hover); }
 .password-info {
-  background-color: #f5f5f5;
+  background-color: var(--color-background-soft);
   padding: 0.8rem;
   border-radius: 0.5rem;
   margin-top: 0.5rem;
   font-size: 0.9rem;
-  color: #555;
+  color: var(--color-text-secondary);
 }
 .auth-link {
   margin-top: 1.5rem;
   text-align: center;
 }
 .auth-link a {
-  color: #1976d2;
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: 500;
 }

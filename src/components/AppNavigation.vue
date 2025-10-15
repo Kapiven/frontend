@@ -46,7 +46,7 @@
         <span class="user-info" v-if="authStore.user">
           👤 {{ authStore.user.username || 'Usuario' }}
         </span>
-        <button @click="handleLogout" class="logout-btn">
+        <button @click="handleLogout" class="btn btn-outline">
           Salir
         </button>
       </div>
@@ -101,12 +101,14 @@ function handleLogout() {
   authStore.clearAuth()
   router.push('/')
 }
+
 </script>
 
 <style scoped>
 .app-nav {
-  background: var(--color-background-soft);
-  border-bottom: 1px solid var(--color-border);
+  background: var(--gradient-primary);
+  color: var(--color-on-primary);
+  border-bottom: 1px solid transparent;
   padding: 1rem 0;
   position: sticky;
   top: 0;
@@ -140,7 +142,7 @@ function handleLogout() {
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
-  color: var(--color-text);
+  color: var(--color-on-primary);
   font-weight: 600;
 }
 
@@ -151,10 +153,7 @@ function handleLogout() {
   object-fit: cover;
 }
 
-.brand-text {
-  font-size: 1.2rem;
-  color: var(--color-heading);
-}
+.brand-text { font-size: 1.2rem; color: var(--color-on-primary); }
 
 .nav-links {
   display: flex;
@@ -165,22 +164,15 @@ function handleLogout() {
 .nav-link {
   padding: 0.5rem 1rem;
   text-decoration: none;
-  color: var(--color-text);
+  color: rgba(255,255,255,0.9);
   border-radius: 6px;
   transition: all 0.2s;
   font-weight: 500;
 }
 
-.nav-link:hover {
-  background: var(--color-background-mute);
-  color: var(--color-heading);
-}
+.nav-link:hover { background: rgba(255,255,255,0.12); color: var(--color-on-primary); }
 
-.nav-link.active {
-  background: hsla(160, 100%, 37%, 0.1);
-  color: hsla(160, 100%, 37%, 1);
-  font-weight: 600;
-}
+.nav-link.active { background: rgba(255,255,255,0.2); color: var(--color-on-primary); font-weight: 700; }
 
 .nav-actions {
   display: flex;
@@ -201,11 +193,12 @@ function handleLogout() {
   max-width: none;
   padding: 0.4rem 0.8rem;
   font-size: 0.9rem;
-  border-radius: 6px;
-  border: 1px solid var(--color-border);
-  background-color: var(--color-background-soft);
-  color: var(--color-text);
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.2);
+  color: var(--color-on-primary);
 }
+.nav-search :deep(.search-bar input::placeholder) { color: rgba(255,255,255,0.85); }
 
 .nav-search :deep(.suggestions-list) {
   position: absolute;
@@ -227,20 +220,9 @@ function handleLogout() {
   font-size: 0.9rem;
 }
 
-.logout-btn {
-  padding: 0.5rem 1rem;
-  background: #dc2626;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s;
-}
 
-.logout-btn:hover {
-  background: #b91c1c;
-}
+
+/* remove old logout-btn styles; now using global .btn.btn-outline */
 
 @media (max-width: 768px) {
   .nav-container {
