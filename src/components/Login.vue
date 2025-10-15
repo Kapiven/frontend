@@ -7,9 +7,9 @@
       <AuthForm :onSubmit="handleLogin" buttonText="Iniciar sesión">
         <AuthInput
           id="username"
-          label="Nombre de Usuario"
+          label="Correo o Usuario"
           type="text"
-          placeholder="Usuario"
+          placeholder="correo@ejemplo.com o usuario"
           v-model="username"
         />
 
