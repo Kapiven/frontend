@@ -9,6 +9,9 @@ import RegisterPageView from '@/views/RegisterPageView.vue'
 import { useAuthStore } from '@/stores/auth'
 import AdminView from '@/views/AdminView.vue'
 import QuestionnairesView from '@/views/QuestionnaireView.vue'
+import WhatsappView from '@/views/WhatsappView.vue'
+import ReminderView from '@/views/ReminderView.vue'
+
 const routes = [
   {
     path: '/',
@@ -63,6 +66,18 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: AdminView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/Whatsapp',
+    name: 'whatsapp',
+    component: WhatsappView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/reminder',
+    name: 'reminder',
+    component: ReminderView,
     meta: { requiresAuth: true },
   },
 ]
