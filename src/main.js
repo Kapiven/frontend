@@ -1,5 +1,6 @@
 import './assets/main.css'
 import './assets/styles/patientpage.css'
+import './styles/responsive.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

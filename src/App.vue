@@ -27,5 +27,7 @@ onMounted(() => {
 
 <!-- src/App.vue -->
 <template>
-  <router-view />
+  <div class="app-wrapper">
+    <router-view />
+  </div>
 </template>

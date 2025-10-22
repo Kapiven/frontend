@@ -8,6 +8,12 @@
         </router-link>
       </div>
       
+      <!-- Mobile toggle button -->
+      <button class="nav-toggle show-mobile" @click="toggleMobileMenu" aria-label="Toggle menu">
+        <span>☰</span>
+        <span style="font-size: 0.9rem">Menú</span>
+      </button>
+      
       <!-- Patient Search Bar -->
       <div class="nav-search" v-if="showSearchBar">
         <SearchBar 
@@ -16,11 +22,12 @@
         />
       </div>
       
-      <div class="nav-links">
+      <div class="nav-links" :class="{ 'mobile-open': isMobileMenuOpen }">
         <router-link 
           to="/dashboard" 
           class="nav-link"
           :class="{ active: $route.name === 'dashboard' }"
+          @click="closeMobileMenu"
         >
           📊 Dashboard
         </router-link>
@@ -29,6 +36,7 @@
           to="/calendar" 
           class="nav-link"
           :class="{ active: $route.name === 'calendar' }"
+          @click="closeMobileMenu"
         >
           📅 Calendario
         </router-link>
@@ -37,13 +45,14 @@
           to="/admin" 
           class="nav-link"
           :class="{ active: $route.name === 'admin' }"
+          @click="closeMobileMenu"
         >
           👥 Admin
         </router-link>
       </div>
       
-      <div class="nav-actions">
-        <span class="user-info" v-if="authStore.user">
+      <div class="nav-actions" :class="{ 'mobile-open': isMobileMenuOpen }">
+        <span class="user-info hide-mobile" v-if="authStore.user">
           👤 {{ authStore.user.username || 'Usuario' }}
         </span>
         <button @click="handleLogout" class="btn btn-outline">
@@ -55,7 +64,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import SearchBar from '@/components/Dashboard/SearchBar.vue'
@@ -75,6 +84,17 @@ const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
 
+// Mobile menu state
+const isMobileMenuOpen = ref(false)
+
+function toggleMobileMenu() {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
+
+function closeMobileMenu() {
+  isMobileMenuOpen.value = false
+}
+
 // Show search bar on all authenticated routes except login and register
 const showSearchBar = computed(() => {
   const authenticatedRoutes = ['dashboard', 'calendar', 'admin', 'patient', 'register-page']
@@ -86,6 +106,7 @@ function handlePatientRedirect(patientId) {
   console.log('🔍 AppNavigation: Redirecting to patient:', patientId)
   // Always use the default universal redirect to patient page
   router.push({ name: 'patient', params: { patientId: String(patientId) } })
+  closeMobileMenu()
 }
 
 // Universal fetchDaySummary function
@@ -100,6 +121,7 @@ function handleFetchDaySummary() {
 function handleLogout() {
   authStore.clearAuth()
   router.push('/')
+  closeMobileMenu()
 }
 
 </script>
@@ -226,28 +248,34 @@ function handleLogout() {
 
 @media (max-width: 768px) {
   .nav-container {
-    flex-direction: column;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    position: relative;
+  }
+  
+  .nav-brand {
+    flex: 1;
+  }
+  
+  .nav-toggle {
+    order: 2;
   }
   
   .nav-search {
-    order: 1;
+    order: 3;
+    width: 100%;
     max-width: none;
     margin: 0;
   }
   
   .nav-links {
-    order: 2;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    order: 4;
+    width: 100%;
   }
   
   .nav-actions {
-    order: 3;
-  }
-  
-  .user-info {
-    display: none;
+    order: 5;
+    width: 100%;
   }
 }
 </style>

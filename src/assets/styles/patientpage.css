@@ -760,3 +760,57 @@ body, html {
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS FOR PATIENT PAGE
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .patient-content {
+    flex-direction: column;
+  }
+  
+  .side-panel {
+    width: 100%;
+    position: relative;
+    max-height: none;
+  }
+  
+  .main-content {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .patient-page {
+    padding: 1rem;
+  }
+  
+  .patient-container {
+    padding: 1rem;
+  }
+  
+  .patient-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .patient-info {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .section-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .action-btn,
+  .add-button {
+    width: 100%;
+  }
+}
