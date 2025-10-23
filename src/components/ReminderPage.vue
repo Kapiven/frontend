@@ -38,7 +38,9 @@
           <tr v-for="r in recordatoriosFiltrados" :key="r.id">
             <td class="paciente">
               <div class="stack">
-                <span class="name">{{ (r.paciente && r.paciente.nombre) ? r.paciente.nombre : '—' }}</span>
+                <span class="name">{{
+                  r.paciente && r.paciente.nombre ? r.paciente.nombre : '—'
+                }}</span>
               </div>
             </td>
             <!--<td>
@@ -52,11 +54,15 @@
             </td>
             <td class="mensaje" :title="r.mensaje">{{ r.mensaje }}</td>
             <td>
-              <span v-if="r.automatico" class="badge" :class="r.activo ? 'activo' : 'pausado'">{{ r.activo ? 'Activo' : 'Pausado' }}</span>
+              <span v-if="r.automatico" class="badge" :class="r.activo ? 'activo' : 'pausado'">{{
+                r.activo ? 'Activo' : 'Pausado'
+              }}</span>
               <span v-else class="badge" :class="r.estado">{{ capitalizar(r.estado) }}</span>
             </td>
             <td>
-              <div v-if="r.automatico" class="muted">{{ r.siguienteEjecucion ? formatearFechaHora(r.siguienteEjecucion) : '—' }}</div>
+              <div v-if="r.automatico" class="muted">
+                {{ r.siguienteEjecucion ? formatearFechaHora(r.siguienteEjecucion) : '—' }}
+              </div>
               <div v-else>—</div>
             </td>
             <td class="acciones text-right">
@@ -69,7 +75,9 @@
             </td>
           </tr>
           <tr v-if="recordatoriosFiltrados.length === 0">
-            <td colspan="9" class="empty">No se encontraron recordatorios con los filtros actuales.</td>
+            <td colspan="9" class="empty">
+              No se encontraron recordatorios con los filtros actuales.
+            </td>
           </tr>
         </tbody>
       </table>
@@ -139,8 +147,11 @@
           </template>
 
           <div class="field field-col">
-            <label>Mensaje</label>
-            <textarea v-model="form.mensaje" rows="3" placeholder="Escribe el mensaje..."></textarea>
+            <label>Mensaje (Plantilla)</label>
+            <select v-model="form.mensaje">
+              <option disabled value="">Seleccione una plantilla</option>
+              <option v-for="t in templates" :key="t" :value="t">{{ t }}</option>
+            </select>
           </div>
         </div>
 
@@ -155,7 +166,11 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-
+const templates = ref([
+  'Recordatorio de cita médica 24hrs antes',
+  'Recordatorio de toma de medicación',
+  'Recordatorio de examen de laboratorio',
+])
 // Estado principal
 const recordatorios = ref([
   {
@@ -302,7 +317,11 @@ function enviarAutomatico(r) {
   })
   r.ultimoEnvio = new Date().toISOString()
   // Programar siguiente
-  r.siguienteEjecucion = sumarIntervalo(new Date(r.siguienteEjecucion), r.intervalo, r.unidad).toISOString()
+  r.siguienteEjecucion = sumarIntervalo(
+    new Date(r.siguienteEjecucion),
+    r.intervalo,
+    r.unidad,
+  ).toISOString()
 }
 
 // Utilidades de fecha y programación
@@ -387,15 +406,15 @@ onMounted(() => {
   })
 
   timer = setInterval(() => {
-  const ahora = new Date()
-  recordatorios.value.forEach((r) => {
-  if (r.automatico && r.activo && r.siguienteEjecucion) {
-  const next = new Date(r.siguienteEjecucion)
-  if (!isNaN(next.getTime()) && next <= ahora) {
-  enviarAutomatico(r)
-  }
-  }
-  })
+    const ahora = new Date()
+    recordatorios.value.forEach((r) => {
+      if (r.automatico && r.activo && r.siguienteEjecucion) {
+        const next = new Date(r.siguienteEjecucion)
+        if (!isNaN(next.getTime()) && next <= ahora) {
+          enviarAutomatico(r)
+        }
+      }
+    })
   }, 10000) // cada 10s para demo
 })
 
@@ -427,7 +446,20 @@ function eliminar(id) {
   padding: 24px;
   background: var(--bg);
   min-height: 100vh;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Ubuntu,
+    Cantarell,
+    Noto Sans,
+    Helvetica Neue,
+    Arial,
+    'Apple Color Emoji',
+    'Segoe UI Emoji';
   color: var(--text);
 }
 
@@ -440,12 +472,12 @@ function eliminar(id) {
 .titles h1 {
   margin: 0;
   font-size: 24px;
-  color: #104F55;
-  font-weight:500;
+  color: #104f55;
+  font-weight: 500;
 }
 .subtitle {
   margin: 4px 0 0;
-  color:#1f2a44 ;
+  color: #1f2a44;
   font-size: 14px;
   font-weight: 400;
 }
@@ -462,7 +494,7 @@ function eliminar(id) {
 
 .segment {
   display: inline-flex;
-  background:#eef6ff;
+  background: #eef6ff;
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 4px;
@@ -539,9 +571,15 @@ function eliminar(id) {
   color: black;
 }
 
-.table tbody tr { background: #f9fbff; }
-.table tbody tr:nth-child(odd) { background: #ffffff; }
-.table tbody tr:hover { background: #e6f0ff; }
+.table tbody tr {
+  background: #f9fbff;
+}
+.table tbody tr:nth-child(odd) {
+  background: #ffffff;
+}
+.table tbody tr:hover {
+  background: #e6f0ff;
+}
 
 .paciente .name {
   font-weight: 600;
@@ -610,7 +648,9 @@ function eliminar(id) {
   justify-content: center;
   border-radius: 8px;
 }
-.table .acciones button:focus { outline: none; }
+.table .acciones button:focus {
+  outline: none;
+}
 .table .acciones button:focus-visible {
   outline: 2px solid #60a5fa;
   outline-offset: 2px;
@@ -636,7 +676,7 @@ function eliminar(id) {
 .btn.sm {
   padding: 6px 10px;
   font-size: 12px;
-  color: #104f55
+  color: #104f55;
 }
 
 .icon {
@@ -649,7 +689,9 @@ function eliminar(id) {
   color: black;
 }
 
-.text-right { text-align: right; }
+.text-right {
+  text-align: right;
+}
 
 .empty {
   text-align: center;
@@ -684,7 +726,7 @@ function eliminar(id) {
   align-items: center;
   justify-content: space-between;
   padding: 16px 16px 8px;
-  color: black
+  color: black;
 }
 .form-grid {
   display: grid;
@@ -692,31 +734,52 @@ function eliminar(id) {
   gap: 12px 16px;
   padding: 8px 16px 16px;
 }
-.field { display: grid; gap: 6px; }
-.field-col { grid-column: 1 / -1; }
-.field.inline { align-items: center; grid-auto-flow: column; grid-auto-columns: max-content; }
-label { font-size: 12px; font-weight: 700; color: #1f2a44; }
-input, select, textarea {
+.field {
+  display: grid;
+  gap: 6px;
+}
+.field-col {
+  grid-column: 1 / -1;
+}
+.field.inline {
+  align-items: center;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+}
+label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1f2a44;
+}
+input,
+select,
+textarea {
   padding: 10px 12px;
   border: 1px solid #dbeafe;
   border-radius: 8px;
   background: #f8fbff;
   color: #334155;
 }
-textarea { resize: vertical; }
+textarea {
+  resize: vertical;
+}
 .modal input::placeholder,
 .modal textarea::placeholder {
   color: #334155;
   opacity: 1;
 }
-.freq { display: flex; gap: 8px; align-items: center; }
+.freq {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
 
 .modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
   padding: 12px 16px 16px;
-  background:transparent;
+  background: transparent;
   border-top: 1px solid rgba(219, 234, 254, 0.9);
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
@@ -724,15 +787,50 @@ textarea { resize: vertical; }
 }
 
 /* Switch */
-.switch { position: relative; display: inline-block; width: 52px; height: 32px; }
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; inset: 0; background: #e5e7eb; transition: .2s; border-radius: 999px; }
-.slider:before { content: ""; position: absolute; height: 24px; width: 24px; left: 4px; top: 4px; background: white; transition: .2s; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-.switch input:checked + .slider { background: var(--primary); }
-.switch input:checked + .slider:before { transform: translateX(20px); }
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 32px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #e5e7eb;
+  transition: 0.2s;
+  border-radius: 999px;
+}
+.slider:before {
+  content: '';
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  left: 4px;
+  top: 4px;
+  background: white;
+  transition: 0.2s;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.switch input:checked + .slider {
+  background: var(--primary);
+}
+.switch input:checked + .slider:before {
+  transform: translateX(20px);
+}
 
 @media (max-width: 920px) {
-  .mensaje { max-width: 240px; }
-  .form-grid { grid-template-columns: 1fr; }
+  .mensaje {
+    max-width: 240px;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

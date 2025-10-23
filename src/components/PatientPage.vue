@@ -10,7 +10,7 @@
         <patient-header :patient="patientData" />
 
         <div class="patient-content">
-          <!-- PatientSidePanel needs the date_of_birth to format it -->
+          <!-- Side panel con botón de editar -->
           <div class="side-panel-container">
             <patient-side-panel :patient="patientData" class="side-panel" />
             <button @click="handleEditPatient" class="edit-patient-btn">
@@ -30,13 +30,20 @@
           </div>
 
           <div class="main-content">
-            <!-- Pass the fetched data (patientData.consultations) -->
-            <consultations-section
-              :consultations="patientData.consultations"
-              @add-consultation="handleAddConsultation"
+            <!-- Consultations -->
+            <ConsultationsSection
+              :consultations="consultations"
+              @add-consultation="openNewModal"
+              @view-consultation="openShowModal"
             />
 
-            <!-- Add the missing event handler -->
+            <ShowConsultationModal
+              v-if="selectedConsultation"
+              :consultation="selectedConsultation"
+              @close="selectedConsultation = null"
+            />
+
+            <!-- Exams -->
             <exams-section
               :exams="examData || []"
               :patient-id="patientId"
@@ -47,8 +54,10 @@
           </div>
         </div>
       </div>
+
       <div v-else>No se encontraron datos para este paciente.</div>
 
+      <!-- New Consultation Modal -->
       <NewConsultationModal
         v-if="showNewConsultationModal"
         :patient-name="patientData?.name"
@@ -56,7 +65,7 @@
         @close="closeNewConsultationModal"
       />
 
-      <!-- Add the upload modal -->
+      <!-- New Exam Modal -->
       <NewExamModal
         v-if="showUploadModal"
         :selected-exam="selectedExamForUpload"
@@ -72,12 +81,12 @@ import AppNavigation from '@/components/AppNavigation.vue'
 import PatientHeader from './PatientPage/PatientHeader.vue'
 import PatientSidePanel from './PatientPage/PatientSidePanel.vue'
 import ConsultationsSection from './PatientPage/ConsultationsSection.vue'
+import ShowConsultationModal from './PatientPage/ShowConsultationModal.vue' // ✅ new import
 import ExamsSection from './PatientPage/ExamsSection.vue'
 import NewConsultationModal from './PatientPage/NewConsultationModal.vue'
-import NewExamModal from './PatientPage/NewExamModal.vue' // Add this import
+import NewExamModal from './PatientPage/NewExamModal.vue'
 import { getPatientDetails } from '@/services/patientService'
 import { getExamsByPatientId } from '@/services/examService'
-import { useRouter } from 'vue-router'
 
 export default {
   name: 'PatientPage',
@@ -86,9 +95,10 @@ export default {
     PatientHeader,
     PatientSidePanel,
     ConsultationsSection,
+    ShowConsultationModal, // ✅ register it
     ExamsSection,
     NewConsultationModal,
-    NewExamModal, // Add this component
+    NewExamModal,
   },
   props: {
     patientId: {
@@ -100,12 +110,14 @@ export default {
   data() {
     return {
       patientData: null,
+      consultations: [], // ✅ added
       examData: null,
       isLoading: true,
       error: null,
       showNewConsultationModal: false,
-      showUploadModal: false, // Add this
-      selectedExamForUpload: null, // Add this
+      selectedConsultation: null, // ✅ added
+      showUploadModal: false,
+      selectedExamForUpload: null,
     }
   },
   watch: {
@@ -124,6 +136,7 @@ export default {
       this.error = null
       this.patientData = null
       this.examData = null
+      this.consultations = []
 
       try {
         const [patientDetails, exams] = await Promise.all([
@@ -133,6 +146,7 @@ export default {
 
         this.patientData = patientDetails
         this.examData = exams
+        this.consultations = patientDetails.consultations || [] // ✅ link consultations
       } catch (error) {
         this.error = 'Error loading patient data.'
         console.error('Error fetching patient data:', error)
@@ -141,8 +155,27 @@ export default {
       }
     },
 
-    handleAddConsultation() {
+    // ✅ Opens new consultation modal
+    openNewModal() {
       this.showNewConsultationModal = true
+    },
+
+    closeNewConsultationModal() {
+      this.showNewConsultationModal = false
+    },
+
+    // ✅ Opens details modal
+    async openShowModal(consultation) {
+      try {
+        console.log('📋 Opening details for consultation:', consultation)
+        const res = await fetch(
+          `http://localhost:4000/api/consultations/${consultation.id}/details`,
+        )
+        const fullConsultation = await res.json()
+        this.selectedConsultation = fullConsultation
+      } catch (err) {
+        console.error('Error loading consultation details:', err)
+      }
     },
 
     handleAddExam() {
@@ -150,7 +183,14 @@ export default {
       this.fetchExamData()
     },
 
-    // Add these new methods
+    async fetchExamData() {
+      try {
+        this.examData = await getExamsByPatientId(this.patientId)
+      } catch (error) {
+        console.error('Error fetching exam data:', error)
+      }
+    },
+
     handleOpenExamUploadModal(exam) {
       this.selectedExamForUpload = exam
       this.showUploadModal = true
@@ -167,25 +207,13 @@ export default {
       this.closeUploadModal()
     },
 
-    async fetchExamData() {
-      try {
-        this.examData = await getExamsByPatientId(this.patientId)
-      } catch (error) {
-        console.error('Error fetching exam data:', error)
-      }
-    },
-
-    closeNewConsultationModal() {
-      this.showNewConsultationModal = false
-    },
-
     handleEditPatient() {
-      // Navigate to edit patient page
       this.$router.push(`/patients/${this.patientId}/edit`)
     },
   },
 }
 </script>
+
 <style scoped>
 @import url('@/assets/styles/patientpage.css');
 
@@ -195,6 +223,7 @@ export default {
   margin-top: 20px;
   font-size: 1.2em;
 }
+
 .error-message {
   color: red;
 }

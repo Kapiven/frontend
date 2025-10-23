@@ -1,13 +1,21 @@
 <template>
   <div class="section">
     <h2>{{ title }}</h2>
-    
+
     <!-- Search bar -->
     <div class="search-container">
       <div class="search-input-wrapper">
-        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8"/>
-          <path d="m21 21-4.35-4.35"/>
+        <svg
+          class="search-icon"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
         </svg>
         <input
           v-model="searchQuery"
@@ -16,9 +24,16 @@
           class="search-input"
         />
         <button v-if="searchQuery" @click="clearSearch" class="clear-search">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
       </div>
@@ -34,10 +49,8 @@
         {{ exam.date }} - {{ exam.patient }} ({{ exam.type }})
       </li>
     </ul>
-    
-    <p v-if="filteredExams.length === 0 && !searchQuery">
-      No hay exámenes pendientes.
-    </p>
+
+    <p v-if="filteredExams.length === 0 && !searchQuery">No hay exámenes pendientes.</p>
     <p v-if="filteredExams.length === 0 && searchQuery">
       No se encontraron exámenes para "{{ searchQuery }}"
     </p>
@@ -49,42 +62,54 @@ import { ref, computed, watch } from 'vue'
 import { searchExams } from '@/services/examService'
 
 const props = defineProps({
-  title: {
-    type: String,
-    default: 'Exámenes Pendientes',
-  },
-  recentExams: {
-    type: Array,
-    required: true,
-  },
+  title: { type: String, default: 'Exámenes Pendientes' },
+  recentExams: { type: Array, required: true },
 })
 
 const emit = defineEmits(['openExamUploadModal'])
 
-// Reactive state
 const searchQuery = ref('')
 const searchResults = ref([])
 const isSearching = ref(false)
 
-// Computed
+// Utility to normalize Spanish text (remove tildes and lowercase)
+function normalizeText(str) {
+  return str
+    ? str
+        .normalize('NFD') // break accents from letters
+        .replace(/[\u0300-\u036f]/g, '') // strip accents
+        .toLowerCase()
+    : ''
+}
+
+// Computed filtered list
 const filteredExams = computed(() => {
-  if (!searchQuery.value.trim()) {
-    return props.recentExams
-  }
-  return searchResults.value
+  const query = normalizeText(searchQuery.value.trim())
+  if (!query) return props.recentExams
+
+  // Option A: purely frontend fuzzy search
+  return props.recentExams.filter((exam) => {
+    const patient = normalizeText(exam.patient || '')
+    const type = normalizeText(exam.type || '')
+    return patient.includes(query) || type.includes(query)
+  })
+
+  // Option B (keep server search)
+  // return searchResults.value
 })
 
-// Watch for search query changes
+// Optional: still use backend search for large datasets
 watch(searchQuery, async (newQuery) => {
-  if (!newQuery.trim() || newQuery.length < 2) {
+  const query = newQuery.trim()
+  if (!query || query.length < 2) {
     searchResults.value = []
     return
   }
 
   isSearching.value = true
   try {
-    const results = await searchExams(newQuery)
-    searchResults.value = results.map(exam => ({
+    const results = await searchExams(query)
+    searchResults.value = results.map((exam) => ({
       id: exam.id,
       date: new Date(exam.date).toLocaleDateString(),
       patient: exam.patient_name || `Paciente ID: ${exam.patient_id}`,
@@ -100,7 +125,6 @@ watch(searchQuery, async (newQuery) => {
   }
 })
 
-// Methods
 function clearSearch() {
   searchQuery.value = ''
   searchResults.value = []

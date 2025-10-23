@@ -7,48 +7,46 @@
           <span class="brand-text">Optyma</span>
         </router-link>
       </div>
-      
+
       <!-- Patient Search Bar -->
       <div class="nav-search" v-if="showSearchBar">
-        <SearchBar 
-          :fetchDaySummary="handleFetchDaySummary" 
-          :patientRedirect="handlePatientRedirect" 
+        <SearchBar
+          :fetchDaySummary="handleFetchDaySummary"
+          :patientRedirect="handlePatientRedirect"
         />
       </div>
-      
+
       <div class="nav-links">
-        <router-link 
-          to="/dashboard" 
+        <router-link
+          to="/dashboard"
           class="nav-link"
           :class="{ active: $route.name === 'dashboard' }"
         >
-          📊 Dashboard
+          Dashboard
         </router-link>
-        
-        <router-link 
-          to="/calendar" 
+
+        <router-link
+          to="/calendar"
           class="nav-link"
           :class="{ active: $route.name === 'calendar' }"
         >
-          📅 Calendario
+          Calendario
         </router-link>
-        
-        <router-link 
-          to="/admin" 
+
+        <router-link
+          to="/questionnaires"
           class="nav-link"
-          :class="{ active: $route.name === 'admin' }"
+          :class="{ active: $route.name === 'questionnaires' }"
         >
-          👥 Admin
+          Formularios
         </router-link>
       </div>
-      
+
       <div class="nav-actions">
         <span class="user-info" v-if="authStore.user">
           👤 {{ authStore.user.username || 'Usuario' }}
         </span>
-        <button @click="handleLogout" class="logout-btn">
-          Salir
-        </button>
+        <button @click="handleLogout" class="logout-btn">Salir</button>
       </div>
     </div>
   </nav>
@@ -63,12 +61,12 @@ import SearchBar from '@/components/Dashboard/SearchBar.vue'
 const props = defineProps({
   fetchDaySummary: {
     type: Function,
-    default: () => {}
+    default: () => {},
   },
   patientRedirect: {
     type: Function,
-    default: () => {}
-  }
+    default: () => {},
+  },
 })
 
 const router = useRouter()
@@ -77,8 +75,8 @@ const authStore = useAuthStore()
 
 // Show search bar on all authenticated routes except login and register
 const showSearchBar = computed(() => {
-  const authenticatedRoutes = ['dashboard', 'calendar', 'admin', 'patient', 'register-page']
-  return authenticatedRoutes.includes(route.name)
+  const hiddenRoutes = ['login', 'register']
+  return !hiddenRoutes.includes(route.name)
 })
 
 // Universal patient redirect function
@@ -247,23 +245,23 @@ function handleLogout() {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .nav-search {
     order: 1;
     max-width: none;
     margin: 0;
   }
-  
+
   .nav-links {
     order: 2;
     justify-content: flex-start;
     flex-wrap: wrap;
   }
-  
+
   .nav-actions {
     order: 3;
   }
-  
+
   .user-info {
     display: none;
   }

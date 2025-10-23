@@ -4,25 +4,29 @@
       <h3>Información de Contacto</h3>
       <p><strong>Teléfono:</strong> {{ patient.phone }}</p>
     </div>
-    
+
     <div class="panel-section">
       <h3>Antecedentes Alérgicos</h3>
       <p>{{ patient.allergies || 'No registra' }}</p>
     </div>
-    
+
     <div class="panel-section">
       <h3>Antecedentes Oculares</h3>
       <p>{{ patient.ocularHistory || 'No registra' }}</p>
     </div>
-    
+
     <div class="panel-section">
       <h3>Antecedentes Médicos</h3>
       <p>{{ patient.medicalHistory || 'No registra' }}</p>
     </div>
-    
+
     <div class="panel-section">
       <h3>Antecedentes Familiares</h3>
       <p>{{ patient.familyHistory || 'No registra' }}</p>
+    </div>
+    <div class="panel-section">
+      <h3>Preferencias Recordatorios</h3>
+      <p>24hrs antes</p>
     </div>
   </div>
 </template>
@@ -33,9 +37,9 @@ export default {
   props: {
     patient: {
       type: Object,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 }
 </script>
 

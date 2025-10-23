@@ -1,10 +1,12 @@
-import axios from 'axios'
+import { api } from '@/services/api'
 
-const API_URL = 'http://localhost:4000'
-
-export async function login(username, password) {
+export async function login(email, password) {
   try {
-    const response = await axios.post(`${API_URL}/login`, { username, password })
+    const response = await api.post(`/login`, { email, password })
+
+    if (!response.data.token) {
+      throw new Error('Token no recibido del servidor')
+    }
 
     localStorage.setItem('authToken', response.data.token)
 
@@ -15,9 +17,9 @@ export async function login(username, password) {
   }
 }
 
-export async function register(email, username, password) {
+export async function register(username, email, password) {
   try {
-    const response = await axios.post(`${API_URL}/register`, { email, username, password })
+    const response = await api.post(`/register`, { username, email, password })
     return response.data
   } catch (error) {
     console.error('Error al registrarse:', error)

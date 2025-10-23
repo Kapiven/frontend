@@ -22,11 +22,6 @@
         />
       </AuthForm>
 
-      <div class="auth-link">
-        ¿No tienes cuenta?
-        <router-link to="/register">Regístrate aquí</router-link>
-      </div>
-
       <p v-if="error" class="auth-error">{{ error }}</p>
     </div>
   </div>
@@ -53,14 +48,14 @@ async function handleLogin() {
     const authStore = useAuthStore()
 
     console.log('Login response:', response)
-    
+
     // Ensure we have both token and user data
     if (!response.token) {
       throw new Error('Token no recibido del servidor')
     }
 
     authStore.setAuth(response.token, response.user || { username: username.value })
-    
+
     // Use router instead of window.location for better navigation
     await router.push('/dashboard')
   } catch (err) {
