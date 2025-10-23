@@ -22,7 +22,6 @@ const routes = [
     path: '/register',
     name: 'register',
     component: RegisterView,
-    meta: { requiresAuth: true },
   },
   {
     path: '/dashboard',
