@@ -454,12 +454,21 @@ export default {
 
     moveQuestion(index, direction) {
       const newIndex = index + direction
-      if (newIndex >= 0 && newIndex < this.form.questions.length) {
-        const temp = this.form.questions[index]
-        this.$set(this.form.questions, index, this.form.questions[newIndex])
-        this.$set(this.form.questions, newIndex, temp)
-        this.reorderQuestions()
-      }
+      if (newIndex < 0 || newIndex >= this.form.questions.length) return
+
+      // Make a shallow copy of the array
+      const updatedQuestions = [...this.form.questions]
+
+      // Swap the two questions
+      const temp = updatedQuestions[index]
+      updatedQuestions[index] = updatedQuestions[newIndex]
+      updatedQuestions[newIndex] = temp
+
+      // Reassign to trigger Vue reactivity
+      this.form.questions = updatedQuestions
+
+      // Reorder order values
+      this.reorderQuestions()
     },
 
     reorderQuestions() {
